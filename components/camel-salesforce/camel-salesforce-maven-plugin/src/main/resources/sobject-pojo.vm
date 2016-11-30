@@ -43,6 +43,9 @@ import org.apache.camel.component.salesforce.api.MultiSelectPicklistSerializer;
 #end
 #end
 import org.apache.camel.component.salesforce.api.dto.AbstractSObjectBase;
+import org.apache.camel.component.salesforce.api.dto.SObjectMetadata;
+import org.apache.camel.component.salesforce.api.dto.SObjectMetadata.Field;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 #if ( $hasMultiSelectPicklists )
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -55,6 +58,15 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * Salesforce DTO for SObject $desc.Name
  */
 @XStreamAlias("$desc.Name")
+@SObjectMetadata(custom = $desc.Custom, label = "$desc.Label", labelPlural = "$desc.LabelPlural", name = "$desc.name",
+    fields = {
+#foreach ( $field in $desc.Fields )
+        @Field(name = "$field.Name")#if( $foreach.hasNext ),
+#end
+#end
+
+    }
+)
 public class $desc.Name extends AbstractSObjectBase {
 
 #foreach ( $field in $desc.Fields )

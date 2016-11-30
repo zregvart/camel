@@ -16,7 +16,9 @@
  */
 package org.apache.camel.component.salesforce.api.dto;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -482,5 +484,131 @@ public class SObjectField extends AbstractDTOBase {
 
     public void setEncrypted(Boolean encrypted) {
         this.encrypted = encrypted;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof SObjectField)) {
+            return false;
+        }
+
+        SObjectField other = (SObjectField) obj;
+
+        boolean ret = Objects.equals(length, other.length);
+        ret &= Objects.equals(name, other.name);
+        ret &= Objects.equals(type, other.type);
+        ret &= Objects.equals(defaultValue, other.defaultValue);
+        ret &= Objects.equals(label, other.label);
+        ret &= Objects.equals(updateable, other.updateable);
+        ret &= Objects.equals(calculated, other.calculated);
+        ret &= Objects.equals(caseSensitive, other.caseSensitive);
+        ret &= Objects.equals(controllerName, other.controllerName);
+        ret &= Objects.equals(unique, other.unique);
+        ret &= Objects.equals(nillable, other.nillable);
+        ret &= Objects.equals(precision, other.precision);
+        ret &= Objects.equals(scale, other.scale);
+        ret &= Objects.equals(byteLength, other.byteLength);
+        ret &= Objects.equals(nameField, other.nameField);
+        ret &= Objects.equals(sortable, other.sortable);
+        ret &= Objects.equals(filterable, other.filterable);
+        ret &= Objects.equals(writeRequiresMasterRead, other.writeRequiresMasterRead);
+        ret &= Objects.equals(externalId, other.externalId);
+        ret &= Objects.equals(idLookup, other.idLookup);
+        ret &= Objects.equals(inlineHelpText, other.inlineHelpText);
+        ret &= Objects.equals(createable, other.createable);
+        ret &= Objects.equals(soapType, other.soapType);
+        ret &= Objects.equals(autoNumber, other.autoNumber);
+        ret &= Objects.equals(restrictedPicklist, other.restrictedPicklist);
+        ret &= Objects.equals(namePointing, other.namePointing);
+        ret &= Objects.equals(custom, other.custom);
+        ret &= Objects.equals(defaultedOnCreate, other.defaultedOnCreate);
+        ret &= Objects.equals(deprecatedAndHidden, other.deprecatedAndHidden);
+        ret &= Objects.equals(htmlFormatted, other.htmlFormatted);
+        ret &= Objects.equals(defaultValueFormula, other.defaultValueFormula);
+        ret &= Objects.equals(calculatedFormula, other.calculatedFormula);
+        ret &= Objects.equals(picklistValues, other.picklistValues);
+        ret &= Objects.equals(dependentPicklist, other.dependentPicklist);
+        ret &= Objects.equals(referenceTo, other.referenceTo);
+        ret &= Objects.equals(relationshipName, other.relationshipName);
+        ret &= Objects.equals(relationshipOrder, other.relationshipOrder);
+        ret &= Objects.equals(cascadeDelete, other.cascadeDelete);
+        ret &= Objects.equals(restrictedDelete, other.restrictedDelete);
+        ret &= Objects.equals(digits, other.digits);
+        ret &= Objects.equals(groupable, other.groupable);
+        ret &= Objects.equals(permissionable, other.permissionable);
+        ret &= Objects.equals(displayLocationInDecimal, other.displayLocationInDecimal);
+        ret &= Objects.equals(extraTypeInfo, other.extraTypeInfo);
+        ret &= Objects.equals(filteredLookupInfo, other.filteredLookupInfo);
+        ret &= Objects.equals(highScaleNumber, other.highScaleNumber);
+        ret &= Objects.equals(mask, other.mask);
+        ret &= Objects.equals(maskType, other.maskType);
+        ret &= Objects.equals(queryByDistance, other.queryByDistance);
+        ret &= Objects.equals(referenceTargetField, other.referenceTargetField);
+        ret &= Objects.equals(encrypted, other.encrypted);
+
+        return ret;
+    }
+
+    @Override
+    public int hashCode() {
+        final Object[] properties = {
+            length,
+            name,
+            type,
+            defaultValue,
+            label,
+            updateable,
+            calculated,
+            caseSensitive,
+            controllerName,
+            unique,
+            nillable,
+            precision,
+            scale,
+            byteLength,
+            nameField,
+            sortable,
+            filterable,
+            writeRequiresMasterRead,
+            externalId,
+            idLookup,
+            inlineHelpText,
+            createable,
+            soapType,
+            autoNumber,
+            restrictedPicklist,
+            namePointing,
+            custom,
+            defaultedOnCreate,
+            deprecatedAndHidden,
+            htmlFormatted,
+            defaultValueFormula,
+            calculatedFormula,
+            picklistValues,
+            dependentPicklist,
+            referenceTo,
+            relationshipName,
+            relationshipOrder,
+            cascadeDelete,
+            restrictedDelete,
+            digits,
+            groupable,
+            permissionable,
+            displayLocationInDecimal,
+            extraTypeInfo,
+            filteredLookupInfo,
+            highScaleNumber,
+            mask,
+            maskType,
+            queryByDistance,
+            referenceTargetField,
+            encrypted
+        };
+
+        return Arrays.hashCode(properties);
     }
 }
