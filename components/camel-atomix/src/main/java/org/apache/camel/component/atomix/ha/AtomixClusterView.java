@@ -26,7 +26,9 @@ import io.atomix.Atomix;
 import io.atomix.group.DistributedGroup;
 import io.atomix.group.GroupMember;
 import io.atomix.group.LocalMember;
+import org.apache.camel.component.atomix.AtomixConfiguration;
 import org.apache.camel.ha.CamelClusterMember;
+import org.apache.camel.ha.CamelClusterService;
 import org.apache.camel.impl.ha.AbstractCamelClusterView;
 import org.apache.camel.util.ObjectHelper;
 import org.slf4j.Logger;
@@ -37,12 +39,14 @@ final class AtomixClusterView extends AbstractCamelClusterView {
 
     private final Atomix atomix;
     private final AtomixLocalMember localMember;
+    private final AtomixConfiguration<?> configuration;
     private DistributedGroup group;
 
-    AtomixClusterView(AtomixClusterService cluster, String namespace, Atomix atomix) {
+    AtomixClusterView(CamelClusterService cluster, String namespace, Atomix atomix, AtomixConfiguration<?> configuration) {
         super(cluster, namespace);
 
         this.atomix = atomix;
+        this.configuration = configuration;
         this.localMember = new AtomixLocalMember();
     }
 
@@ -80,11 +84,17 @@ final class AtomixClusterView extends AbstractCamelClusterView {
         return new AtomixClusterMember(group, member);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void doStart() throws Exception {
         if (!localMember.hasJoined()) {
             LOGGER.debug("Get group {}", getNamespace());
-            group = this.atomix.getGroup(getNamespace()).get();
+
+            group = this.atomix.getGroup(
+                getNamespace(),
+                new DistributedGroup.Config(configuration.getResourceConfig(getNamespace())),
+                new DistributedGroup.Options(configuration.getResourceOptions(getNamespace()))
+            ).get();
 
             LOGGER.debug("Join group {}", getNamespace());
             localMember.join();

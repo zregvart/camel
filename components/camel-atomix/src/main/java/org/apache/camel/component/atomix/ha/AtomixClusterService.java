@@ -23,8 +23,6 @@ import io.atomix.catalyst.transport.Address;
 import io.atomix.catalyst.transport.Transport;
 import io.atomix.copycat.server.storage.StorageLevel;
 import org.apache.camel.CamelContext;
-import org.apache.camel.component.atomix.cluster.AtomixClusterConfiguration;
-import org.apache.camel.component.atomix.cluster.AtomixClusterHelper;
 import org.apache.camel.impl.ha.AbstractCamelClusterService;
 import org.apache.camel.util.ObjectHelper;
 import org.slf4j.Logger;
@@ -80,12 +78,12 @@ public final class AtomixClusterService extends AbstractCamelClusterService<Atom
         configuration.setStoragePath(storagePath);
     }
 
-    public List<Address> getNodes() {
-        return configuration.getNodes();
-    }
-
     public StorageLevel getStorageLevel() {
         return configuration.getStorageLevel();
+    }
+
+    public List<Address> getNodes() {
+        return configuration.getNodes();
     }
 
     public void setNodes(List<Address> nodes) {
@@ -138,7 +136,7 @@ public final class AtomixClusterService extends AbstractCamelClusterService<Atom
 
     @Override
     protected AtomixClusterView createView(String namespace) throws Exception {
-        return new AtomixClusterView(this, namespace, getOrCreateReplica());
+        return new AtomixClusterView(this, namespace, getOrCreateReplica(), configuration);
     }
 
     private AtomixReplica getOrCreateReplica() throws Exception {

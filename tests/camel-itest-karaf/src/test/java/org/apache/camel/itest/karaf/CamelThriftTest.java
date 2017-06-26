@@ -28,6 +28,7 @@ public class CamelThriftTest extends BaseKarafTest {
     @Test
     public void test() throws Exception {
         testDataFormat(COMPONENT);
+        testComponent(COMPONENT);
     }
 
 

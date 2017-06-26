@@ -64,6 +64,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class BaseTypeConverterRegistry extends ServiceSupport implements TypeConverter, TypeConverterRegistry, CamelContextAware {
     protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final OptimisedTypeConverter optimisedTypeConverter = new OptimisedTypeConverter();
     protected final ConcurrentMap<TypeMapping, TypeConverter> typeMappings = new ConcurrentHashMap<TypeMapping, TypeConverter>();
     // for misses use a soft reference cache map, as the classes may be un-deployed at runtime
     protected final LRUSoftCache<TypeMapping, TypeMapping> misses = new LRUSoftCache<TypeMapping, TypeMapping>(1000);
@@ -79,6 +80,7 @@ public abstract class BaseTypeConverterRegistry extends ServiceSupport implement
     protected final LongAdder noopCounter = new LongAdder();
     protected final LongAdder attemptCounter = new LongAdder();
     protected final LongAdder missCounter = new LongAdder();
+    protected final LongAdder coreHitCounter = new LongAdder();
     protected final LongAdder hitCounter = new LongAdder();
     protected final LongAdder failedCounter = new LongAdder();
 
@@ -243,9 +245,9 @@ public abstract class BaseTypeConverterRegistry extends ServiceSupport implement
         }
     }
 
-    protected Object doConvertTo(final Class<?> type, final Exchange exchange, final Object value, final boolean tryConvert) {
+    protected Object doConvertTo(final Class<?> type, final Exchange exchange, final Object value, final boolean tryConvert) throws Exception {
         if (log.isTraceEnabled()) {
-            log.trace("Converting {} -> {} with value: {}",
+            log.trace("Finding type converter to convert {} -> {} with value: {}",
                     new Object[]{value == null ? "null" : value.getClass().getCanonicalName(), 
                         type.getCanonicalName(), value});
         }
@@ -256,7 +258,7 @@ public abstract class BaseTypeConverterRegistry extends ServiceSupport implement
                 noopCounter.increment();
             }
             // lets avoid NullPointerException when converting to boolean for null values
-            if (boolean.class.isAssignableFrom(type)) {
+            if (boolean.class == type) {
                 return Boolean.FALSE;
             }
             return null;
@@ -268,11 +270,11 @@ public abstract class BaseTypeConverterRegistry extends ServiceSupport implement
             if (statistics.isStatisticsEnabled()) {
                 noopCounter.increment();
             }
-            return type.cast(value);
+            return value;
         }
 
         // special for NaN numbers, which we can only convert for floating numbers
-        if (ObjectHelper.isNaN(value)) {
+        if ((value instanceof Float && value.equals(Float.NaN)) || (value instanceof Double && value.equals(Double.NaN))) {
             // no type conversion was needed
             if (statistics.isStatisticsEnabled()) {
                 noopCounter.increment();
@@ -290,6 +292,18 @@ public abstract class BaseTypeConverterRegistry extends ServiceSupport implement
         // okay we need to attempt to convert
         if (statistics.isStatisticsEnabled()) {
             attemptCounter.increment();
+        }
+
+        // use the optimised core converter first
+        Object result = optimisedTypeConverter.convertTo(type, exchange, value);
+        if (result != null) {
+            if (statistics.isStatisticsEnabled()) {
+                coreHitCounter.increment();
+            }
+            if (log.isTraceEnabled()) {
+                log.trace("Using optimised core converter to convert: {} -> {}", type, value.getClass().getCanonicalName());
+            }
+            return result;
         }
 
         // check if we have tried it before and if its a miss
@@ -719,6 +733,11 @@ public abstract class BaseTypeConverterRegistry extends ServiceSupport implement
         }
 
         @Override
+        public long getCoreHitCounter() {
+            return coreHitCounter.longValue();
+        }
+
+        @Override
         public long getMissCounter() {
             return missCounter.longValue();
         }
@@ -733,6 +752,7 @@ public abstract class BaseTypeConverterRegistry extends ServiceSupport implement
             noopCounter.reset();
             attemptCounter.reset();
             hitCounter.reset();
+            coreHitCounter.reset();
             missCounter.reset();
             failedCounter.reset();
         }
@@ -749,21 +769,29 @@ public abstract class BaseTypeConverterRegistry extends ServiceSupport implement
 
         @Override
         public String toString() {
-            return String.format("TypeConverterRegistry utilization[noop=%s, attempts=%s, hits=%s, misses=%s, failures=%s]",
-                    getNoopCounter(), getAttemptCounter(), getHitCounter(), getMissCounter(), getFailedCounter());
+            return String.format("TypeConverterRegistry utilization[noop=%s, attempts=%s, hits=%s, coreHits=%s, misses=%s, failures=%s]",
+                    getNoopCounter(), getAttemptCounter(), getHitCounter(), getCoreHitCounter(), getMissCounter(), getFailedCounter());
         }
     }
 
     /**
      * Represents a mapping from one type (which can be null) to another
      */
-    protected static class TypeMapping {
+    protected static final class TypeMapping {
         private final Class<?> toType;
         private final Class<?> fromType;
+        private final int hashCode;
 
         TypeMapping(Class<?> toType, Class<?> fromType) {
             this.toType = toType;
             this.fromType = fromType;
+
+            // pre calculate hashcode
+            int hash = toType.hashCode();
+            if (fromType != null) {
+                hash *= 37 + fromType.hashCode();
+            }
+            hashCode = hash;
         }
 
         public Class<?> getFromType() {
@@ -778,19 +806,14 @@ public abstract class BaseTypeConverterRegistry extends ServiceSupport implement
         public boolean equals(Object object) {
             if (object instanceof TypeMapping) {
                 TypeMapping that = (TypeMapping) object;
-                return ObjectHelper.equal(this.fromType, that.fromType)
-                        && ObjectHelper.equal(this.toType, that.toType);
+                return this.fromType == that.fromType && this.toType == that.toType;
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            int answer = toType.hashCode();
-            if (fromType != null) {
-                answer *= 37 + fromType.hashCode();
-            }
-            return answer;
+            return hashCode;
         }
 
         @Override

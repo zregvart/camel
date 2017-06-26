@@ -73,6 +73,7 @@
     <atmosphere-version-range>[2.4,3.0)</atmosphere-version-range>
     <atomix-version>1.0.8</atomix-version>
     <atomix-catalyst-version>1.2.1</atomix-catalyst-version>
+    <atomix-copycat-version>1.2.8</atomix-copycat-version>
     <automaton-bundle-version>1.11-8_1</automaton-bundle-version>
     <avalon-bundle-version>4.3.1_1</avalon-bundle-version>
     <avalon-version>4.3.1</avalon-version>
@@ -97,7 +98,7 @@
     <boxjavalibv2.version>3.2.1</boxjavalibv2.version>
     <box-java-sdk-version>2.1.1</box-java-sdk-version>
     <braintree-gateway-version>2.63.0</braintree-gateway-version>
-    <brave-zipkin-version>4.3.4</brave-zipkin-version>
+    <brave-zipkin-version>4.4.0</brave-zipkin-version>
     <build-helper-maven-plugin-version>1.10</build-helper-maven-plugin-version>
     <c3p0-version>0.9.5.2</c3p0-version>
     <c3p0-bundle-version>0.9.5.2_1</c3p0-bundle-version>
@@ -117,14 +118,14 @@
     <jta-api-1.2-version>1.2</jta-api-1.2-version>
     <cglib-bundle-version>3.2.5_1</cglib-bundle-version>
     <cglib-version>3.2.5</cglib-version>
-    <chronicle-bytes-version>1.8.4</chronicle-bytes-version>
+    <chronicle-bytes-version>1.8.5</chronicle-bytes-version>
     <chronicle-core-version>1.8.2</chronicle-core-version>
     <chronicle-engine-version>1.13.27</chronicle-engine-version>
     <chronicle-map-version>2.4.17</chronicle-map-version>
-    <chronicle-network-version>1.8.2</chronicle-network-version>
+    <chronicle-network-version>1.8.3</chronicle-network-version>
     <chronicle-queue-version>4.5.27</chronicle-queue-version>
     <chronicle-threads-version>1.8.1</chronicle-threads-version>
-    <chronicle-wire-version>1.8.7</chronicle-wire-version>
+    <chronicle-wire-version>1.8.9</chronicle-wire-version>
     <chunk-templates-version>3.2.4</chunk-templates-version>
     <chunk-templates-bundle-version>3.2.4_1</chunk-templates-bundle-version>
     <classmate-version>1.3.3</classmate-version>
@@ -175,7 +176,7 @@
     <depends-maven-plugin-version>1.3.1</depends-maven-plugin-version>
     <derby-version>10.11.1.1</derby-version>
     <digitalocean-api-client-version>2.10</digitalocean-api-client-version>
-    <digitalocean-api-client-bundle-version>2.10_1</digitalocean-api-client-bundle-version> 
+    <digitalocean-api-client-bundle-version>2.10_1</digitalocean-api-client-bundle-version>
     <disruptor-version>3.3.6</disruptor-version>
     <dnsjava-version>2.1.8</dnsjava-version>
     <dnsjava-bundle-version>2.1.8_1</dnsjava-bundle-version>
@@ -217,7 +218,7 @@
     <felix-scr-annotations-version>1.9.12</felix-scr-annotations-version>
     <findbugs-maven-plugin-version>2.5.2</findbugs-maven-plugin-version>
     <flatpack-version>3.4.3</flatpack-version>
-    <flink-version>1.3.0</flink-version>
+    <flink-version>1.3.1</flink-version>
     <fop-bundle-version>2.1_1</fop-bundle-version>
     <fop-version>2.1</fop-version>
     <ftpserver-version>1.0.6</ftpserver-version>
@@ -240,7 +241,7 @@
     <geronimo-jcdi-1.1-spec-version>1.0</geronimo-jcdi-1.1-spec-version>
     <geronimo-jms-spec-version>1.1.1</geronimo-jms-spec-version>
     <geronimo-jms2-spec-version>1.0-alpha-2</geronimo-jms2-spec-version>
-    <geronimo-jpa2-spec-version>1.1</geronimo-jpa2-spec-version>
+    <geronimo-jpa-spec-version>1.0-alpha-1</geronimo-jpa-spec-version>
     <geronimo-jsp-spec-version>1.1</geronimo-jsp-spec-version>
     <geronimo-json-spec-version>1.0</geronimo-json-spec-version>
     <geronimo-jta-spec-version>1.1.1</geronimo-jta-spec-version>
@@ -255,7 +256,7 @@
     <google-api-services-mail-version>v1-rev63-1.22.0</google-api-services-mail-version>
     <google-api-services-pubsub-version>v1-rev12-1.22.0</google-api-services-pubsub-version>
     <google-truth-version>0.30</google-truth-version>
-    <grizzly-websockets-version>2.3.25</grizzly-websockets-version> 
+    <grizzly-websockets-version>2.3.25</grizzly-websockets-version>
     <grpc-version>1.2.0</grpc-version>
     <grpc-bundle-version>1.2.0_1</grpc-bundle-version>
     <gson-version>2.7</gson-version>
@@ -276,8 +277,7 @@
     <hbase-version>1.2.1</hbase-version>
     <hessian-version>4.0.38</hessian-version>
     <hibernate-validator-version>5.4.1.Final</hibernate-validator-version>
-    <!-- Spring 3.2.x and 4.0.x still stick to JPA 2.0. Hibernate 4.3.x upgraded to JPA 2.1. -->
-    <hibernate-version>4.2.20.Final</hibernate-version>
+    <hibernate-version>5.0.12.Final</hibernate-version>
     <hikaricp-version>2.3.13</hikaricp-version>
     <hk2-version>2.3.0</hk2-version>
     <hk2-osgi-resource-version>1.0.1</hk2-osgi-resource-version>
@@ -297,7 +297,7 @@
     <ibatis-version>2.3.4.726</ibatis-version>
     <ical4j-version>1.0.7</ical4j-version>
     <ignite-version>1.9.0</ignite-version>
-    <infinispan-version>9.0.1.Final</infinispan-version>
+    <infinispan-version>9.0.3.Final</infinispan-version>
     <infinispan-spring-boot-version>1.0.0.Final</infinispan-spring-boot-version>
     <influx-java-driver-version>2.5</influx-java-driver-version>
     <influx-java-driver-bundle-version>2.5_1</influx-java-driver-bundle-version>
@@ -344,7 +344,7 @@
     <jboss-logging-version>3.3.0.Final</jboss-logging-version>
     <jboss-marshalling-version>1.4.10.Final</jboss-marshalling-version>
     <jboss-transaction-spi.version>7.5.1.Final</jboss-transaction-spi.version>
-    <jboss-xnio-version>3.4.5.Final</jboss-xnio-version>
+    <jboss-xnio-version>3.4.6.Final</jboss-xnio-version>
     <jcache-bundle-version>1.0.0_1</jcache-bundle-version>
     <jclouds-version>2.0.1</jclouds-version>
     <!-- jclouds must use this guava version -->
@@ -366,9 +366,9 @@
     <jetty-plugin-version>${jetty-version}</jetty-plugin-version>
     <jetty-runner-groupId>org.eclipse.jetty</jetty-runner-groupId>
     <jettison-version>1.3.8</jettison-version>
-    <jgit-version>4.7.1.201706071930-r</jgit-version>
+    <jgit-version>4.8.0.201706111038-r</jgit-version>
     <jgroups-version>4.0.3.Final</jgroups-version>
-    <libthrift-version>0.9.3</libthrift-version>
+    <libthrift-version>0.10.0</libthrift-version>
     <jibx-version>1.2.6</jibx-version>
     <jing-bundle-version>20030619_5</jing-bundle-version>
     <jing-version>20030619</jing-version>
@@ -383,6 +383,7 @@
     <jolt-version>0.1.0</jolt-version>
     <jolt-bundle-version>0.1.0_1</jolt-bundle-version>
     <johnzon-version>1.1.0</johnzon-version>
+    <jose4j-version>0.4.4</jose4j-version>
     <josql-bundle-version>1.5_5</josql-bundle-version>
     <josql-version>1.5</josql-version>
     <!-- Upgrade to 1.7.26 causes stability issues. See CAMEL-10477 -->
@@ -492,7 +493,7 @@
     <mustache-bundle-version>0.9.4_1</mustache-bundle-version>
     <mvel-version>2.3.1.Final</mvel-version>
     <mybatis-version>3.4.4</mybatis-version>
-    <narayana-version>5.6.1.Final</narayana-version>
+    <narayana-version>5.6.2.Final</narayana-version>
     <neethi-bundle-version>3.0.1</neethi-bundle-version>
     <nekohtml-version>1.9.22</nekohtml-version>
     <netty3-version>3.10.6.Final</netty3-version>
@@ -570,7 +571,7 @@
     <rome-bundle-version>1.0_3</rome-bundle-version>
     <rome-version>1.0</rome-version>
     <rxjava-version>1.3.0</rxjava-version>
-    <rxjava2-version>2.1.0</rxjava2-version>
+    <rxjava2-version>2.1.1</rxjava2-version>
     <saaj-impl-version>1.3.2_2</saaj-impl-version>
     <saxon-bundle-version>9.7.0-18_1</saxon-bundle-version>
     <saxon-version>9.7.0-18</saxon-version>
@@ -652,8 +653,8 @@
     <swagger-scala-version>1.3.12</swagger-scala-version>
     <swagger-scala-guava-version>15.0</swagger-scala-guava-version>
     <swagger-scala-bundle-version>1.3.12_1</swagger-scala-bundle-version>
-    <swagger-java-version>1.5.14</swagger-java-version>
-    <swagger-java-parser-version>1.0.29</swagger-java-parser-version>
+    <swagger-java-version>1.5.15</swagger-java-version>
+    <swagger-java-parser-version>1.0.30</swagger-java-parser-version>
     <swagger-java-guava-version>20.0</swagger-java-guava-version>
     <swagger-ui-version>2.2.10</swagger-ui-version>
     <stax-api-version>1.0.1</stax-api-version>
@@ -682,7 +683,7 @@
     <vertx-version>3.4.2</vertx-version>
     <vysper-version>0.7</vysper-version>
     <weld1-version>1.1.28.Final</weld1-version>
-    <weld2-version>2.4.2.Final</weld2-version>
+    <weld2-version>2.4.4.Final</weld2-version>
     <weld3-version>3.0.0.Final</weld3-version>
     <werken-xpath-bundle-version>0.9.4_5</werken-xpath-bundle-version>
     <wiremock-version>2.6.0</wiremock-version>
@@ -719,8 +720,9 @@
     <xom-version>1.2.5</xom-version>
     <yammer-metrics-version>2.2.0</yammer-metrics-version>
     <zendesk-client-version>0.5.4</zendesk-client-version>
-    <zipkin-version>1.24.0</zipkin-version>
+    <zipkin-libthrift-version>0.9.3</zipkin-libthrift-version>
     <zipkin-reporter-version>0.10.0</zipkin-reporter-version>
+    <zipkin-version>1.24.0</zipkin-version>
     <zjsonpatch-version>0.3.0</zjsonpatch-version>
     <zookeeper-version>3.4.10</zookeeper-version>
     <zookeeper-guava-version>16.0</zookeeper-guava-version>
@@ -925,6 +927,11 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-cache</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-caffeine</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -2360,6 +2367,11 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-cache-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-caffeine-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -3889,8 +3901,8 @@
       </dependency>
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
-        <artifactId>geronimo-jpa_2.0_spec</artifactId>
-        <version>${geronimo-jpa2-spec-version}</version>
+        <artifactId>geronimo-jpa_2.1_spec</artifactId>
+        <version>${geronimo-jpa-spec-version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>

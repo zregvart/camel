@@ -144,6 +144,17 @@
     <bundle dependency='true'>mvn:commons-codec/commons-codec/${commons-codec-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-atom/${project.version}</bundle>
   </feature>
+  <feature name='camel-atomix' version='${project.version}' resolver='(obr)' start-level='50'>      
+    <feature version='${project.version}'>camel-core</feature>
+    <bundle dependency='true'>mvn:io.netty/netty-common/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-buffer/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-resolver/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-handler/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-codec/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-transport/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.atomix./atomix-all/${atomix-version}</bundle>
+    <bundle>mvn:org.apache.camel/camel-atomix/${project.version}</bundle>
+  </feature>
   <feature name='camel-avro' version='${project.version}' resolver='(obr)' start-level='50'>
     <details>The camel-avro feature can only run if you have libsnappyjava.dylib in java.library.path</details>
     <feature version='${project.version}'>camel-core</feature>
@@ -192,7 +203,7 @@
     <bundle dependency='true'>mvn:commons-dbcp/commons-dbcp/${commons-dbcp-version}</bundle>
     <bundle dependency='true'>mvn:commons-lang/commons-lang/${commons-lang-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo-jms-spec-version}</bundle>
-    <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jpa_2.0_spec/${geronimo-jpa2-spec-version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jpa_2.1_spec/${geronimo-jpa-spec-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${cglib-bundle-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.oscache/${oscache-bundle-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ibatis-sqlmap/${ibatis-bundle-version}</bundle>
@@ -264,6 +275,10 @@
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xalan/${xalan-bundle-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xerces/${xerces-bundle-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlresolver/${xmlresolver-bundle-version}</bundle>
+    <bundle dependency='true'>mvn:org.bouncycastle/bcprov-jdk15on/${bouncycastle-version}</bundle>
+    <bundle dependency='true'>mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle-version}</bundle>
+    <bundle dependency='true'>mvn:com.eclipsesource.minimal-json/minimal-json/${minimal-json-version}</bundle>
+    <bundle dependency='true'>mvn:org.bitbucket.b_c/jose4j/${jose4j-version}</bundle>
     <bundle dependency='true'>wrap:mvn:com.box/box-java-sdk/${box-java-sdk-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.camel/camel-box-api/${project.version}</bundle>
     <bundle>mvn:org.apache.camel/camel-box/${project.version}</bundle>
@@ -279,6 +294,11 @@
     <bundle dependency='true'>mvn:net.sf.ehcache/ehcache/${ehcache-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jdom/${jdom-bundle-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-cache/${project.version}</bundle>
+  </feature>
+  <feature name='camel-caffeine' version='${project.version}' resolver='(obr)' start-level='50'>
+    <feature version="${project.version}">camel-core</feature>
+    <bundle dependency="true">mvn:com.github.ben-manes.caffeine/caffeine/${caffeine-version}</bundle>
+    <bundle>mvn:org.apache.camel/camel-caffeine/${project.version}</bundle>
   </feature>
   <feature name='camel-cassandraql' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
@@ -1138,7 +1158,7 @@
     <feature version='${spring-version-range}'>spring-orm</feature>
     <feature version='${spring-version-range}'>spring-tx</feature>
     <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-annotation_1.0_spec/${geronimo-annotation-1.0-spec-version}</bundle>
-    <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jpa_2.0_spec/${geronimo-jpa2-spec-version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jpa_2.1_spec/${geronimo-jpa-spec-version}</bundle>
     <bundle dependency='true'>mvn:javax.servlet/javax.servlet-api/${javax.servlet-api-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-el_1.0_spec/${geronimo-el-spec-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${geronimo-jta-spec-version}</bundle>
@@ -1994,6 +2014,7 @@
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>mvn:org.apache.thrift/libthrift/${libthrift-version}</bundle>
     <bundle dependency='true'>mvn:commons-io/commons-io/${commons-io-version}</bundle>
+    <bundle dependency='true'>mvn:org.javassist/javassist/${javassist-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-thrift/${project.version}</bundle>
   </feature>
   <feature name='camel-tika' version='${project.version}' resolver='(obr)' start-level='50'>
@@ -2169,7 +2190,7 @@
     <bundle dependency='true'>mvn:io.zipkin.brave/brave-spancollector-scribe/${brave-zipkin-version}</bundle>
     <bundle dependency='true'>mvn:io.zipkin.java/zipkin/${zipkin-version}</bundle>
     <bundle dependency='true'>mvn:io.zipkin.reporter/zipkin-reporter/${zipkin-reporter-version}</bundle>
-    <bundle dependency='true'>mvn:org.apache.thrift/libthrift/${libthrift-version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.thrift/libthrift/${zipkin-libthrift-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-zipkin/${project.version}</bundle>
   </feature>
   <feature name='camel-zookeeper' version='${project.version}' resolver='(obr)' start-level='50'>

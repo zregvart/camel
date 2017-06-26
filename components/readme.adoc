@@ -2,7 +2,7 @@ Components
 ^^^^^^^^^^
 
 // components: START
-Number of Components: 267 in 187 JAR artifacts (17 deprecated)
+Number of Components: 275 in 189 JAR artifacts (17 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |=======================================================================
@@ -39,7 +39,22 @@ Number of Components: 267 in 187 JAR artifacts (17 deprecated)
 `atom:feedUri` | 1.2 | The atom component is used for consuming Atom RSS feeds.
 
 | link:camel-atomix/src/main/docs/atomix-map-component.adoc[Atomix Map] (camel-atomix) +
-`atomix-map:mapName` | 2.20 | Camel Atomix support
+`atomix-map:mapName` | 2.20 | The atomix-map component is used to access Atomix's distributed map.
+
+| link:camel-atomix/src/main/docs/atomix-messaging-component.adoc[Atomix Messaging] (camel-atomix) +
+`atomix-messaging:group` | 2.20 | The atomix-messaging component is used to access Atomix's group messaging.
+
+| link:camel-atomix/src/main/docs/atomix-multimap-component.adoc[Atomix MultiMap] (camel-atomix) +
+`atomix-multimap:multiMapName` | 2.20 | The atomix-multimap component is used to access Atomix's distributed multi map.
+
+| link:camel-atomix/src/main/docs/atomix-queue-component.adoc[Atomix Queue] (camel-atomix) +
+`atomix-queue:queueName` | 2.20 | The atomix-queue component is used to access Atomix's distributed queue.
+
+| link:camel-atomix/src/main/docs/atomix-set-component.adoc[Atomix Set] (camel-atomix) +
+`atomix-set:setName` | 2.20 | The atomix-set component is used to access Atomix's distributed set.
+
+| link:camel-atomix/src/main/docs/atomix-value-component.adoc[Atomix Value] (camel-atomix) +
+`atomix-value:valueName` | 2.20 | The atomix-value component is used to access Atomix's distributed value.
 
 | link:camel-avro/src/main/docs/avro-component.adoc[Avro] (camel-avro) +
 `avro:transport:host:port/messageName` | 2.10 | Working with Apache Avro for data serialization.
@@ -109,6 +124,12 @@ Number of Components: 267 in 187 JAR artifacts (17 deprecated)
 
 | link:../camel-core/src/main/docs/browse-component.adoc[Browse] (camel-core) +
 `browse:name` | 1.3 | The browse component is used for viewing the messages received on endpoints that supports BrowsableEndpoint.
+
+| link:camel-caffeine/src/main/docs/caffeine-cache-component.adoc[Caffeine Cache] (camel-caffeine) +
+`caffeine-cache:cacheName` | 2.20 | The caffeine-cache component is used for integration with Caffeine Cache.
+
+| link:camel-caffeine/src/main/docs/caffeine-loadcache-component.adoc[Caffeine LoadCache] (camel-caffeine) +
+`caffeine-loadcache:cacheName` | 2.20 | The caffeine-loadcache component is used for integration with Caffeine Load Cache.
 
 | link:camel-context/src/main/docs/context-component.adoc[Camel Context] (camel-context) +
 `context:contextId:localEndpointUrl` | 2.7 | *deprecated* The context component allows to send/receive messages between Camel routes in a black box way.
@@ -740,6 +761,9 @@ Number of Components: 267 in 187 JAR artifacts (17 deprecated)
 | link:../camel-core/src/main/docs/test-component.adoc[Test] (camel-core) +
 `test:name` | 1.3 | The test component extends the mock component by on startup to pull messages from another endpoint to set the expected message bodies.
 
+| link:camel-thrift/src/main/docs/thrift-component.adoc[Thrift] (camel-thrift) +
+`thrift:host:port/service` | 2.20 | The Thrift component allows to call and expose remote procedures (RPC) with Apache Thrift data format and serialization mechanism
+
 | link:camel-tika/src/main/docs/tika-component.adoc[Tika] (camel-tika) +
 `tika:operation` | 2.19 | This component integrates with Apache Tika to extract content and metadata from thousands of file types.
 
@@ -985,7 +1009,7 @@ Miscellaneous Components
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 // others: START
-Number of Miscellaneous Components: 39 in 39 JAR artifacts (14 deprecated)
+Number of Miscellaneous Components: 38 in 38 JAR artifacts (14 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |=======================================================================
@@ -1026,8 +1050,6 @@ Number of Miscellaneous Components: 39 in 39 JAR artifacts (14 deprecated)
 | link:camel-ruby/src/main/docs/ruby.adoc[Ruby] (camel-ruby) | 1.0 | *deprecated* Camel Ruby DSL
 
 | link:camel-rx/src/main/docs/rx.adoc[RX] (camel-rx) | 2.11 | *deprecated* Camel Reactive using RxJava library
-
-| link:camel-rxjava2/src/main/docs/rxjava2.adoc[Rxjava2] (camel-rxjava2) | 2.20 | RxJava2 based back-end for Camel's reactive streams component
 
 | link:camel-scala/src/main/docs/scala.adoc[Scala DSL] (camel-scala) | 1.4 | *deprecated* Camel Scala DSL
 
