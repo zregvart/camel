@@ -37,9 +37,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class ZooKeeperClientRoutePolicyTest {
+public final class ZooKeeperClusteredRoutePolicyTest {
     private static final int PORT = AvailablePortFinder.getNextAvailable();
-    private static final Logger LOGGER = LoggerFactory.getLogger(ZooKeeperClientRoutePolicyTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZooKeeperClusteredRoutePolicyTest.class);
     private static final List<String> CLIENTS = IntStream.range(0, 3).mapToObj(Integer::toString).collect(Collectors.toList());
     private static final List<String> RESULTS = new ArrayList<>();
     private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(CLIENTS.size() * 2);
@@ -84,13 +84,13 @@ public final class ZooKeeperClientRoutePolicyTest {
             ZooKeeperClusterService service = new ZooKeeperClusterService();
             service.setId("node-" + id);
             service.setNodes("localhost:" + PORT);
-            service.setNamespace(null );
+            service.setBasePath("/camel");
 
             DefaultCamelContext context = new DefaultCamelContext();
             context.disableJMX();
             context.setName("context-" + id);
             context.addService(service);
-            context.addRoutePolicyFactory(ClusteredRoutePolicyFactory.forNamespace("/my-ns"));
+            context.addRoutePolicyFactory(ClusteredRoutePolicyFactory.forNamespace("my-ns"));
             context.addRoutes(new RouteBuilder() {
                 @Override
                 public void configure() throws Exception {

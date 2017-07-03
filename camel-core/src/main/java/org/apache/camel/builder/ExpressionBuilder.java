@@ -35,12 +35,12 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.Component;
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.Expression;
-import org.apache.camel.ExpressionEvaluationException;
 import org.apache.camel.InvalidPayloadException;
 import org.apache.camel.Message;
 import org.apache.camel.NoSuchEndpointException;
@@ -2328,14 +2328,14 @@ public final class ExpressionBuilder {
     }
 
     /**
-     * Returns a random number between 0 and upperbound (exclusive)
+     * Returns a random number between 0 and max (exclusive)
      */
-    public static Expression randomExpression(final int upperbound) {
-        return randomExpression(0, upperbound);
+    public static Expression randomExpression(final int max) {
+        return randomExpression(0, max);
     }
 
     /**
-     * Returns a random number between min and max
+     * Returns a random number between min and max (exclusive)
      */
     public static Expression randomExpression(final int min, final int max) {
         return new ExpressionAdapter() {
@@ -2347,13 +2347,13 @@ public final class ExpressionBuilder {
 
             @Override
             public String toString() {
-                return "random";
+                return "random(" + min + "," + max + ")";
             }
         };
     }
 
     /**
-     * Returns a random number between min and max
+     * Returns a random number between min and max (exclusive)
      */
     public static Expression randomExpression(final String min, final String max) {
         return new ExpressionAdapter() {
@@ -2367,7 +2367,7 @@ public final class ExpressionBuilder {
 
             @Override
             public String toString() {
-                return "random";
+                return "random(" + min + "," + max + ")";
             }
         };
     }

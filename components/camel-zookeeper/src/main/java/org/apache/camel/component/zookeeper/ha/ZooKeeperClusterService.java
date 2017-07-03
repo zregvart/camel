@@ -16,205 +16,182 @@
  */
 package org.apache.camel.component.zookeeper.ha;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
+import org.apache.camel.component.zookeeper.ZooKeeperCuratorConfiguration;
+import org.apache.camel.component.zookeeper.ZooKeeperCuratorHelper;
 import org.apache.camel.impl.ha.AbstractCamelClusterService;
 import org.apache.camel.util.ObjectHelper;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.AuthInfo;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ZooKeeperClusterService extends AbstractCamelClusterService<ZooKeeperClusterView> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ZooKeeperClusterService.class);
 
-    private CuratorFramework client;
-    private List<String> nodes;
-    private String namespace;
-    private long reconnectBaseSleepTime;
-    private TimeUnit reconnectBaseSleepTimeUnit;
-    private int reconnectMaxRetries;
-    private long sessionTimeout;
-    private TimeUnit sessionTimeoutUnit;
-    private long connectionTimeout;
-    private TimeUnit connectionTimeotUnit;
-    private List<AuthInfo> authInfoList;
-    private long maxCloseWait;
-    private TimeUnit maxCloseWaitUnit;
-    private boolean closeOnStop;
-    private RetryPolicy retryPolicy;
+    private CuratorFramework curator;
+    private ZooKeeperCuratorConfiguration configuration;
+    private boolean managedInstance;
 
     public ZooKeeperClusterService() {
-        this.reconnectBaseSleepTime = 1000;
-        this.reconnectBaseSleepTimeUnit = TimeUnit.MILLISECONDS;
-        this.reconnectMaxRetries = 3;
-        this.closeOnStop = true;
+        this.configuration = new ZooKeeperCuratorConfiguration();
+        this.managedInstance = true;
+    }
 
-        // from org.apache.curator.framework.CuratorFrameworkFactory
-        this.sessionTimeout = Integer.getInteger("curator-default-session-timeout", 60 * 1000);
-        this.sessionTimeoutUnit =  TimeUnit.MILLISECONDS;
-
-        // from org.apache.curator.framework.CuratorFrameworkFactory
-        this.connectionTimeout = Integer.getInteger("curator-default-connection-timeout", 15 * 1000);
-        this.connectionTimeotUnit = TimeUnit.MILLISECONDS;
-
-        // from org.apache.curator.framework.CuratorFrameworkFactory
-        this.maxCloseWait = 1000;
-        this.maxCloseWaitUnit = TimeUnit.MILLISECONDS;
+    public ZooKeeperClusterService(ZooKeeperCuratorConfiguration configuration) {
+        this.configuration = configuration.copy();
+        this.managedInstance = true;
     }
 
     // *********************************************
     // Properties
     // *********************************************
 
-    public CuratorFramework getClient() {
-        return client;
+    public ZooKeeperCuratorConfiguration getConfiguration() {
+        return configuration;
     }
 
-    public void setClient(CuratorFramework client) {
-        this.client = client;
+    public void setConfiguration(ZooKeeperCuratorConfiguration configuration) {
+        this.configuration = configuration.copy();
+    }
+
+    public CuratorFramework getCuratorFramework() {
+        return configuration.getCuratorFramework();
+    }
+
+    public void setCuratorFramework(CuratorFramework curatorFramework) {
+        configuration.setCuratorFramework(curatorFramework);
     }
 
     public List<String> getNodes() {
-        return nodes;
+        return configuration.getNodes();
     }
 
     public void setNodes(String nodes) {
-        this.nodes = Collections.unmodifiableList(
-            Arrays.stream(nodes.split(",")).collect(Collectors.toList())
-        );
+        configuration.setNodes(nodes);
     }
 
     public void setNodes(List<String> nodes) {
-        this.nodes = Collections.unmodifiableList(new ArrayList<>(nodes));
+        configuration.setNodes(nodes);
     }
 
     public String getNamespace() {
-        return namespace;
+        return configuration.getNamespace();
     }
 
     public void setNamespace(String namespace) {
-        this.namespace = namespace;
+        configuration.setNamespace(namespace);
     }
 
     public long getReconnectBaseSleepTime() {
-        return reconnectBaseSleepTime;
+        return configuration.getReconnectBaseSleepTime();
     }
 
     public void setReconnectBaseSleepTime(long reconnectBaseSleepTime) {
-        this.reconnectBaseSleepTime = reconnectBaseSleepTime;
+        configuration.setReconnectBaseSleepTime(reconnectBaseSleepTime);
     }
 
     public void setReconnectBaseSleepTime(long reconnectBaseSleepTime, TimeUnit reconnectBaseSleepTimeUnit) {
-        this.reconnectBaseSleepTime = reconnectBaseSleepTime;
-        this.reconnectBaseSleepTimeUnit = reconnectBaseSleepTimeUnit;
+        configuration.setReconnectBaseSleepTime(reconnectBaseSleepTime, reconnectBaseSleepTimeUnit);
     }
 
     public TimeUnit getReconnectBaseSleepTimeUnit() {
-        return reconnectBaseSleepTimeUnit;
+        return configuration.getReconnectBaseSleepTimeUnit();
     }
 
     public void setReconnectBaseSleepTimeUnit(TimeUnit reconnectBaseSleepTimeUnit) {
-        this.reconnectBaseSleepTimeUnit = reconnectBaseSleepTimeUnit;
+        configuration.setReconnectBaseSleepTimeUnit(reconnectBaseSleepTimeUnit);
     }
 
     public int getReconnectMaxRetries() {
-        return reconnectMaxRetries;
+        return configuration.getReconnectMaxRetries();
     }
 
     public void setReconnectMaxRetries(int reconnectMaxRetries) {
-        this.reconnectMaxRetries = reconnectMaxRetries;
+        configuration.setReconnectMaxRetries(reconnectMaxRetries);
     }
 
     public long getSessionTimeout() {
-        return sessionTimeout;
+        return configuration.getSessionTimeout();
     }
 
     public void setSessionTimeout(long sessionTimeout) {
-        this.sessionTimeout = sessionTimeout;
+        configuration.setSessionTimeout(sessionTimeout);
     }
 
     public void setSessionTimeout(long sessionTimeout, TimeUnit sessionTimeoutUnit) {
-        this.sessionTimeout = sessionTimeout;
-        this.sessionTimeoutUnit = sessionTimeoutUnit;
+        configuration.setSessionTimeout(sessionTimeout, sessionTimeoutUnit);
     }
 
     public TimeUnit getSessionTimeoutUnit() {
-        return sessionTimeoutUnit;
+        return configuration.getSessionTimeoutUnit();
     }
 
     public void setSessionTimeoutUnit(TimeUnit sessionTimeoutUnit) {
-        this.sessionTimeoutUnit = sessionTimeoutUnit;
+        configuration.setSessionTimeoutUnit(sessionTimeoutUnit);
     }
 
     public long getConnectionTimeout() {
-        return connectionTimeout;
+        return configuration.getConnectionTimeout();
     }
 
     public void setConnectionTimeout(long connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+        configuration.setConnectionTimeout(connectionTimeout);
     }
 
     public void setConnectionTimeout(long connectionTimeout, TimeUnit connectionTimeotUnit) {
-        this.connectionTimeout = connectionTimeout;
-        this.connectionTimeotUnit = connectionTimeotUnit;
+        configuration.setConnectionTimeout(connectionTimeout, connectionTimeotUnit);
     }
 
     public TimeUnit getConnectionTimeotUnit() {
-        return connectionTimeotUnit;
+        return configuration.getConnectionTimeoutUnit();
     }
 
     public void setConnectionTimeotUnit(TimeUnit connectionTimeotUnit) {
-        this.connectionTimeotUnit = connectionTimeotUnit;
+        configuration.setConnectionTimeoutUnit(connectionTimeotUnit);
     }
 
     public List<AuthInfo> getAuthInfoList() {
-        return authInfoList;
+        return configuration.getAuthInfoList();
     }
 
     public void setAuthInfoList(List<AuthInfo> authInfoList) {
-        this.authInfoList = authInfoList;
+        configuration.setAuthInfoList(authInfoList);
     }
 
     public long getMaxCloseWait() {
-        return maxCloseWait;
+        return configuration.getMaxCloseWait();
     }
 
     public void setMaxCloseWait(long maxCloseWait) {
-        this.maxCloseWait = maxCloseWait;
+        configuration.setMaxCloseWait(maxCloseWait);
     }
 
     public TimeUnit getMaxCloseWaitUnit() {
-        return maxCloseWaitUnit;
+        return configuration.getMaxCloseWaitUnit();
     }
 
     public void setMaxCloseWaitUnit(TimeUnit maxCloseWaitUnit) {
-        this.maxCloseWaitUnit = maxCloseWaitUnit;
-    }
-
-    public boolean isCloseOnStop() {
-        return closeOnStop;
-    }
-
-    public void setCloseOnStop(boolean closeOnStop) {
-        this.closeOnStop = closeOnStop;
+        configuration.setMaxCloseWaitUnit(maxCloseWaitUnit);
     }
 
     public RetryPolicy getRetryPolicy() {
-        return retryPolicy;
+        return configuration.getRetryPolicy();
     }
 
     public void setRetryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
+        configuration.setRetryPolicy(retryPolicy);
+    }
+
+    public String getBasePath() {
+        return configuration.getBasePath();
+    }
+
+    public void setBasePath(String basePath) {
+        configuration.setBasePath(basePath);
     }
 
     // *********************************************
@@ -223,13 +200,18 @@ public class ZooKeeperClusterService extends AbstractCamelClusterService<ZooKeep
 
     @Override
     protected ZooKeeperClusterView createView(String namespace) throws Exception {
-        return new ZooKeeperClusterView(this, getOrCreateClient(), namespace);
+
+        // Validation
+        ObjectHelper.notNull(getCamelContext(), "Camel Context");
+        ObjectHelper.notNull(configuration.getBasePath(), "ZooKeeper base path");
+
+        return new ZooKeeperClusterView(this, configuration, getOrCreateCurator(), namespace);
     }
 
     @Override
     protected void doStart() throws Exception {
         // instantiate a new CuratorFramework
-        getOrCreateClient();
+        getOrCreateCurator();
 
         super.doStart();
     }
@@ -238,42 +220,30 @@ public class ZooKeeperClusterService extends AbstractCamelClusterService<ZooKeep
     protected void doStop() throws Exception {
         super.doStop();
 
-        if (client != null && closeOnStop) {
-            client.close();
+        if (curator != null && managedInstance) {
+            curator.close();
         }
     }
 
-    private CuratorFramework getOrCreateClient() throws Exception {
-        if (client == null) {
-            // Validate parameters
-            ObjectHelper.notNull(getCamelContext(), "Camel Context");
-            ObjectHelper.notNull(nodes, "ZooKeeper Nodes");
+    private CuratorFramework getOrCreateCurator() throws Exception {
+        if (curator == null) {
+            curator = configuration.getCuratorFramework();
 
-            CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
-                .connectString(String.join(",", nodes))
-                .sessionTimeoutMs((int)sessionTimeoutUnit.toMillis(sessionTimeout))
-                .connectionTimeoutMs((int)connectionTimeotUnit.toMillis(connectionTimeout))
-                .maxCloseWaitMs((int)maxCloseWaitUnit.toMillis(maxCloseWait))
-                .retryPolicy(retryPolicy());
+            if (curator == null) {
+                managedInstance = true;
 
-            Optional.ofNullable(namespace).ifPresent(builder::namespace);
-            Optional.ofNullable(authInfoList).ifPresent(builder::authorization);
+                LOGGER.debug("Starting ZooKeeper Curator with namespace '{}',  nodes: '{}'",
+                    configuration.getNamespace(),
+                    String.join(",", configuration.getNodes())
+                );
 
-            LOGGER.debug("Connect to ZooKeeper with namespace {},  nodes: {}", namespace, nodes);
-            client = builder.build();
-
-            LOGGER.debug("Starting ZooKeeper client");
-            client.start();
+                curator = ZooKeeperCuratorHelper.createCurator(configuration);
+                curator.start();
+            } else {
+                managedInstance = false;
+            }
         }
 
-        return this.client;
-    }
-
-    private RetryPolicy retryPolicy() {
-        return retryPolicy != null
-            ? retryPolicy
-            : new ExponentialBackoffRetry(
-                (int)reconnectBaseSleepTimeUnit.toMillis(reconnectBaseSleepTime),
-                reconnectMaxRetries);
+        return curator;
     }
 }

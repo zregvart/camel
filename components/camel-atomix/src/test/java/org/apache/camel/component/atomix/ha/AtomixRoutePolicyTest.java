@@ -38,16 +38,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class AtomixRoutePolicyTest {
-    private static final List<Address> ADDRESSES = Arrays.asList(
+    private static final Logger LOGGER = LoggerFactory.getLogger(AtomixRoutePolicyTest.class);
+
+    private final List<Address> addresses = Arrays.asList(
         new Address("127.0.0.1", AvailablePortFinder.getNextAvailable()),
         new Address("127.0.0.1", AvailablePortFinder.getNextAvailable()),
         new Address("127.0.0.1", AvailablePortFinder.getNextAvailable())
     );
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AtomixRoutePolicyTest.class);
-    private static final Set<Address> RESULTS = new HashSet<>();
-    private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(ADDRESSES.size() * 2);
-    private static final CountDownLatch LATCH = new CountDownLatch(ADDRESSES.size());
+    private final Set<Address> results = new HashSet<>();
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(addresses.size() * 2);
+    private final CountDownLatch latch = new CountDownLatch(addresses.size());
 
     // ************************************
     // Test
@@ -55,22 +56,22 @@ public final class AtomixRoutePolicyTest {
 
     @Test
     public void test() throws Exception {
-        for (Address address: ADDRESSES) {
-            SCHEDULER.submit(() -> run(address));
+        for (Address address: addresses) {
+            scheduler.submit(() -> run(address));
         }
 
-        LATCH.await(1, TimeUnit.MINUTES);
-        SCHEDULER.shutdownNow();
+        latch.await(1, TimeUnit.MINUTES);
+        scheduler.shutdownNow();
 
-        Assert.assertEquals(ADDRESSES.size(), RESULTS.size());
-        Assert.assertTrue(RESULTS.containsAll(ADDRESSES));
+        Assert.assertEquals(addresses.size(), results.size());
+        Assert.assertTrue(results.containsAll(addresses));
     }
 
     // ************************************
     // Run a Camel node
     // ************************************
 
-    private static void run(Address address) {
+    private void run(Address address) {
         try {
             CountDownLatch contextLatch = new CountDownLatch(1);
 
@@ -78,7 +79,7 @@ public final class AtomixRoutePolicyTest {
             service.setId("node-" + address.port());
             service.setStorageLevel(StorageLevel.MEMORY);
             service.setAddress(address);
-            service.setNodes(ADDRESSES);
+            service.setNodes(addresses);
 
             DefaultCamelContext context = new DefaultCamelContext();
             context.disableJMX();
@@ -92,10 +93,10 @@ public final class AtomixRoutePolicyTest {
                         .routeId("route-" + address.port())
                         .process(e -> {
                             LOGGER.debug("Node {} done", address);
-                            RESULTS.add(address);
+                            results.add(address);
                             // Shutdown the context later on to give a chance to
                             // other members to catch-up
-                            SCHEDULER.schedule(contextLatch::countDown, 2 + ThreadLocalRandom.current().nextInt(3), TimeUnit.SECONDS);
+                            scheduler.schedule(contextLatch::countDown, 2 + ThreadLocalRandom.current().nextInt(3), TimeUnit.SECONDS);
                         });
                 }
             });
@@ -108,7 +109,7 @@ public final class AtomixRoutePolicyTest {
             contextLatch.await();
             context.stop();
 
-            LATCH.countDown();
+            latch.countDown();
         } catch (Exception e) {
             LOGGER.warn("", e);
         }

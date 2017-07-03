@@ -61,7 +61,7 @@ final class AtomixClusterView extends AbstractCamelClusterView {
             return Optional.empty();
         }
 
-        return Optional.of(asCamelClusterMember(leader));
+        return Optional.of(new AtomixClusterMember(leader));
     }
 
     @Override
@@ -76,12 +76,8 @@ final class AtomixClusterView extends AbstractCamelClusterView {
         }
 
         return this.group.members().stream()
-            .map(this::asCamelClusterMember)
+            .map(AtomixClusterMember::new)
             .collect(Collectors.toList());
-    }
-
-    private AtomixClusterMember asCamelClusterMember(GroupMember member) {
-        return new AtomixClusterMember(group, member);
     }
 
     @SuppressWarnings("unchecked")
@@ -96,17 +92,17 @@ final class AtomixClusterView extends AbstractCamelClusterView {
                 new DistributedGroup.Options(configuration.getResourceOptions(getNamespace()))
             ).get();
 
-            LOGGER.debug("Join group {}", getNamespace());
-            localMember.join();
-
             LOGGER.debug("Listen election events");
-            group.election().onElection(term -> fireLeadershipChangedEvent(asCamelClusterMember(term.leader())));
+            group.election().onElection(term -> fireLeadershipChangedEvent(new AtomixClusterMember(term.leader())));
 
             LOGGER.debug("Listen join events");
-            group.onJoin(member -> fireMemberAddedEvent(asCamelClusterMember(member)));
+            group.onJoin(member -> fireMemberAddedEvent(new AtomixClusterMember(member)));
 
             LOGGER.debug("Listen leave events");
-            group.onLeave(member -> fireMemberRemovedEvent(asCamelClusterMember(member)));
+            group.onLeave(member -> fireMemberRemovedEvent(new AtomixClusterMember(member)));
+
+            LOGGER.debug("Join group {}", getNamespace());
+            localMember.join();
         }
     }
 
@@ -152,12 +148,13 @@ final class AtomixClusterView extends AbstractCamelClusterView {
         AtomixLocalMember join() throws ExecutionException, InterruptedException {
             if (member == null && group != null) {
                 String id = getClusterService().getId();
-                if (ObjectHelper.isNotEmpty(id)) {
-                    LOGGER.debug("Joining group: {}, with id: {}", group, id);
-                    member = group.join(id).join();
-                } else {
+                if (ObjectHelper.isEmpty(id) || configuration.isEphemeral()) {
                     LOGGER.debug("Joining group: {} ", group);
                     member = group.join().join();
+                    LOGGER.debug("Group {} joined with id {}", group, member.id());
+                } else {
+                    LOGGER.debug("Joining group: {}, with id: {}", group, id);
+                    member = group.join(id).join();
                 }
             }
 
@@ -172,14 +169,20 @@ final class AtomixClusterView extends AbstractCamelClusterView {
 
             return this;
         }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("AtomixLocalMember{");
+            sb.append("member=").append(member);
+            sb.append('}');
+            return sb.toString();
+        }
     }
 
     class AtomixClusterMember implements CamelClusterMember {
-        private final DistributedGroup group;
         private final GroupMember member;
 
-        AtomixClusterMember(DistributedGroup group, GroupMember member) {
-            this.group = group;
+        AtomixClusterMember(GroupMember member) {
             this.member = member;
         }
 
@@ -190,7 +193,23 @@ final class AtomixClusterView extends AbstractCamelClusterView {
 
         @Override
         public boolean isMaster() {
+            if (group == null) {
+                return false;
+            }
+            if (member == null) {
+                return false;
+            }
+
             return member.equals(group.election().term().leader());
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("AtomixClusterMember{");
+            sb.append("group=").append(group);
+            sb.append(", member=").append(member);
+            sb.append('}');
+            return sb.toString();
         }
     }
 }
