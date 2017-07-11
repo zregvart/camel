@@ -178,6 +178,7 @@ import org.apache.camel.util.EventHelper;
 import org.apache.camel.util.IOHelper;
 import org.apache.camel.util.IntrospectionSupport;
 import org.apache.camel.util.JsonSchemaHelper;
+import org.apache.camel.util.LRUCacheFactory;
 import org.apache.camel.util.LoadPropertiesException;
 import org.apache.camel.util.ObjectHelper;
 import org.apache.camel.util.OrderedComparator;
@@ -316,10 +317,18 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
      * Use one of the other constructors to force use an explicit registry / JNDI.
      */
     public DefaultCamelContext() {
+        boolean warmUp = "true".equalsIgnoreCase(System.getProperty("CamelWarmUpLRUCacheFactory", "true"));
+        if (warmUp) {
+            // warm-up LRUCache which happens in a background test, which can speedup starting Camel
+            // as the warm-up can run concurrently with starting up Camel and the runtime container Camel may be running inside
+            LRUCacheFactory.warmUp();
+        }
+
         this.executorServiceManager = new DefaultExecutorServiceManager(this);
 
-        // create endpoint registry at first since end users may access endpoints before CamelContext is started
-        this.endpoints = new DefaultEndpointRegistry(this);
+        // create a provisional (temporary) endpoint registry at first since end users may access endpoints before CamelContext is started
+        // we will later transfer the endpoints to the actual DefaultEndpointRegistry later, but we do this to starup Camel faster.
+        this.endpoints = new ProvisionalEndpointRegistry();
 
         // add the defer service startup listener
         this.startupListeners.add(deferStartupListener);
@@ -3262,7 +3271,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
         validatorRegistry = new DefaultValidatorRegistry(this, validators);
         addService(validatorRegistry, true, true);
 
-        // optimised to not include runtimeEndpointRegistry unless its enabled or JMX statis is in extended mode
+        // optimised to not include runtimeEndpointRegistry unless its enabled or JMX statistics is in extended mode
         if (runtimeEndpointRegistry == null && getManagementStrategy() != null && getManagementStrategy().getManagementAgent() != null) {
             Boolean isEnabled = getManagementStrategy().getManagementAgent().getEndpointRuntimeStatisticsEnabled();
             boolean isExtended = getManagementStrategy().getManagementAgent().getStatisticsLevel().isExtended();
@@ -3341,7 +3350,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
 
         // start routes
         if (doNotStartRoutesOnFirstStart) {
-            log.debug("Skip starting of routes as CamelContext has been configured with autoStartup=false");
+            log.debug("Skip starting routes as CamelContext has been configured with autoStartup=false");
         }
 
         // invoke this logic to warmup the routes and if possible also start the routes

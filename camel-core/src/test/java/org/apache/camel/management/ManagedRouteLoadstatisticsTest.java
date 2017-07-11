@@ -16,10 +16,13 @@
  */
 package org.apache.camel.management;
 
+import java.util.concurrent.TimeUnit;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
 import org.apache.camel.builder.RouteBuilder;
+
+import static org.awaitility.Awaitility.await;
 
 /**
  * @version 
@@ -91,16 +94,17 @@ public class ManagedRouteLoadstatisticsTest extends ManagementTestSupport {
 
         assertMockEndpointsSatisfied();
 
-        Thread.sleep(2000);
-        String load01 = (String)mbeanServer.getAttribute(on, "Load01");
-        String load05 = (String)mbeanServer.getAttribute(on, "Load05");
-        String load15 = (String)mbeanServer.getAttribute(on, "Load15");
-        assertNotNull(load01);
-        assertNotNull(load05);
-        assertNotNull(load15);
-        assertTrue(Double.parseDouble(load01.replace(',', '.')) >= 0);
-        assertTrue(Double.parseDouble(load05.replace(',', '.')) >= 0);
-        assertTrue(Double.parseDouble(load15.replace(',', '.')) >= 0);
+        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
+            String load01 = (String)mbeanServer.getAttribute(on, "Load01");
+            String load05 = (String)mbeanServer.getAttribute(on, "Load05");
+            String load15 = (String)mbeanServer.getAttribute(on, "Load15");
+            assertNotNull(load01);
+            assertNotNull(load05);
+            assertNotNull(load15);
+            assertTrue(Double.parseDouble(load01.replace(',', '.')) >= 0);
+            assertTrue(Double.parseDouble(load05.replace(',', '.')) >= 0);
+            assertTrue(Double.parseDouble(load15.replace(',', '.')) >= 0);
+        });
     }
 
 }

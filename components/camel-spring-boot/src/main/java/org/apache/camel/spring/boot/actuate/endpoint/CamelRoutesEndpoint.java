@@ -21,20 +21,21 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Route;
 import org.apache.camel.StatefulService;
 import org.apache.camel.spring.boot.actuate.endpoint.CamelRoutesEndpoint.RouteEndpointInfo;
 import org.springframework.boot.actuate.endpoint.AbstractEndpoint;
 import org.springframework.boot.actuate.endpoint.Endpoint;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * {@link Endpoint} to expose {@link org.apache.camel.Route} information.
  */
+@ConfigurationProperties(prefix = "endpoints." + CamelRoutesEndpoint.ENDPOINT_ID)
 public class CamelRoutesEndpoint extends AbstractEndpoint<List<RouteEndpointInfo>> {
 
-    private static final String ENDPOINT_ID = "camelroutes";
+    public static final String ENDPOINT_ID = "camelroutes";
 
     private CamelContext camelContext;
 
@@ -45,11 +46,22 @@ public class CamelRoutesEndpoint extends AbstractEndpoint<List<RouteEndpointInfo
 
     @Override
     public List<RouteEndpointInfo> invoke() {
-        // @formatter:off
+        return getRoutesInfo();
+    }
+
+    public List<RouteEndpointInfo> getRoutesInfo() {
         return camelContext.getRoutes().stream()
-                .map(RouteEndpointInfo::new)
-                .collect(Collectors.toList());
-        // @formatter:on
+            .map(RouteEndpointInfo::new)
+            .collect(Collectors.toList());
+    }
+
+    public RouteEndpointInfo getRouteInfo(String id) {
+        Route route = camelContext.getRoute(id);
+        if (route != null) {
+            return new RouteEndpointInfo(route);
+        }
+
+        return null;
     }
 
     /**
