@@ -58,6 +58,7 @@
     <module>camel-example-console</module>
     <module>camel-example-etl</module>
     <module>camel-example-ftp</module>
+    <module>camel-example-google-pubsub</module>
     <module>camel-example-guice-jms</module>
     <module>camel-example-groovy</module>
     <module>camel-example-hazelcast-kubernetes</module>
@@ -98,8 +99,10 @@
     <module>camel-example-spring-boot-geocoder</module>
     <module>camel-example-spring-boot-live-reload</module>
     <module>camel-example-spring-boot-metrics</module>
+    <module>camel-example-spring-boot-pojo</module>
     <module>camel-example-spring-boot-rest-jpa</module>
     <module>camel-example-spring-boot-rest-swagger</module>
+    <module>camel-example-spring-boot-routecontroller</module>
     <module>camel-example-spring-boot-servicecall</module>
     <module>camel-example-spring-cloud-servicecall</module>
     <module>camel-example-spring-javaconfig</module>
