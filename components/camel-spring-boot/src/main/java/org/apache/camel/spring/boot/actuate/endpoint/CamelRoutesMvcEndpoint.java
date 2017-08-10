@@ -44,7 +44,7 @@ public class CamelRoutesMvcEndpoint extends EndpointMvcAdapter {
      * Default path
      */
     public static final String PATH = "/camel/routes";
-
+    
     private final CamelRoutesEndpoint delegate;
 
     public CamelRoutesMvcEndpoint(CamelRoutesEndpoint delegate) {
@@ -60,13 +60,13 @@ public class CamelRoutesMvcEndpoint extends EndpointMvcAdapter {
 
     @ResponseBody
     @GetMapping(
-        value = "/{id}/info",
-        produces = {
-            ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
-            MediaType.APPLICATION_JSON_VALUE
-        }
+            value = "/{id}/detail",
+            produces = {
+                    ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+            }
     )
-    public Object info(
+    public Object detail(
             @PathVariable String id) {
 
         return doIfEnabled(() -> {
@@ -80,12 +80,33 @@ public class CamelRoutesMvcEndpoint extends EndpointMvcAdapter {
     }
 
     @ResponseBody
+    @GetMapping(
+            value = "/{id}/info",
+            produces = {
+                    ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+            }
+    )
+    public Object info(
+            @PathVariable String id) {
+
+        return doIfEnabled(() -> {
+            Object result = delegate.getRouteInfo(id);
+            if (result == null) {
+                throw new NoSuchRouteException("No such route " + id);
+            }
+
+            return result;
+        });
+    }
+
+    @ResponseBody
     @PostMapping(
-        value = "/{id}/stop",
-        produces = {
-            ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
-            MediaType.APPLICATION_JSON_VALUE
-        }
+            value = "/{id}/stop",
+            produces = {
+                    ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+            }
     )
     public Object stop(
             @PathVariable String id,
@@ -95,10 +116,10 @@ public class CamelRoutesMvcEndpoint extends EndpointMvcAdapter {
         return doIfEnabled(() -> {
             try {
                 delegate.stopRoute(
-                    id,
-                    Optional.ofNullable(timeout),
-                    Optional.of(TimeUnit.SECONDS),
-                    Optional.ofNullable(abortAfterTimeout)
+                        id,
+                        Optional.ofNullable(timeout),
+                        Optional.of(TimeUnit.SECONDS),
+                        Optional.ofNullable(abortAfterTimeout)
                 );
             } catch (Exception e) {
                 throw new GenericException("Error stopping route " + id, e);
@@ -110,11 +131,11 @@ public class CamelRoutesMvcEndpoint extends EndpointMvcAdapter {
 
     @ResponseBody
     @PostMapping(
-        value = "/{id}/start",
-        produces = {
-            ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
-            MediaType.APPLICATION_JSON_VALUE
-        }
+            value = "/{id}/start",
+            produces = {
+                    ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+            }
     )
     public Object start(
             @PathVariable String id) {
@@ -131,12 +152,28 @@ public class CamelRoutesMvcEndpoint extends EndpointMvcAdapter {
     }
 
     @ResponseBody
+    @PostMapping(value = "/{id}/reset", produces = {ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public Object reset(@PathVariable String id) {
+
+        return doIfEnabled(() -> {
+            try {
+                delegate.resetRoute(id);                
+            } catch (Exception e) {
+                throw new GenericException("Error resetting route stats " + id, e);
+            }
+
+            return ResponseEntity.ok().build();
+        });
+    }
+
+
+    @ResponseBody
     @PostMapping(
-        value = "/{id}/suspend",
-        produces = {
-            ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
-            MediaType.APPLICATION_JSON_VALUE
-        }
+            value = "/{id}/suspend",
+            produces = {
+                    ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+            }
     )
     public Object suspend(
             @PathVariable String id,
@@ -145,9 +182,9 @@ public class CamelRoutesMvcEndpoint extends EndpointMvcAdapter {
         return doIfEnabled(() -> {
             try {
                 delegate.suspendRoute(
-                    id,
-                    Optional.ofNullable(timeout),
-                    Optional.of(TimeUnit.SECONDS)
+                        id,
+                        Optional.ofNullable(timeout),
+                        Optional.of(TimeUnit.SECONDS)
                 );
             } catch (Exception e) {
                 throw new GenericException("Error suspending route " + id, e);
@@ -159,11 +196,11 @@ public class CamelRoutesMvcEndpoint extends EndpointMvcAdapter {
 
     @ResponseBody
     @PostMapping(
-        value = "/{id}/resume",
-        produces = {
-            ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
-            MediaType.APPLICATION_JSON_VALUE
-        }
+            value = "/{id}/resume",
+            produces = {
+                    ActuatorMediaTypes.APPLICATION_ACTUATOR_V1_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+            }
     )
     public Object resume(
             @PathVariable String id) {

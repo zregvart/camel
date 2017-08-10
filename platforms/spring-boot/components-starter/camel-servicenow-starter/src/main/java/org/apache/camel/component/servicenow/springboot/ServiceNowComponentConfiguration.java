@@ -41,6 +41,10 @@ public class ServiceNowComponentConfiguration
             ComponentConfigurationPropertiesCommon {
 
     /**
+     * The ServiceNow instance name
+     */
+    private String instanceName;
+    /**
      * The ServiceNow default configuration
      */
     private ServiceNowConfigurationNestedConfiguration configuration;
@@ -78,6 +82,14 @@ public class ServiceNowComponentConfiguration
      * placeholders.
      */
     private Boolean resolvePropertyPlaceholders = true;
+
+    public String getInstanceName() {
+        return instanceName;
+    }
+
+    public void setInstanceName(String instanceName) {
+        this.instanceName = instanceName;
+    }
 
     public ServiceNowConfigurationNestedConfiguration getConfiguration() {
         return configuration;
@@ -245,6 +257,12 @@ public class ServiceNowComponentConfiguration
          */
         private Boolean favorites;
         /**
+         * Set this parameter to true to retrieve the target record when using
+         * import set api. The import set result is then replaced by the target
+         * record
+         */
+        private Boolean retrieveTargetRecordOnImport = false;
+        /**
          * Set this parameter to true to return only scorecards for key
          * indicators.
          */
@@ -336,6 +354,18 @@ public class ServiceNowComponentConfiguration
          * Password for proxy authentication
          */
         private String proxyPassword;
+        /**
+         * The date format used for Json serialization/deserialization
+         */
+        private String dateFormat = "yyyy-MM-dd";
+        /**
+         * The time format used for Json serialization/deserialization
+         */
+        private String timeFormat = "HH:mm:ss";
+        /**
+         * The date-time format used for Json serialization/deserialization
+         */
+        private String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         private Map models;
         /**
          * Defines the response model
@@ -486,6 +516,15 @@ public class ServiceNowComponentConfiguration
 
         public void setFavorites(Boolean favorites) {
             this.favorites = favorites;
+        }
+
+        public Boolean getRetrieveTargetRecordOnImport() {
+            return retrieveTargetRecordOnImport;
+        }
+
+        public void setRetrieveTargetRecordOnImport(
+                Boolean retrieveTargetRecordOnImport) {
+            this.retrieveTargetRecordOnImport = retrieveTargetRecordOnImport;
         }
 
         public Boolean getKey() {
@@ -640,6 +679,30 @@ public class ServiceNowComponentConfiguration
 
         public void setProxyPassword(String proxyPassword) {
             this.proxyPassword = proxyPassword;
+        }
+
+        public String getDateFormat() {
+            return dateFormat;
+        }
+
+        public void setDateFormat(String dateFormat) {
+            this.dateFormat = dateFormat;
+        }
+
+        public String getTimeFormat() {
+            return timeFormat;
+        }
+
+        public void setTimeFormat(String timeFormat) {
+            this.timeFormat = timeFormat;
+        }
+
+        public String getDateTimeFormat() {
+            return dateTimeFormat;
+        }
+
+        public void setDateTimeFormat(String dateTimeFormat) {
+            this.dateTimeFormat = dateTimeFormat;
         }
 
         public Map getModels() {

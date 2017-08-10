@@ -102,6 +102,7 @@
         <include>org.apache.camel:camel-google-calendar</include>
         <include>org.apache.camel:camel-google-drive</include>
         <include>org.apache.camel:camel-google-mail</include>
+        <include>org.apache.camel:camel-google-bigquery</include>
         <include>org.apache.camel:camel-google-pubsub</include>
         <include>org.apache.camel:camel-gora</include>
         <include>org.apache.camel:camel-groovy</include>
@@ -124,6 +125,7 @@
         <include>org.apache.camel:camel-http4</include>
         <include>org.apache.camel:camel-ibatis</include>
         <include>org.apache.camel:camel-ical</include>
+        <include>org.apache.camel:camel-iec60870</include>
         <include>org.apache.camel:camel-infinispan</include>
         <include>org.apache.camel:camel-influxdb</include>
         <include>org.apache.camel:camel-ignite</include>
@@ -388,6 +390,7 @@
         <include>org.apache.camel:camel-geocoder-starter</include>
         <include>org.apache.camel:camel-github-starter</include>
         <include>org.apache.camel:camel-git-starter</include>
+        <include>org.apache.camel:camel-google-bigquery-starter</include>
         <include>org.apache.camel:camel-google-calendar-starter</include>
         <include>org.apache.camel:camel-google-drive-starter</include>
         <include>org.apache.camel:camel-google-mail-starter</include>
@@ -413,6 +416,7 @@
         <include>org.apache.camel:camel-http-starter</include>
         <include>org.apache.camel:camel-hystrix-starter</include>
         <include>org.apache.camel:camel-ical-starter</include>
+        <include>org.apache.camel:camel-iec60870-starter</include>
         <include>org.apache.camel:camel-ignite-starter</include>
         <include>org.apache.camel:camel-infinispan-starter</include>
         <include>org.apache.camel:camel-influxdb-starter</include>

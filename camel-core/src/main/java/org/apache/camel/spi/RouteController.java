@@ -16,14 +16,22 @@
  */
 package org.apache.camel.spi;
 
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.CamelContextAware;
 import org.apache.camel.Experimental;
+import org.apache.camel.Route;
 import org.apache.camel.Service;
 
 @Experimental
 public interface RouteController extends CamelContextAware, Service {
+    /**
+     * Return the list of routes controlled by this controller.
+     *
+     * @return the list of controlled routes;
+     */
+    Collection<Route> getControlledRoutes();
 
     void startRoute(String routeId) throws Exception;
 
@@ -38,4 +46,20 @@ public interface RouteController extends CamelContextAware, Service {
     void suspendRoute(String routeId, long timeout, TimeUnit timeUnit) throws Exception;
 
     void resumeRoute(String routeId) throws Exception;
+
+    /**
+     * Access the underlying concrete RouteController implementation.
+     *
+     * @param clazz the proprietary class or interface of the underlying concrete RouteController.
+     * @return an instance of the underlying concrete RouteController as the required type.
+     */
+    default <T extends RouteController> T unwrap(Class<T> clazz) {
+        if (RouteController.class.isAssignableFrom(clazz)) {
+            return clazz.cast(this);
+        }
+
+        throw new IllegalArgumentException(
+            "Unable to unwrap this RouteController type (" + getClass() + ") to the required type (" + clazz + ")"
+        );
+    }
 }
