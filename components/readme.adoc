@@ -111,7 +111,7 @@ Number of Components: 280 in 192 JAR artifacts (17 deprecated)
 `beanstalk:connectionSettings` | 2.15 | The beanstalk component is used for job retrieval and post-processing of Beanstalk jobs.
 
 | link:camel-google-bigquery/src/main/docs/bigquery-component.adoc[BigQuery] (camel-google-bigquery) +
-`bigquery:projectId:datasetId[:tableName]` |  | BigQuery Endpoint Definition Represents a table within a BigQuery dataset Contains configuration details for a single table and the utility methods (such as check create) to ease operations URI Parameters: Logger ID - To ensure that logging is unified under Route Logger the logger ID can be passed on via an endpoint URI parameter Partitioned - to indicate that the table needs to be partitioned - every UTC day to be written into a timestamped separate table side effect: Australian operational day is always split between two UTC days and therefore tables
+`bigquery:projectId:datasetId:tableName` | 2.20 | Google BigQuery data warehouse for analytics.
 
 | link:../camel-core/src/main/docs/binding-component.adoc[Binding] (camel-core) +
 `binding:bindingName:delegateUri` | 2.11 | *deprecated* The binding component is used for as a of wrapping an Endpoint in a contract with a data format.
@@ -177,7 +177,7 @@ Number of Components: 280 in 192 JAR artifacts (17 deprecated)
 `crypto:cryptoOperation:name` | 2.3 | The crypto component is used for signing and verifying exchanges using the Signature Service of the Java Cryptographic Extension (JCE).
 
 | link:camel-crypto-cms/src/main/docs/crypto-cms-component.adoc[Crypto CMS] (camel-crypto-cms) +
-`crypto-cms:cryptoOperation:name` | 2.20 | Camel Cryptographic Message Syntax Support
+`crypto-cms:cryptoOperation:name` | 2.20 | The crypto cms component is used for encrypting data in CMS Enveloped Data format decrypting CMS Enveloped Data signing data in CMS Signed Data format and verifying CMS Signed Data.
 
 | link:camel-cxf/src/main/docs/cxf-component.adoc[CXF] (camel-cxf) +
 `cxf:beanId:address` | 1.0 | The cxf component is used for SOAP WebServices using Apache CXF.
