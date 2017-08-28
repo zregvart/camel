@@ -96,6 +96,14 @@ public class HazelcastQueueProducer extends HazelcastDefaultProducer {
         case DRAIN_TO:
             this.drainTo((Collection) drainToCollection, exchange);
             break;
+            
+        case TAKE:
+            this.take(exchange);
+            break;
+            
+        case RETAIN_ALL:
+            this.retainAll(exchange);
+            break;
 
         default:
             throw new IllegalArgumentException(String.format("The value '%s' is not allowed for parameter '%s' on the QUEUE cache.", operation, HazelcastConstants.OPERATION));
@@ -155,5 +163,14 @@ public class HazelcastQueueProducer extends HazelcastDefaultProducer {
     private void removeIf(Exchange exchange) {
         Predicate filter = exchange.getIn().getBody(Predicate.class);
         exchange.getOut().setBody(this.queue.removeIf(filter));
+    }
+    
+    private void take(Exchange exchange) throws InterruptedException {
+        exchange.getOut().setBody(this.queue.take());
+    }
+    
+    private void retainAll(Exchange exchange) {
+        Collection body = exchange.getIn().getBody(Collection.class);
+        this.queue.retainAll(body);
     }
 }

@@ -74,10 +74,13 @@ public class CaffeineLoadCacheEndpoint extends DefaultEndpoint {
                 builder.maximumSize(configuration.getMaximumSize());
             } else if (configuration.getEvictionType() == EvictionType.TIME_BASED) {
                 builder.expireAfterAccess(configuration.getExpireAfterAccessTime(), TimeUnit.SECONDS);
-                builder.expireAfterAccess(configuration.getExpireAfterWriteTime(), TimeUnit.SECONDS);
+                builder.expireAfterWrite(configuration.getExpireAfterWriteTime(), TimeUnit.SECONDS);
             }
             if (configuration.isStatsEnabled()) {
                 builder.recordStats();
+            }
+            if (ObjectHelper.isNotEmpty(configuration.getRemovalListener())) {
+                builder.removalListener(configuration.getRemovalListener());
             }
             cache = builder.build(configuration.getCacheLoader());
         }
