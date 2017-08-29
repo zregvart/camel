@@ -14,15 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.camel.component.nagios;
+package org.apache.camel.component.sql.stored;
 
-/**
- * Encryption methods supported by nagios.
- * @deprecated use {@link com.googlecode.jsendnsca.encryption.Encryption} instead.
- */
-@Deprecated
-public enum NagiosEncryptionMethod {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    No, Xor, TripleDes
+public final class TestStoredFunction {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TestStoredFunction.class);
+
+
+    private TestStoredFunction() {
+    }
+
+    public static int subnumbers(int val1, int val2) {
+        LOG.info("calling subnumbers:{} - {}", val1, val2);
+        return val1 - val2;
+    }
 }

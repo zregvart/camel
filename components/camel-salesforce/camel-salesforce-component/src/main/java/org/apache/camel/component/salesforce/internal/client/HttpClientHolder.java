@@ -14,15 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.camel.component.nagios;
+package org.apache.camel.component.salesforce.internal.client;
 
-/**
- * Encryption methods supported by nagios.
- * @deprecated use {@link com.googlecode.jsendnsca.encryption.Encryption} instead.
- */
-@Deprecated
-public enum NagiosEncryptionMethod {
+import org.eclipse.jetty.client.HttpClient;
 
-    No, Xor, TripleDes
+public interface HttpClientHolder {
+
+    HttpClient getHttpClient();
 
 }
