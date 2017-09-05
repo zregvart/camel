@@ -21,7 +21,6 @@
   <repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf-version}/xml/features</repository>
   <repository>mvn:org.apache.jclouds.karaf/jclouds-karaf/${jclouds-version}/xml/features</repository>
   <repository>mvn:org.ops4j.pax.cdi/pax-cdi-features/${pax-cdi-version}/xml/features</repository>
-  <repository>mvn:org.hibernate.validator/hibernate-validator-osgi-karaf-features/${hibernate-validator-version}/xml/features</repository>
 
   <feature name='xml-specs-api' version='${servicemix-specs-version}' resolver='(obr)' start-level='10'>
     <bundle dependency='true'>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.activation-api-1.1/${servicemix-specs-version}</bundle>
@@ -204,7 +203,12 @@
   </feature>
   <feature name='camel-bean-validator' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
-    <feature version='${hibernate-validator-version}'>hibernate-validator</feature>
+    <bundle dependency='true'>mvn:javax.validation/validation-api/${validation-api-version}</bundle>
+    <bundle dependency='true'>mvn:javax.el/javax.el-api/${javax.el-api-version}</bundle>
+    <bundle dependency='true'>mvn:org.glassfish.web/javax.el/${javax.el-version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml/classmate/${classmate-version}</bundle>
+    <bundle dependency='true'>mvn:org.hibernate/hibernate-validator/${hibernate-validator-version}</bundle>
+    <bundle dependency='true'>mvn:org.jboss.logging/jboss-logging/${jboss-logging-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-bean-validator/${project.version}</bundle>
   </feature>
   <feature name='camel-beanio' version='${project.version}' resolver='(obr)' start-level='50'>
@@ -294,8 +298,8 @@
     <bundle dependency='true'>mvn:io.netty/netty-common/${netty-version}</bundle>
     <bundle dependency='true'>mvn:io.netty/netty-transport/${netty-version}</bundle>
     <bundle dependency='true'>mvn:io.netty/netty-codec/${netty-version}</bundle>
-    <bundle dependency='true'>mvn:io.dropwizard.metrics/metrics-core/${metrics-version}</bundle>
-    <bundle dependency='true'>mvn:io.dropwizard.metrics/metrics-json/${metrics-version}</bundle>
+    <bundle dependency='true'>mvn:io.dropwizard.metrics/metrics-core/${cassandra-metrics-version}</bundle>
+    <bundle dependency='true'>mvn:io.dropwizard.metrics/metrics-json/${cassandra-metrics-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
@@ -318,7 +322,7 @@
     <bundle>mvn:org.apache.camel/camel-cdi/${project.version}</bundle>
   </feature>
   <feature name='camel-chronicle' version='${project.version}' resolver='(obr)' start-level='50'>
-    <details>Now working well in OSGi atm, requires the runtime to provide sun.nio.ch, sun.misc, sun.reflect, com.sun.jdi.connect.spi</details>
+    <details>Not working well in OSGi atm, requires the runtime to provide sun.nio.ch, sun.misc, sun.reflect, com.sun.jdi.connect.spi, com.sun.nio.file</details>
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>mvn:org.xerial.snappy/snappy-java/${snappy-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xstream/${xstream-bundle-version}</bundle>
@@ -333,15 +337,16 @@
     <bundle dependency='true'>mvn:net.openhft/chronicle-wire/${chronicle-wire-version}</bundle>
     <bundle dependency='true'>mvn:net.openhft/chronicle-threads/${chronicle-threads-version}</bundle>
     <bundle dependency='true'>mvn:net.openhft/chronicle-network/${chronicle-network-version}</bundle>
-    <bundle dependency='true'>wrap:mvn:net.openhft/chronicle-map/${chronicle-map-version}</bundle>
+    <bundle dependency='true'>mvn:net.openhft/chronicle-map/${chronicle-map-version}</bundle>
     <bundle dependency='true'>mvn:net.openhft/chronicle-queue/${chronicle-queue-version}</bundle>
-    <bundle dependency='true'>wrap:mvn:net.openhft/chronicle-engine/${chronicle-engine-version}</bundle>
+    <bundle dependency='true'>mvn:net.openhft/chronicle-engine/${chronicle-engine-version}</bundle>
+    <bundle dependency='true'>mvn:net.openhft/compiler/${openhft-compiler-version}</bundle>    
     <bundle>mvn:org.apache.camel/camel-chronicle/${project.version}</bundle>
   </feature>
   <feature name='camel-chunk' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>mvn:commons-io/commons-io/${commons-io-version}</bundle>
-    <bundle dependency='true'>mvn:net.minidev/json-smart-action/${json-smart-version}</bundle>
+    <bundle dependency='true'>mvn:net.minidev/json-smart-action/${json-smart-karaf-version}</bundle>
     <bundle dependency='true'>mvn:net.minidev/accessors-smart/${json-accessors-smart-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.chunk-templates/${chunk-templates-bundle-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-chunk/${project.version}</bundle>
@@ -349,11 +354,17 @@
   <feature name='camel-cm-sms' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
     <feature version='${cxf-version-range}'>cxf-specs</feature>
-    <feature version='${hibernate-validator-version}'>hibernate-validator</feature>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.libphonenumber/${libphonenumber-bundle-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.httpcomponents/httpcore-osgi/${httpcore4-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.httpcomponents/httpclient-osgi/${httpclient4-version}</bundle>
     <bundle dependency='true'>mvn:javax.servlet/javax.servlet-api/${javax.servlet-api-version}</bundle>
+    <bundle dependency='true'>mvn:org.jsoup/jsoup/${jsoup-version}</bundle>
+    <bundle dependency='true'>mvn:javax.validation/validation-api/${validation-api-version}</bundle>
+    <bundle dependency='true'>mvn:javax.el/javax.el-api/${javax.el-api-version}</bundle>
+    <bundle dependency='true'>mvn:org.glassfish.web/javax.el/${javax.el-version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml/classmate/${classmate-version}</bundle>
+    <bundle dependency='true'>mvn:org.hibernate/hibernate-validator/${hibernate-validator-version}</bundle>
+    <bundle dependency='true'>mvn:org.jboss.logging/jboss-logging/${jboss-logging-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-cm-sms/${project.version}</bundle>
   </feature>
   <feature name='camel-cmis' version='${project.version}' resolver='(obr)' start-level='50'>

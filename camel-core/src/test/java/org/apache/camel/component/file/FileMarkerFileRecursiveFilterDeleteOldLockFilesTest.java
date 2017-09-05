@@ -62,6 +62,10 @@ public class FileMarkerFileRecursiveFilterDeleteOldLockFilesTest extends Context
         context.startRoute("foo");
 
         assertMockEndpointsSatisfied();
+
+        // the lock files should be gone
+        assertFileNotExists("target/oldlock/hello.txt." + FileComponent.DEFAULT_LOCK_FILE_POSTFIX);
+        assertFileNotExists("target/oldlock/foo/hegooddayllo.txt." + FileComponent.DEFAULT_LOCK_FILE_POSTFIX);
     }
 
     @Override
