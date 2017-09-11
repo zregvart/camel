@@ -21,5 +21,19 @@
     "kind" : "search",
     "type" : "POLLING",
     "delay" : 5000
+  },
+  "connectorProperties" : {
+    "prefix" : {
+      "kind" : "parameter",
+      "displayName" : "Keyword prefix",
+      "group" : "filter",
+      "label" : "consumer,filter",
+      "required" : false,
+      "type" : "string",
+      "javaType" : "java.lang.String",
+      "deprecated" : false,
+      "secret" : false,
+      "description" : "A prefix"
+    }
   }
 }

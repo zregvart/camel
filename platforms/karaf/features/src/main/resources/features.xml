@@ -114,6 +114,12 @@
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.java-apns/${java-apns-bundle-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-apns/${project.version}</bundle>
   </feature>
+  <feature name='camel-asn1' version='${project.version}' resolver='(obr)' start-level='50'>
+    <feature version='${project.version}'>camel-core</feature>
+    <bundle dependency='true'>mvn:org.openmuc/jasn1/${jasn1-version}</bundle>
+    <bundle dependency='true'>mvn:org.bouncycastle/bcprov-jdk15on/${bouncycastle-version}</bundle>
+    <bundle>mvn:org.apache.camel/camel-asn1/${project.version}</bundle>
+  </feature>
   <feature name='camel-asterisk' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.asterisk-java/${asterisk-java-bundle-version}</bundle>
@@ -473,6 +479,7 @@
   <feature name='camel-docker' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.docker-java/${docker-java-bundle-version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-annotation_1.2_spec/${geronimo-annotation-1.2-spec-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
@@ -575,6 +582,7 @@
     <bundle dependency='true'>mvn:org.yaml/snakeyaml/${snakeyaml-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.elasticsearch/${elasticsearch5-bundle-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.elasticsearch-client/${elasticsearch5-bundle-version}</bundle>
+    <bundle dependency='true'>wrap:mvn:org.elasticsearch.client/transport/${elasticsearch5-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-elasticsearch5/${project.version}</bundle>
   </feature>
   <feature name='camel-etcd' version='${project.version}' resolver='(obr)' start-level='50'>
@@ -771,10 +779,31 @@
     <bundle>mvn:org.apache.camel/camel-groovy/${project.version}</bundle>
   </feature>
   <feature name='camel-grpc' version='${project.version}' resolver='(obr)' start-level='50'>
+    <details>gRPC bundle version 1.6.1 currently doesn't work well so we are actually use the wrapped gRPC jars</details>
     <feature version='${project.version}'>camel-core</feature>
-    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.grpc/${grpc-bundle-version}</bundle>
+    <bundle dependency='true'>wrap:mvn:io.grpc/grpc-core/${grpc-version}</bundle>
+    <bundle dependency='true'>wrap:mvn:io.grpc/grpc-auth/${grpc-version}</bundle>
+    <bundle dependency='true'>wrap:mvn:io.grpc/grpc-netty/${grpc-version}</bundle>
+    <bundle dependency='true'>wrap:mvn:io.grpc/grpc-protobuf/${grpc-version}</bundle>
+    <bundle dependency='true'>wrap:mvn:io.grpc/grpc-stub/${grpc-version}</bundle>
+    <!-- gRPC netty dependencies -->
+    <bundle dependency='true'>mvn:io.netty/netty-handler/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-buffer/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-common/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-codec/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-codec-http/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-codec-http2/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-codec-socks/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-handler-proxy/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-resolver/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-transport/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-tcnative-boringssl-static/${grpc-netty-tcnative-boringssl-static-version}</bundle>
+    <!-- Third party dependencies -->
     <bundle dependency='true'>mvn:org.javassist/javassist/${javassist-version}</bundle>
-    <bundle>mvn:org.apache.camel/camel-grpc/${project.version}</bundle>
+    <bundle dependency='true'>wrap:mvn:com.auth0/java-jwt/${grpc-java-jwt-version}</bundle>
+    <bundle dependency='true'>wrap:mvn:com.google.auth/google-auth-library-oauth2-http/${grpc-google-auth-library-version}</bundle>
+    <bundle dependency='true'>wrap:mvn:com.google.auth/google-auth-library-credentials/${grpc-google-auth-library-version}</bundle>
+    <bundle>mvn:org.apache.camel/camel-grpc/${project.version}</bundle>    
   </feature>
   <feature name='camel-gson' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
@@ -1391,6 +1420,8 @@
   <feature name='camel-nagios' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>wrap:mvn:com.github.jsendnsca/jsendnsca/${jsendnsca-version}</bundle>
+    <bundle dependency='true'>mvn:org.bouncycastle/bcprov-jdk15on/${bouncycastle-version}</bundle>
+    <bundle dependency='true'>mvn:commons-lang/commons-lang/${commons-lang-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-nagios/${project.version}</bundle>
   </feature>
   <feature name='camel-nats' version='${project.version}' resolver='(obr)' start-level='50'>
@@ -1638,8 +1669,9 @@
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
-    <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-jaxrs-json-provider/${jackson2-version}</bundle>
-    <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-module-jsonSchema/${jackson2-version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson2-version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.module/jackson-module-jsonSchema/${jackson2-version}</bundle>
+    <bundle dependency='true'>mvn:javax.validation/validation-api/${validation-api-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xstream/${xstream-bundle-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xpp3/${xpp3-bundle-version}</bundle>
     <bundle dependency='true'>mvn:javax.servlet/javax.servlet-api/${javax.servlet-api-version}</bundle>
@@ -1695,6 +1727,8 @@
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jsr310/${jackson2-version}</bundle>
+    <bundle dependency='true'>mvn:com.fasterxml.jackson.datatype/jackson-datatype-jdk8/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson2-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-servicenow/${project.version}</bundle>
