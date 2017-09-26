@@ -244,6 +244,7 @@
   </feature>
   <feature name='camel-box' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
+    <feature>pax-http-whiteboard</feature>
     <feature>jetty</feature>
     <bundle dependency='true'>mvn:org.eclipse.jetty.websocket/websocket-api/${jetty-version}</bundle>
     <bundle dependency='true'>mvn:org.eclipse.jetty.websocket/websocket-common/${jetty-version}</bundle>
@@ -397,9 +398,7 @@
   <feature name='camel-consul' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>mvn:com.google.guava/guava/${google-guava-version}</bundle>
-    <bundle dependency='true'>mvn:commons-codec/commons-codec/${commons-codec-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
-    <bundle dependency='true'>mvn:commons-lang/commons-lang/${commons-lang-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
@@ -974,6 +973,23 @@
     <bundle dependency='true'>mvn:org.mnode.ical4j/ical4j/${ical4j-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-ical/${project.version}</bundle>
   </feature>
+  <feature name='camel-iec60870' version='${project.version}' resolver='(obr)' start-level='50'>
+    <feature version='${project.version}'>camel-core</feature>
+    <bundle dependency='true'>mvn:com.google.guava/guava/${google-guava-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.neoscada.protocols/org.eclipse.neoscada.protocol.iec60870/${neoscada-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.neoscada.protocols/org.eclipse.neoscada.protocol.iec60870.client/${neoscada-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.neoscada.protocols/org.eclipse.neoscada.protocol.iec60870.client.data/${neoscada-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.neoscada.protocols/org.eclipse.neoscada.protocol.iec60870.server/${neoscada-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.neoscada.protocols/org.eclipse.neoscada.protocol.iec60870.server.data/${neoscada-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.neoscada.utils/org.eclipse.scada.utils/${neoscada-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-buffer/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-codec/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-common/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-handler/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-transport/${netty-version}</bundle>
+    <bundle dependency='true'>mvn:io.netty/netty-resolver/${netty-version}</bundle>
+    <bundle>mvn:org.apache.camel/camel-iec60870/${project.version}</bundle>
+  </feature>
   <feature name='camel-ignite' version='${project.version}' resolver='(obr)' start-level='50'>
     <details>
         <![CDATA[For performance reasons, Apache Ignite requires a JRE with the sun.nio.ch low-level package.
@@ -1144,7 +1160,7 @@
     <feature version='${spring-version-range}'>spring-jms</feature>
     <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${geronimo-jta-spec-version}</bundle>
     <bundle dependency='true'>mvn:commons-pool/commons-pool/${commons-pool-version}</bundle>
-    <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo-jms-spec-version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.geronimo.specs/geronimo-jms_2.0_spec/${geronimo-jms2-spec-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-jms/${project.version}</bundle>
   </feature>
   <feature name='camel-jmx' version='${project.version}' resolver='(obr)' start-level='50'>
@@ -1265,8 +1281,32 @@
     <feature version='${project.version}'>camel-core</feature>
     <bundle>mvn:org.apache.camel/camel-ldap/${project.version}</bundle>
   </feature>
+  <feature name='camel-ldif' version='${project.version}' resolver='(obr)' start-level='50'>
+    <feature version='${project.version}'>camel-core</feature>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-i18n/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-asn1-api/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-asn1-ber/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-ldap-client-api/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-ldap-codec-core/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-ldap-extras-aci/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-ldap-extras-codec/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-ldap-extras-codec-api/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-ldap-extras-util/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-ldap-model/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-ldap-schema-data/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.api/api-util/1.0.0</bundle>
+    <bundle dependency='true'>mvn:org.apache.directory.server/apacheds-core-api/${apacheds-version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.antlr/2.7.7_5</bundle>
+    <bundle dependency='true'>mvn:commons-codec/commons-codec/${commons-codec-version}</bundle>
+    <bundle dependency='true'>mvn:commons-collections/commons-collections/${commons-collections-version}</bundle>
+    <bundle dependency='true'>mvn:commons-lang/commons-lang/${commons-lang-version}</bundle>
+    <bundle dependency='true'>mvn:commons-pool/commons-pool/${commons-pool-version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.mina/mina-core/${mina2-version}</bundle>
+    <bundle>mvn:org.apache.camel/camel-ldif/${project.version}</bundle>
+  </feature>
   <feature name='camel-linkedin' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature>aries-blueprint</feature>
+    <feature>pax-http-whiteboard</feature>
     <feature version='${project.version}'>camel-core</feature>
     <feature version='${cxf-version-range}'>cxf-core</feature>
     <feature version='${cxf-version-range}'>cxf-jaxrs</feature>

@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -47,8 +48,9 @@ public class AtomixClusterServiceAutoConfiguration {
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    @ConditionalOnProperty(prefix = "camel.clustered.service.atomix", name = "mode", havingValue = "node")
-    public CamelClusterService clusterNode() {
+    @ConditionalOnProperty(prefix = "camel.component.atomix.cluster.service", name = "mode", havingValue = "node")
+    @ConditionalOnMissingBean
+    public CamelClusterService atomixClusterService() {
         AtomixClusterService service = new AtomixClusterService();
         service.setNodes(configuration.getNodes().stream().map(Address::new).collect(Collectors.toList()));
 
@@ -64,8 +66,9 @@ public class AtomixClusterServiceAutoConfiguration {
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    @ConditionalOnProperty(prefix = "camel.clustered.service.atomix", name = "mode", havingValue = "client")
-    public CamelClusterService clusterClient() {
+    @ConditionalOnProperty(prefix = "camel.component.atomix.cluster.service", name = "mode", havingValue = "client")
+    @ConditionalOnMissingBean
+    public CamelClusterService atomixClusterClientService() {
         AtomixClusterClientService service = new AtomixClusterClientService();
         service.setNodes(configuration.getNodes().stream().map(Address::new).collect(Collectors.toList()));
 
@@ -84,12 +87,11 @@ public class AtomixClusterServiceAutoConfiguration {
             super(ConfigurationPhase.REGISTER_BEAN);
         }
 
-        @ConditionalOnProperty(prefix = "camel.clustered.service.atomix", name = "enabled")
+        @ConditionalOnProperty(prefix = "camel.component.atomix.cluster.service", name = "enabled")
         static class IfEnabled {
         }
 
-
-        @ConditionalOnProperty(prefix = "camel.clustered.service.atomix", name = "mode")
+        @ConditionalOnProperty(prefix = "camel.component.atomix.cluster.service", name = "mode")
         static class WithMode {
         }
     }
