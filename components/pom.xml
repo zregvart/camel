@@ -59,6 +59,7 @@
     <module>camel-cxf</module>
     <module>camel-cxf-transport</module>
     <module>camel-jms</module>
+    <module>camel-master</module>
 
     <!-- build it first so it can be used by other component to test i.e. ServiceCall EIP -->
     <module>camel-ribbon</module>
@@ -120,6 +121,7 @@
     <module>camel-elsql</module>
     <module>camel-etcd</module>
     <module>camel-eventadmin</module>
+    <module>camel-json-validator</module>
     <module>camel-exec</module>
     <module>camel-facebook</module>
     <module>camel-fastjson</module>

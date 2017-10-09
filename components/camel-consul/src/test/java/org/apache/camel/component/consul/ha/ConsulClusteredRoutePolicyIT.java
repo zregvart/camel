@@ -29,7 +29,7 @@ import java.util.stream.IntStream;
 import com.orbitz.consul.Consul;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.impl.ha.ClusteredRoutePolicyFactory;
+import org.apache.camel.impl.ha.ClusteredRoutePolicy;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -80,12 +80,12 @@ public class ConsulClusteredRoutePolicyIT {
             context.disableJMX();
             context.setName("context-" + id);
             context.addService(service);
-            context.addRoutePolicyFactory(ClusteredRoutePolicyFactory.forNamespace("my-ns"));
             context.addRoutes(new RouteBuilder() {
                 @Override
                 public void configure() throws Exception {
                     from("timer:consul?delay=1s&period=1s")
                         .routeId("route-" + id)
+                        .routePolicy(ClusteredRoutePolicy.forNamespace("my-ns"))
                         .log("From ${routeId}")
                         .process(e -> contextLatch.countDown());
                 }

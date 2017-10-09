@@ -319,8 +319,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymock</artifactId>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -498,7 +498,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <excludes>
-                <!--ignore tests until CXF-7270 is resolved and released-->
+                <!--ignore tests until CXF-7520 is resolved and released-->
                 <exclude>**/**</exclude>
               </excludes>
             </configuration>
