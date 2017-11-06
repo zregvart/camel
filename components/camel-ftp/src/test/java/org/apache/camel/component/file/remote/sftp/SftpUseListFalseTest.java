@@ -14,26 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.camel.component.jetty.jettyproducer;
+package org.apache.camel.component.file.remote.sftp;
 
+import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.jetty.BaseJettyTest;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.junit.Test;
 
-/**
- *
- */
-public class JettyHttpProducerSendEmptyHeaderTest extends BaseJettyTest {
+public class SftpUseListFalseTest extends SftpServerTestSupport {
 
     @Test
-    public void testHttpProducerSendEmptyHeader() throws Exception {
+    public void testSftpUseListFalse() throws Exception {
+        if (!canTest()) {
+            return;
+        }
+
+        String expected = "Hello World";
+
+        // create file using regular file
+        template.sendBodyAndHeader("file://" + FTP_ROOT_DIR, expected, Exchange.FILE_NAME, "report.txt");
+
         MockEndpoint mock = getMockEndpoint("mock:result");
         mock.expectedMessageCount(1);
-        String expectedValue = "";
-        mock.expectedHeaderReceived("foo", expectedValue);
-
-        template.sendBodyAndHeader("jetty:http://localhost:{{port}}/myapp/mytest", "Hello World", "foo", "");
+        mock.expectedHeaderReceived(Exchange.FILE_NAME, "report.txt");
+        mock.expectedBodiesReceived(expected);
+        
+        context.startRoute("foo");
 
         assertMockEndpointsSatisfied();
     }
@@ -43,9 +49,9 @@ public class JettyHttpProducerSendEmptyHeaderTest extends BaseJettyTest {
         return new RouteBuilder() {
             @Override
             public void configure() throws Exception {
-                allowNullHeaders();
-                from("jetty:http://localhost:{{port}}/myapp/mytest")
-                    .convertBodyTo(String.class)
+                from("sftp://localhost:" + getPort() + "/" + FTP_ROOT_DIR
+                    + "?username=admin&password=admin&delay=10s&disconnect=true&stepwise=false&useList=false&fileName=report.txt&delete=true")
+                    .routeId("foo").noAutoStartup()
                     .to("mock:result");
             }
         };

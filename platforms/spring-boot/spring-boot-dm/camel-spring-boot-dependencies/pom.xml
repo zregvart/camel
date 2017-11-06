@@ -32,12 +32,37 @@
     <dependencies>
       <dependency>
         <groupId>ca.uhn.hapi</groupId>
+        <artifactId>hapi-structures-v22</artifactId>
+        <version>2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>ca.uhn.hapi</groupId>
+        <artifactId>hapi-structures-v23</artifactId>
+        <version>2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>ca.uhn.hapi</groupId>
+        <artifactId>hapi-structures-v231</artifactId>
+        <version>2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>ca.uhn.hapi</groupId>
         <artifactId>hapi-structures-v24</artifactId>
         <version>2.2</version>
       </dependency>
       <dependency>
         <groupId>ca.uhn.hapi</groupId>
         <artifactId>hapi-structures-v25</artifactId>
+        <version>2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>ca.uhn.hapi</groupId>
+        <artifactId>hapi-structures-v251</artifactId>
+        <version>2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>ca.uhn.hapi</groupId>
+        <artifactId>hapi-structures-v26</artifactId>
         <version>2.2</version>
       </dependency>
       <dependency>
@@ -2891,6 +2916,16 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
+        <artifactId>camel-yql</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-yql-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
         <artifactId>camel-zendesk</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -3137,12 +3172,12 @@
       <dependency>
         <groupId>org.apache.kafka</groupId>
         <artifactId>kafka-clients</artifactId>
-        <version>0.11.0.1</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.kafka</groupId>
         <artifactId>kafka_2.11</artifactId>
-        <version>0.11.0.1</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.mina</groupId>
@@ -3153,6 +3188,31 @@
         <groupId>org.apache.openjpa</groupId>
         <artifactId>openjpa-persistence-jdbc</artifactId>
         <version>2.4.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.pdfbox</groupId>
+        <artifactId>fontbox</artifactId>
+        <version>2.0.6</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.pdfbox</groupId>
+        <artifactId>jempbox</artifactId>
+        <version>1.8.13</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.pdfbox</groupId>
+        <artifactId>pdfbox</artifactId>
+        <version>2.0.6</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.pdfbox</groupId>
+        <artifactId>pdfbox-debugger</artifactId>
+        <version>2.0.6</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.pdfbox</groupId>
+        <artifactId>pdfbox-tools</artifactId>
+        <version>2.0.6</version>
       </dependency>
       <dependency>
         <groupId>org.apache.ws.commons.axiom</groupId>

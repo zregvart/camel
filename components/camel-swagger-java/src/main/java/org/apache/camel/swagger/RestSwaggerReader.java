@@ -59,6 +59,7 @@ import org.apache.camel.model.rest.RestOperationParamDefinition;
 import org.apache.camel.model.rest.RestOperationResponseHeaderDefinition;
 import org.apache.camel.model.rest.RestOperationResponseMsgDefinition;
 import org.apache.camel.model.rest.RestParamType;
+import org.apache.camel.model.rest.RestPropertyDefinition;
 import org.apache.camel.model.rest.VerbDefinition;
 import org.apache.camel.spi.ClassResolver;
 import org.apache.camel.util.FileUtil;
@@ -250,7 +251,9 @@ public class RestSwaggerReader {
 
                 if (parameter != null) {
                     parameter.setName(param.getName());
-                    parameter.setDescription(param.getDescription());
+                    if (ObjectHelper.isNotEmpty(param.getDescription())) {
+                        parameter.setDescription(param.getDescription());
+                    }
                     parameter.setRequired(param.getRequired());
 
                     // set type on parameter
@@ -259,6 +262,9 @@ public class RestSwaggerReader {
 
                         if (param.getDataType() != null) {
                             serializableParameter.setType(param.getDataType());
+                            if (param.getDataFormat() != null) {
+                                serializableParameter.setFormat(param.getDataFormat());
+                            }
                             if (param.getDataType().equalsIgnoreCase("array")) {
                                 if (param.getArrayType() != null) {
                                     if (param.getArrayType().equalsIgnoreCase("string")) {
@@ -290,11 +296,16 @@ public class RestSwaggerReader {
                         }
                     }
 
-                    // set default value on parameter
                     if (parameter instanceof AbstractSerializableParameter) {
                         AbstractSerializableParameter qp = (AbstractSerializableParameter) parameter;
-                        if (param.getDefaultValue() != null) {
+                        // set default value on parameter
+                        if (ObjectHelper.isNotEmpty(param.getDefaultValue())) {
                             qp.setDefaultValue(param.getDefaultValue());
+                        }
+                        // add examples
+                        if (param.getExamples() != null && param.getExamples().size() >= 1) {
+                            // we can only set one example on the parameter
+                            qp.example(param.getExamples().get(0).getValue());
                         }
                     }
 
@@ -319,10 +330,21 @@ public class RestSwaggerReader {
                                 }
                             }
                         }
+                        // add examples
+                        if (param.getExamples() != null) {
+                            for (RestPropertyDefinition prop : param.getExamples()) {
+                                bp.example(prop.getKey(), prop.getValue());
+                            }
+                        }
                     }
 
                     op.addParameter(parameter);
                 }
+            }
+
+            // clear parameters if its empty
+            if (op.getParameters().isEmpty()) {
+                op.setParameters(null);
             }
 
             // if we have an out type then set that as response message
@@ -355,86 +377,133 @@ public class RestSwaggerReader {
                 Property prop = modelTypeAsProperty(msg.getResponseModel(), swagger);
                 response.setSchema(prop);
             }
-            response.setDescription(msg.getMessage());
+            if (ObjectHelper.isNotEmpty(msg.getMessage())) {
+                response.setDescription(msg.getMessage());
+            }
 
             // add headers
             if (msg.getHeaders() != null) {
                 for (RestOperationResponseHeaderDefinition header : msg.getHeaders()) {
                     String name = header.getName();
                     String type = header.getDataType();
+                    String format = header.getDataFormat();
                     if ("string".equals(type)) {
                         StringProperty sp = new StringProperty();
                         sp.setName(name);
+                        if (format != null) {
+                            sp.setFormat(format);
+                        }
                         sp.setDescription(header.getDescription());
                         if (header.getAllowableValues() != null) {
                             sp.setEnum(header.getAllowableValues());
+                        }
+                        // add example
+                        if (header.getExample() != null) {
+                            sp.example(header.getExample());
                         }
                         response.addHeader(name, sp);
                     } else if ("int".equals(type) || "integer".equals(type)) {
                         IntegerProperty ip = new IntegerProperty();
                         ip.setName(name);
+                        if (format != null) {
+                            ip.setFormat(format);
+                        }
                         ip.setDescription(header.getDescription());
 
                         List<Integer> values;
                         if (!header.getAllowableValues().isEmpty()) {
-                            values = new ArrayList<Integer>();
+                            values = new ArrayList<>();
                             for (String text : header.getAllowableValues()) {
                                 values.add(Integer.valueOf(text));
                             }
                             ip.setEnum(values);
                         }
+                        // add example
+                        if (header.getExample() != null) {
+                            ip.example(Integer.valueOf(header.getExample()));
+                        }
                         response.addHeader(name, ip);
                     } else if ("long".equals(type)) {
                         LongProperty lp = new LongProperty();
                         lp.setName(name);
+                        if (format != null) {
+                            lp.setFormat(format);
+                        }
                         lp.setDescription(header.getDescription());
 
                         List<Long> values;
                         if (!header.getAllowableValues().isEmpty()) {
-                            values = new ArrayList<Long>();
+                            values = new ArrayList<>();
                             for (String text : header.getAllowableValues()) {
                                 values.add(Long.valueOf(text));
                             }
                             lp.setEnum(values);
                         }
+                        // add example
+                        if (header.getExample() != null) {
+                            lp.example(Long.valueOf(header.getExample()));
+                        }
                         response.addHeader(name, lp);
                     } else if ("float".equals(type)) {
-                        FloatProperty lp = new FloatProperty();
-                        lp.setName(name);
-                        lp.setDescription(header.getDescription());
+                        FloatProperty fp = new FloatProperty();
+                        fp.setName(name);
+                        if (format != null) {
+                            fp.setFormat(format);
+                        }
+                        fp.setDescription(header.getDescription());
 
                         List<Float> values;
                         if (!header.getAllowableValues().isEmpty()) {
-                            values = new ArrayList<Float>();
+                            values = new ArrayList<>();
                             for (String text : header.getAllowableValues()) {
                                 values.add(Float.valueOf(text));
                             }
-                            lp.setEnum(values);
+                            fp.setEnum(values);
                         }
-                        response.addHeader(name, lp);
+                        // add example
+                        if (header.getExample() != null) {
+                            fp.example(Float.valueOf(header.getExample()));
+                        }
+                        response.addHeader(name, fp);
                     } else if ("double".equals(type)) {
                         DoubleProperty dp = new DoubleProperty();
                         dp.setName(name);
+                        if (format != null) {
+                            dp.setFormat(format);
+                        }
                         dp.setDescription(header.getDescription());
 
                         List<Double> values;
                         if (!header.getAllowableValues().isEmpty()) {
-                            values = new ArrayList<Double>();
+                            values = new ArrayList<>();
                             for (String text : header.getAllowableValues()) {
                                 values.add(Double.valueOf(text));
                             }
                             dp.setEnum(values);
                         }
+                        // add example
+                        if (header.getExample() != null) {
+                            dp.example(Double.valueOf(header.getExample()));
+                        }
                         response.addHeader(name, dp);
                     } else if ("boolean".equals(type)) {
                         BooleanProperty bp = new BooleanProperty();
                         bp.setName(name);
+                        if (format != null) {
+                            bp.setFormat(format);
+                        }
                         bp.setDescription(header.getDescription());
+                        // add example
+                        if (header.getExample() != null) {
+                            bp.example(Boolean.valueOf(header.getExample()));
+                        }
                         response.addHeader(name, bp);
                     } else if ("array".equals(type)) {
                         ArrayProperty ap = new ArrayProperty();
                         ap.setName(name);
-                        ap.setDescription(header.getDescription());
+                        if (ObjectHelper.isNotEmpty(header.getDescription())) {
+                            ap.setDescription(header.getDescription());
+                        }
                         if (header.getArrayType() != null) {
                             if (header.getArrayType().equalsIgnoreCase("string")) {
                                 ap.setItems(new StringProperty());
@@ -455,12 +524,28 @@ public class RestSwaggerReader {
                                 ap.setItems(new BooleanProperty());
                             }
                         }
+                        // add example
+                        if (header.getExample() != null) {
+                            ap.example(header.getExample());
+                        }
                         response.addHeader(name, ap);
                     }
                 }
             }
 
+            // add examples
+            if (msg.getExamples() != null) {
+                for (RestPropertyDefinition prop : msg.getExamples()) {
+                    response.example(prop.getKey(), prop.getValue());
+                }
+            }
+
             op.addResponse(msg.getCode(), response);
+        }
+
+        // must include an empty noop response if none exists
+        if (op.getResponses() == null) {
+            op.addResponse("200", new Response());
         }
     }
 
