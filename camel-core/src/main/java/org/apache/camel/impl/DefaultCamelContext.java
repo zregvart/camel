@@ -471,10 +471,30 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
         }
 
         try {
+            // Flag used to mark a component of being created.
+            final AtomicBoolean created = new AtomicBoolean(false);
+
             // atomic operation to get/create a component. Avoid global locks.
-            return components.computeIfAbsent(name, comp -> initComponent(name, autoCreateComponents, autoStart));
+            final Component component = components.computeIfAbsent(name, comp -> {
+                created.set(true);
+                return initComponent(name, autoCreateComponents);
+            });
+
+            // Start the component after its creation as if it is a component proxy
+            // that creates/start a delegated component, we may end up in a deadlock
+            if (component != null && created.get() && autoStart && (isStarted() || isStarting())) {
+                // If the component is looked up after the context is started,
+                // lets start it up.
+                if (component instanceof Service) {
+                    startService((Service)component);
+                }
+            }
+
+            return  component;
+        } catch (Exception e) {
+            throw new RuntimeCamelException("Cannot auto create component: " + name, e);
         } finally {
-            // cremove the reference to the component being created
+            // remove the reference to the component being created
             componentsInCreation.get().remove(name);
         }
     }
@@ -482,7 +502,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
     /**
      * Function to initialize a component and auto start. Returns null if the autoCreateComponents is disabled
      */
-    private Component initComponent(String name, boolean autoCreateComponents, boolean autoStart) {
+    private Component initComponent(String name, boolean autoCreateComponents) {
         Component component = null;
         if (autoCreateComponents) {
             try {
@@ -525,13 +545,6 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
                 if (component != null) {
                     component.setCamelContext(this);
                     postInitComponent(name, component);
-                    if (autoStart && (isStarted() || isStarting())) {
-                        // If the component is looked up after the context is started,
-                        // lets start it up.
-                        if (component instanceof Service) {
-                            startService((Service)component);
-                        }
-                    }
                 }
             } catch (Exception e) {
                 throw new RuntimeCamelException("Cannot auto create component: " + name, e);
@@ -3046,7 +3059,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
     protected void doSuspend() throws Exception {
         EventHelper.notifyCamelContextSuspending(this);
 
-        log.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is suspending");
+        log.info("Apache Camel {} (CamelContext: {}) is suspending", getVersion(), getName());
         StopWatch watch = new StopWatch();
 
         // update list of started routes to be suspended
@@ -3084,7 +3097,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
 
         watch.stop();
         if (log.isInfoEnabled()) {
-            log.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is suspended in " + TimeUtils.printDuration(watch.taken()));
+            log.info("Apache Camel {} (CamelContext: {}) is suspended in {}", getVersion(), getName(), TimeUtils.printDuration(watch.taken()));
         }
 
         EventHelper.notifyCamelContextSuspended(this);
@@ -3095,7 +3108,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
         try {
             EventHelper.notifyCamelContextResuming(this);
 
-            log.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is resuming");
+            log.info("Apache Camel {} (CamelContext: {}) is resuming", getVersion(), getName());
             StopWatch watch = new StopWatch();
 
             // start the suspended routes (do not check for route clashes, and indicate)
@@ -3111,8 +3124,8 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
             }
 
             if (log.isInfoEnabled()) {
-                log.info("Resumed " + suspendedRouteServices.size() + " routes");
-                log.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") resumed in " + TimeUtils.printDuration(watch.taken()));
+                log.info("Resumed {} routes", suspendedRouteServices.size());
+                log.info("Apache Camel {} (CamelContext: {}) resumed in {}", getVersion(), getName(), TimeUtils.printDuration(watch.taken()));
             }
 
             // and clear the list as they have been resumed
@@ -3131,7 +3144,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
             vetoStated.set(false);
             startDate = new Date();
             stopWatch.restart();
-            log.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is starting");
+            log.info("Apache Camel {} (CamelContext: {}) is starting", getVersion(), getName());
 
             // Note: This is done on context start as we want to avoid doing it during object construction
             // where we could be dealing with CDI proxied camel contexts which may never be started (CAMEL-9657)
@@ -3192,7 +3205,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
                     );
                 }
 
-                log.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") started in " + TimeUtils.printDuration(stopWatch.taken()));
+                log.info("Apache Camel {} (CamelContext: {}) started in {}", getVersion(), getName(), TimeUtils.printDuration(stopWatch.taken()));
             }
             EventHelper.notifyCamelContextStarted(this);
 
@@ -3401,7 +3414,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
         validatorRegistry = new DefaultValidatorRegistry(this, validators);
         addService(validatorRegistry, true, true);
 
-        // optimised to not include runtimeEndpointRegistry unless its enabled or JMX statistics is in extended mode
+        // optimised to not include runtimeEndpointRegistry unlesstartServices its enabled or JMX statistics is in extended mode
         if (runtimeEndpointRegistry == null && getManagementStrategy() != null && getManagementStrategy().getManagementAgent() != null) {
             Boolean isEnabled = getManagementStrategy().getManagementAgent().getEndpointRuntimeStatisticsEnabled();
             boolean isExtended = getManagementStrategy().getManagementAgent().getStatisticsLevel().isExtended();
@@ -3491,7 +3504,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
 
     protected synchronized void doStop() throws Exception {
         stopWatch.restart();
-        log.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is shutting down");
+        log.info("Apache Camel {} (CamelContext: {}) is shutting down", getVersion(), getName());
         EventHelper.notifyCamelContextStopping(this);
         
         // Stop the route controller
@@ -3583,7 +3596,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
 
         if (log.isInfoEnabled()) {
             log.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") uptime {}", getUptime());
-            log.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is shutdown in " + TimeUtils.printDuration(stopWatch.taken()));
+            log.info("Apache Camel {} (CamelContext: {}) is shutdown in {}", getVersion(), getName(), TimeUtils.printDuration(stopWatch.taken()));
         }
 
         // and clear start date
@@ -3962,7 +3975,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
             // if we are starting camel, then skip routes which are configured to not be auto started
             boolean autoStartup = routeService.getRouteDefinition().isAutoStartup(this) && this.isAutoStartup();
             if (addingRoute && !autoStartup) {
-                log.info("Skipping starting of route " + routeService.getId() + " as its configured with autoStartup=false");
+                log.info("Skipping starting of route {} as its configured with autoStartup=false", routeService.getId());
                 continue;
             }
 
@@ -4006,7 +4019,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
                 if (resumeOnly && route.supportsSuspension()) {
                     // if we are resuming and the route can be resumed
                     ServiceHelper.resumeService(consumer);
-                    log.info("Route: " + route.getId() + " resumed and consuming from: " + endpoint);
+                    log.info("Route: {} resumed and consuming from: {}", route.getId(), endpoint);
                 } else {
                     // when starting we should invoke the lifecycle strategies
                     for (LifecycleStrategy strategy : lifecycleStrategies) {
@@ -4020,7 +4033,7 @@ public class DefaultCamelContext extends ServiceSupport implements ModelCamelCon
                         throw e;
                     }
 
-                    log.info("Route: " + route.getId() + " started and consuming from: " + endpoint);
+                    log.info("Route: {} started and consuming from: {}", route.getId(), endpoint);
                 }
 
                 routeInputs.add(endpoint);

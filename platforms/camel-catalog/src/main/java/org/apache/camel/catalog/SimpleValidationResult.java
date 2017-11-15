@@ -20,7 +20,6 @@ package org.apache.camel.catalog;
  * Kept to be backwards compatible,
  * @deprecated Please use {@link LanguageValidationResult} instead.
  */
-@Deprecated
 public class SimpleValidationResult extends LanguageValidationResult {
 
     public SimpleValidationResult(String text) {
