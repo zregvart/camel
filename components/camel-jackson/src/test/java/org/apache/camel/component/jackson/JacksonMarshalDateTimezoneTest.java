@@ -16,9 +16,6 @@
  */
 package org.apache.camel.component.jackson;
 
-import static java.lang.String.format;
-import static org.junit.Assume.assumeTrue;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -28,18 +25,20 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Test;
 
+
 public class JacksonMarshalDateTimezoneTest extends CamelTestSupport {
 
     @Test
     public void testMarshalDate() throws Exception {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         GregorianCalendar in = new GregorianCalendar(2017, Calendar.APRIL, 25, 17, 0, 10);
 
         MockEndpoint mock = getMockEndpoint("mock:result");
 
         Object marshalled = template.requestBody("direct:in", in.getTime());
         String marshalledAsString = context.getTypeConverter().convertTo(String.class, marshalled);
-        assertEquals("1493132410000", marshalledAsString);
-
+        assertEquals("1493139610000", marshalledAsString);
+        
         mock.expectedMessageCount(1);
 
         mock.assertIsSatisfied();
@@ -52,9 +51,7 @@ public class JacksonMarshalDateTimezoneTest extends CamelTestSupport {
             @Override
             public void configure() throws Exception {
                 JacksonDataFormat format = new JacksonDataFormat();
-                String timeZoneId = "Africa/Ouagadougou";
-                TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-                assumeTrue(format("TimeZone with id '%s' is available", timeZoneId), timeZone.getID().equals(timeZoneId));
+                TimeZone timeZone = TimeZone.getTimeZone("Africa/Ouagadougou");
                 format.setTimezone(timeZone);
 
                 from("direct:in").marshal(format).to("mock:result");
