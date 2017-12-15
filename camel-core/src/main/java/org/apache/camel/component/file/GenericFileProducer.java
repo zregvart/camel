@@ -310,7 +310,7 @@ public class GenericFileProducer<T> extends DefaultProducer {
 
         // expression support
         Expression expression = endpoint.getFileName();
-        if (value != null && value instanceof Expression) {
+        if (value instanceof Expression) {
             expression = (Expression) value;
         }
 
@@ -397,7 +397,6 @@ public class GenericFileProducer<T> extends DefaultProducer {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void doStart() throws Exception {
         ServiceHelper.startService(locks);
         super.doStart();

@@ -428,6 +428,7 @@
 	* [Test Spring](test-spring.adoc)
 	* [TestNG](testng.adoc)
 	* [URLRewrite](urlrewrite.adoc)
+	* [XRay](aws-xray.adoc)
 	* [Zipkin](zipkin.adoc)
 <!-- others: END -->
 
@@ -503,7 +504,7 @@
 	* [Header](header-language.adoc)
 	* [HL7 Terser](terser-language.adoc)
 	* [JavaScript](javaScript-language.adoc)
-	* [JSonPath](jsonpath-language.adoc)
+	* [JsonPath](jsonpath-language.adoc)
 	* [JXPath](jxpath-language.adoc)
 	* [MVEL](mvel-language.adoc)
 	* [OGNL](ognl-language.adoc)
