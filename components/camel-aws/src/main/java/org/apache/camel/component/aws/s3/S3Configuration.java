@@ -17,8 +17,10 @@
 package org.apache.camel.component.aws.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.S3ClientOptions;
 import com.amazonaws.services.s3.model.EncryptionMaterials;
 
+import org.apache.camel.RuntimeCamelException;
 import org.apache.camel.spi.UriParam;
 import org.apache.camel.spi.UriParams;
 import org.apache.camel.util.ObjectHelper;
@@ -29,15 +31,15 @@ public class S3Configuration implements Cloneable {
     private String bucketName;
     @UriParam
     private AmazonS3 amazonS3Client;
-    @UriParam
+    @UriParam(label = "security", secret = true)
     private String accessKey;
-    @UriParam
+    @UriParam(label = "security", secret = true)
     private String secretKey;
     @UriParam(label = "consumer")
     private String fileName;
     @UriParam(label = "consumer")
     private String prefix;
-    @UriParam(label = "producer")
+    @UriParam
     private String region;
     @UriParam(label = "consumer", defaultValue = "true")
     private boolean deleteAfterRead = true;
@@ -71,6 +73,12 @@ public class S3Configuration implements Cloneable {
     private EncryptionMaterials encryptionMaterials;
     @UriParam(label = "common", defaultValue = "false")
     private boolean useEncryption;
+    @UriParam(label = "common, advanced", defaultValue = "false")
+    private boolean chunkedEncodingDisabled;
+    @UriParam(label = "producer", defaultValue = "false")
+    private boolean useAwsKMS;
+    @UriParam(label = "producer")
+    private String awsKMSKeyId;
 
     public long getPartSize() {
         return partSize;
@@ -355,7 +363,52 @@ public class S3Configuration implements Cloneable {
         this.useEncryption = useEncryption;
     }
 
+    public boolean isUseAwsKMS() {
+        return useAwsKMS;
+    }
+
+    /**
+     * Define if KMS must be used or not
+     */
+    public void setUseAwsKMS(boolean useAwsKMS) {
+        this.useAwsKMS = useAwsKMS;
+    }
+
+    public String getAwsKMSKeyId() {
+        return awsKMSKeyId;
+    }
+
+    /**
+     * Define the id of KMS key to use in case KMS is enabled
+     */
+    public void setAwsKMSKeyId(String awsKMSKeyId) {
+        this.awsKMSKeyId = awsKMSKeyId;
+    }
+
+    public boolean isChunkedEncodingDisabled() {
+        return chunkedEncodingDisabled;
+    }
+
+    /**
+     * Define if disabled Chunked Encoding is true or false
+     */
+    public void setChunkedEncodingDisabled(boolean chunkedEncodingDisabled) {
+        this.chunkedEncodingDisabled = chunkedEncodingDisabled;
+    }
+
     boolean hasProxyConfiguration() {
         return ObjectHelper.isNotEmpty(getProxyHost()) && ObjectHelper.isNotEmpty(getProxyPort());
+    }
+    
+    // *************************************************
+    //
+    // *************************************************
+
+    public S3Configuration copy() {
+        try {
+            return (S3Configuration)super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeCamelException(e);
+        }
     }
 }

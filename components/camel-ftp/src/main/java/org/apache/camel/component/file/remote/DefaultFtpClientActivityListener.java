@@ -23,16 +23,19 @@ import org.apache.camel.util.StringHelper;
 import org.apache.camel.util.TimeUtils;
 import org.apache.commons.net.io.CopyStreamEvent;
 import org.apache.commons.net.io.CopyStreamListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultFtpClientActivityListener implements FtpClientActivityListener, CopyStreamListener {
 
-    // TODO: allow to reconfigure level, interval, verbose etc via JMX
+    private static final Logger LOG = LoggerFactory.getLogger(FtpClientActivityListener.class);
 
     private final CamelLogger logger;
     private final String host;
-    private final boolean verbose;
-    private final int intervalSeconds;
+    private final FtpEndpoint endpoint;
     private boolean download = true;
+    private boolean resume;
+    private long resumeOffset;
 
     private String fileName;
     private long fileSize;
@@ -45,10 +48,9 @@ public class DefaultFtpClientActivityListener implements FtpClientActivityListen
     private final StopWatch watch = new StopWatch();
     private final StopWatch interval = new StopWatch();
 
-    public DefaultFtpClientActivityListener(CamelLogger logger, boolean verbose, int intervalSeconds, String host) {
-        this.logger = logger;
-        this.verbose = verbose;
-        this.intervalSeconds = intervalSeconds;
+    public DefaultFtpClientActivityListener(FtpEndpoint endpoint, String host) {
+        this.logger = new CamelLogger(LOG);
+        this.endpoint = endpoint;
         this.host = host;
     }
 
@@ -140,6 +142,8 @@ public class DefaultFtpClientActivityListener implements FtpClientActivityListen
     @Override
     public void onBeginDownloading(String host, String file) {
         download = true;
+        resume = false;
+        resumeOffset = 0;
         watch.restart();
         interval.restart();
         String msg = "Downloading from host: " + host + " file: " + file + " starting "; // add extra space to align with completed
@@ -150,10 +154,28 @@ public class DefaultFtpClientActivityListener implements FtpClientActivityListen
     }
 
     @Override
+    public void onResumeDownloading(String host, String file, long position) {
+        download = true;
+        resume = true;
+        resumeOffset = position;
+        watch.restart();
+        interval.restart();
+        String msg = "Resume downloading from host: " + host + " file: " + file + " at position: " + position + " bytes/" + StringHelper.humanReadableBytes(position);
+        if (fileSize > 0) {
+            float percent = ((float) resumeOffset / (float) fileSize) * 100L;
+            String num = String.format("%.1f", percent);
+            msg += "/" + num + "% (size: " + fileSizeText + ")";
+        }
+        doLog(msg);
+    }
+
+    @Override
     public void onDownload(String host, String file, long chunkSize, long totalChunkSize, long fileSize) {
+        totalChunkSize = totalChunkSize + resumeOffset;
         transferredBytes = totalChunkSize;
 
-        String msg = "Downloading from host: " + host + " file: " + file + " chunk (" + chunkSize + "/" + totalChunkSize + " bytes)";
+        String prefix  = resume ? "Resume downloading" : "Downloading";
+        String msg = prefix + " from host: " + host + " file: " + file + " chunk (" + chunkSize + "/" + totalChunkSize + " bytes)";
         if (fileSize > 0) {
             float percent = ((float) totalChunkSize / (float) fileSize) * 100L;
             String num = String.format("%.1f", percent);
@@ -161,11 +183,16 @@ public class DefaultFtpClientActivityListener implements FtpClientActivityListen
             if (totalChunkSize < fileSize && "100.0".equals(num)) {
                 num = "99.9";
             }
-            msg += " (progress: " + num + "%)";
+            String size = StringHelper.humanReadableBytes(totalChunkSize);
+            msg += " (progress: " + size + "/" + num + "%)";
+        } else {
+            // okay we do not know the total size, but then make what we have download so-far human readable
+            String size = StringHelper.humanReadableBytes(totalChunkSize);
+            msg += " (downloaded: " + size + ")";
         }
         doLogVerbose(msg);
         // however if the operation is slow then log once in a while
-        if (interval.taken() > intervalSeconds * 1000) {
+        if (interval.taken() > endpoint.getTransferLoggingIntervalSeconds() * 1000) {
             doLog(msg);
             interval.restart();
         }
@@ -173,7 +200,8 @@ public class DefaultFtpClientActivityListener implements FtpClientActivityListen
 
     @Override
     public void onDownloadComplete(String host, String file) {
-        String msg = "Downloading from host: " + host + " file: " + file + " completed";
+        String prefix  = resume ? "Resume downloading" : "Downloading";
+        String msg = prefix + " from host: " + host + " file: " + file + " completed";
         if (transferredBytes > 0) {
             msg += " (size: " + StringHelper.humanReadableBytes(transferredBytes) + ")";
         }
@@ -207,12 +235,17 @@ public class DefaultFtpClientActivityListener implements FtpClientActivityListen
             if (totalChunkSize < fileSize && "100.0".equals(num)) {
                 num = "99.9";
             }
-            msg += " (progress: " + num + "%)";
+            String size = StringHelper.humanReadableBytes(totalChunkSize);
+            msg += " (progress: " + size + "/" + num + "%)";
+        } else {
+            // okay we do not know the total size, but then make what we have uploaded so-far human readable
+            String size = StringHelper.humanReadableBytes(totalChunkSize);
+            msg += " (uploaded: " + size + ")";
         }
         // each chunk is verbose
         doLogVerbose(msg);
         // however if the operation is slow then log once in a while
-        if (interval.taken() > intervalSeconds * 1000) {
+        if (interval.taken() > endpoint.getTransferLoggingIntervalSeconds() * 1000) {
             doLog(msg);
             interval.restart();
         }
@@ -251,14 +284,14 @@ public class DefaultFtpClientActivityListener implements FtpClientActivityListen
         // verbose implies regular log as well
         lastVerboseLogActivity = lastLogActivity;
         lastVerboseLogActivityTimestamp = lastLogActivityTimestamp;
-        logger.log(message);
+        logger.log(message, endpoint.getTransferLoggingLevel());
     }
 
     protected void doLogVerbose(String message) {
         lastVerboseLogActivity = message;
         lastVerboseLogActivityTimestamp = System.currentTimeMillis();
-        if (verbose) {
-            logger.log(message);
+        if (endpoint.isTransferLoggingVerbose()) {
+            logger.log(message, endpoint.getTransferLoggingLevel());
         }
     }
 }

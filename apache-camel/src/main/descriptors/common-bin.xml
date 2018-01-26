@@ -172,6 +172,7 @@
         <include>org.apache.camel:camel-leveldb</include>
         <include>org.apache.camel:camel-linkedin-api</include>
         <include>org.apache.camel:camel-linkedin</include>
+        <include>org.apache.camel:camel-lra</include>
         <include>org.apache.camel:camel-lucene</include>
         <include>org.apache.camel:camel-lumberjack</include>
         <include>org.apache.camel:camel-lzf</include>
@@ -287,7 +288,9 @@
         <include>org.apache.camel:camel-vertx</include>
         <include>org.apache.camel:camel-weather</include>
         <include>org.apache.camel:camel-websocket</include>
+        <include>org.apache.camel:camel-wordpress</include>
         <include>org.apache.camel:camel-xmlbeans</include>
+        <include>org.apache.camel:camel-xchange</include>
         <include>org.apache.camel:camel-xmljson</include>
         <include>org.apache.camel:camel-xmlrpc</include>
         <include>org.apache.camel:camel-xmlsecurity</include>
@@ -478,6 +481,7 @@
         <include>org.apache.camel:camel-ldif-starter</include>
         <include>org.apache.camel:camel-leveldb-starter</include>
         <include>org.apache.camel:camel-linkedin-starter</include>
+        <include>org.apache.camel:camel-lra-starter</include>
         <include>org.apache.camel:camel-lucene-starter</include>
         <include>org.apache.camel:camel-lumberjack-starter</include>
         <include>org.apache.camel:camel-lzf-starter</include>
@@ -581,7 +585,9 @@
         <include>org.apache.camel:camel-vertx-starter</include>
         <include>org.apache.camel:camel-weather-starter</include>
         <include>org.apache.camel:camel-websocket-starter</include>
+        <include>org.apache.camel:camel-wordpress-starter</include>
         <include>org.apache.camel:camel-xmlbeans-starter</include>
+        <include>org.apache.camel:camel-xchange-starter</include>
         <include>org.apache.camel:camel-xmljson-starter</include>
         <include>org.apache.camel:camel-xmlrpc-starter</include>
         <include>org.apache.camel:camel-xmlsecurity-starter</include>

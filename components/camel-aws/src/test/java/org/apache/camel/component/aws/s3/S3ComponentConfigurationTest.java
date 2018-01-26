@@ -16,6 +16,9 @@
  */
 package org.apache.camel.component.aws.s3;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.S3ClientOptions;
+
 import org.apache.camel.impl.JndiRegistry;
 import org.apache.camel.impl.PropertyPlaceholderDelegateRegistry;
 import org.apache.camel.test.junit4.CamelTestSupport;
@@ -141,6 +144,44 @@ public class S3ComponentConfigurationTest extends CamelTestSupport {
     public void createEndpointWithoutSecretKeyConfiguration() throws Exception {
         S3Component component = new S3Component(context);
         component.createEndpoint("aws-s3://MyTopic?accessKey=xxx");
+    }
+    
+    @Test
+    public void createEndpointWithComponentElements() throws Exception {
+        S3Component component = new S3Component(context);
+        component.setAccessKey("XXX");
+        component.setSecretKey("YYY");
+        S3Endpoint endpoint = (S3Endpoint)component.createEndpoint("aws-s3://MyBucket");
+        
+        assertEquals("MyBucket", endpoint.getConfiguration().getBucketName());
+        assertEquals("XXX", endpoint.getConfiguration().getAccessKey());
+        assertEquals("YYY", endpoint.getConfiguration().getSecretKey());
+    }
+    
+    @Test
+    public void createEndpointWithComponentAndEndpointElements() throws Exception {
+        S3Component component = new S3Component(context);
+        component.setAccessKey("XXX");
+        component.setSecretKey("YYY");
+        component.setRegion(Regions.US_WEST_1.toString());
+        S3Endpoint endpoint = (S3Endpoint)component.createEndpoint("aws-s3://MyBucket?accessKey=xxxxxx&secretKey=yyyyy&region=US_EAST_1");
+        
+        assertEquals("MyBucket", endpoint.getConfiguration().getBucketName());
+        assertEquals("xxxxxx", endpoint.getConfiguration().getAccessKey());
+        assertEquals("yyyyy", endpoint.getConfiguration().getSecretKey());
+        assertEquals("US_EAST_1", endpoint.getConfiguration().getRegion());
+    }
+    
+    @Test
+    public void createEndpointWithChunkedEncoding() throws Exception {
+        
+        S3Component component = new S3Component(context);
+        S3Endpoint endpoint = (S3Endpoint) component.createEndpoint("aws-s3://MyBucket?chunkedEncodingDisabled=true&accessKey=xxx&secretKey=yyy&region=US_WEST_1");
+
+        assertEquals("MyBucket", endpoint.getConfiguration().getBucketName());
+        assertEquals("xxx", endpoint.getConfiguration().getAccessKey());
+        assertEquals("yyy", endpoint.getConfiguration().getSecretKey());
+        assertTrue(endpoint.getConfiguration().isChunkedEncodingDisabled());
     }
     
     @Test

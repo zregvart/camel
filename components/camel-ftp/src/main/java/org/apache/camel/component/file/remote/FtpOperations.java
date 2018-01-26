@@ -35,7 +35,6 @@ import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.component.file.GenericFileEndpoint;
 import org.apache.camel.component.file.GenericFileExist;
 import org.apache.camel.component.file.GenericFileOperationFailedException;
-import org.apache.camel.util.CamelLogger;
 import org.apache.camel.util.FileUtil;
 import org.apache.camel.util.IOHelper;
 import org.apache.camel.util.ObjectHelper;
@@ -57,7 +56,6 @@ public class FtpOperations implements RemoteFileOperations<FTPFile> {
     protected final Logger log = LoggerFactory.getLogger(getClass());
     protected final FTPClient client;
     protected final FTPClientConfig clientConfig;
-    protected final CamelLogger transferLogger = new CamelLogger(LoggerFactory.getLogger(FtpClientActivityListener.class));
     protected FtpEndpoint<FTPFile> endpoint;
     protected FtpClientActivityListener clientActivityListener;
 
@@ -69,9 +67,7 @@ public class FtpOperations implements RemoteFileOperations<FTPFile> {
     public void setEndpoint(GenericFileEndpoint<FTPFile> endpoint) {
         this.endpoint = (FtpEndpoint<FTPFile>) endpoint;
         // setup download listener/logger when we have the endpoint configured
-        transferLogger.setLevel(this.endpoint.getTransferLoggingLevel());
-        this.clientActivityListener = new DefaultFtpClientActivityListener(transferLogger, this.endpoint.isTransferLoggingVerbose(),
-            this.endpoint.getTransferLoggingIntervalSeconds(), this.endpoint.getConfiguration().remoteServerInformation());
+        this.clientActivityListener = new DefaultFtpClientActivityListener(this.endpoint, this.endpoint.getConfiguration().remoteServerInformation());
     }
 
     public FtpClientActivityListener getClientActivityListener() {
@@ -253,6 +249,11 @@ public class FtpOperations implements RemoteFileOperations<FTPFile> {
         }
     }
 
+    @Override
+    public void forceDisconnect() throws GenericFileOperationFailedException {
+        doDisconnect();
+    }
+
     protected void doDisconnect() throws GenericFileOperationFailedException {
         // logout before disconnecting
         clientActivityListener.onDisconnecting(endpoint.getConfiguration().remoteServerInformation());
@@ -364,7 +365,7 @@ public class FtpOperations implements RemoteFileOperations<FTPFile> {
             log.trace("retrieveFile({})", name);
             if (ObjectHelper.isNotEmpty(endpoint.getLocalWorkDirectory())) {
                 // local work directory is configured so we should store file content as files in this local directory
-                answer = retrieveFileToFileInLocalWorkDirectory(name, exchange);
+                answer = retrieveFileToFileInLocalWorkDirectory(name, exchange, endpoint.isResumeDownload());
             } else {
                 // store file content directory as stream on the body
                 answer = retrieveFileToStreamInBody(name, exchange);
@@ -450,10 +451,12 @@ public class FtpOperations implements RemoteFileOperations<FTPFile> {
     }
 
     @SuppressWarnings("unchecked")
-    private boolean retrieveFileToFileInLocalWorkDirectory(String name, Exchange exchange) throws GenericFileOperationFailedException {
+    private boolean retrieveFileToFileInLocalWorkDirectory(String name, Exchange exchange, boolean resumeDownload) throws GenericFileOperationFailedException {
         File temp;
         File local = new File(FileUtil.normalizePath(endpoint.getLocalWorkDirectory()));
         OutputStream os;
+        long existingSize = -1;
+
         try {
             // use relative filename in local work directory
             GenericFile<FTPFile> target = (GenericFile<FTPFile>) exchange.getProperty(FileComponent.FILE_EXCHANGE_FILE);
@@ -466,25 +469,34 @@ public class FtpOperations implements RemoteFileOperations<FTPFile> {
             // create directory to local work file
             local.mkdirs();
 
-            // delete any existing files
-            if (temp.exists()) {
-                if (!FileUtil.deleteFile(temp)) {
-                    throw new GenericFileOperationFailedException("Cannot delete existing local work file: " + temp);
-                }
-            }
+            // delete any local file (as its the temp file that is in the in-progress download)
             if (local.exists()) {
                 if (!FileUtil.deleteFile(local)) {
                     throw new GenericFileOperationFailedException("Cannot delete existing local work file: " + local);
                 }
             }
 
-            // create new temp local work file
-            if (!temp.createNewFile()) {
-                throw new GenericFileOperationFailedException("Cannot create new local work file: " + temp);
+            // if a previous file exists then store its current size as its a partial download
+            boolean exists = temp.exists();
+            if (exists) {
+                existingSize = temp.length();
+            }
+
+            // if we do not resume download, then delete any existing temp file and create a new to use for in-progress download
+            if (!resumeDownload) {
+                // delete any existing files
+                if (exists && !FileUtil.deleteFile(temp)) {
+                    throw new GenericFileOperationFailedException("Cannot delete existing local work file: " + temp);
+                }
+                // create new temp local work file
+                if (!temp.createNewFile()) {
+                    throw new GenericFileOperationFailedException("Cannot create new local work file: " + temp);
+                }
             }
 
             // store content as a file in the local work directory in the temp handle
-            os = new FileOutputStream(temp);
+            boolean append = resumeDownload && existingSize > 0;
+            os = new FileOutputStream(temp, append);
 
             // set header with the path to the local work file            
             exchange.getIn().setHeader(Exchange.FILE_LOCAL_WORK_PATH, local.getPath());
@@ -515,6 +527,13 @@ public class FtpOperations implements RemoteFileOperations<FTPFile> {
                 remoteName = FileUtil.stripPath(name);
             }
 
+            // the file exists so lets try to resume the download
+            if (resumeDownload && existingSize > 0) {
+                clientActivityListener.onResumeDownloading(endpoint.getConfiguration().remoteServerInformation(), name, existingSize);
+                log.trace("Client restartOffset: {}", existingSize);
+                log.debug("Resuming download of file: {} at position: {}", remoteName, existingSize);
+                client.setRestartOffset(existingSize);
+            }
             log.trace("Client retrieveFile: {}", remoteName);
             result = client.retrieveFile(remoteName, os);
 
@@ -528,13 +547,17 @@ public class FtpOperations implements RemoteFileOperations<FTPFile> {
             }
 
         } catch (IOException e) {
-            log.trace("Error occurred during retrieving file: {} to local directory. Deleting local work file: {}", name, temp);
-            // failed to retrieve the file so we need to close streams and delete in progress file
-            // must close stream before deleting file
-            IOHelper.close(os, "retrieve: " + name, log);
-            boolean deleted = FileUtil.deleteFile(temp);
-            if (!deleted) {
-                log.warn("Error occurred during retrieving file: " + name + " to local directory. Cannot delete local work file: " + temp);
+            log.trace("Error occurred during retrieving file: {} to local directory.", name);
+            // if we do not attempt to resume download, then attempt to delete the temporary file
+            if (!resumeDownload) {
+                log.trace("Deleting local work file: {}", name, temp);
+                // failed to retrieve the file so we need to close streams and delete in progress file
+                // must close stream before deleting file
+                IOHelper.close(os, "retrieve: " + name, log);
+                boolean deleted = FileUtil.deleteFile(temp);
+                if (!deleted) {
+                    log.warn("Error occurred during retrieving file: " + name + " to local directory. Cannot delete local work file: " + temp);
+                }
             }
             throw new GenericFileOperationFailedException(client.getReplyCode(), client.getReplyString(), e.getMessage(), e);
         } finally {

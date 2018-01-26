@@ -83,7 +83,7 @@
       <dependency>
         <groupId>com.dropbox.core</groupId>
         <artifactId>dropbox-core-sdk</artifactId>
-        <version>3.0.5</version>
+        <version>3.0.6</version>
       </dependency>
       <dependency>
         <groupId>com.github.dozermapper</groupId>
@@ -1751,6 +1751,16 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
+        <artifactId>camel-lra</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-lra-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
         <artifactId>camel-lucene</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -2856,6 +2866,26 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
+        <artifactId>camel-wordpress</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-wordpress-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-xchange</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-xchange-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
         <artifactId>camel-xmlbeans</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -3132,12 +3162,12 @@
       <dependency>
         <groupId>org.apache.ftpserver</groupId>
         <artifactId>ftplet-api</artifactId>
-        <version>1.0.6</version>
+        <version>1.1.1</version>
       </dependency>
       <dependency>
         <groupId>org.apache.ftpserver</groupId>
         <artifactId>ftpserver-core</artifactId>
-        <version>1.0.6</version>
+        <version>1.1.1</version>
       </dependency>
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
@@ -3177,7 +3207,7 @@
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpcore-nio</artifactId>
-        <version>4.4.8</version>
+        <version>4.4.9</version>
       </dependency>
       <dependency>
         <groupId>org.apache.kafka</groupId>
@@ -3320,6 +3350,11 @@
         <groupId>org.jruby</groupId>
         <artifactId>jruby-complete</artifactId>
         <version>1.7.18</version>
+      </dependency>
+      <dependency>
+        <groupId>org.knowm.xchange</groupId>
+        <artifactId>xchange-core</artifactId>
+        <version>4.3.2</version>
       </dependency>
       <dependency>
         <groupId>org.mozilla</groupId>
