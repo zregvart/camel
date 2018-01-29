@@ -17,7 +17,6 @@
 package org.apache.camel.component.aws.s3;
 
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.S3ClientOptions;
 
 import org.apache.camel.impl.JndiRegistry;
 import org.apache.camel.impl.PropertyPlaceholderDelegateRegistry;
@@ -182,6 +181,54 @@ public class S3ComponentConfigurationTest extends CamelTestSupport {
         assertEquals("xxx", endpoint.getConfiguration().getAccessKey());
         assertEquals("yyy", endpoint.getConfiguration().getSecretKey());
         assertTrue(endpoint.getConfiguration().isChunkedEncodingDisabled());
+    }
+    
+    @Test
+    public void createEndpointWithAccelerateMode() throws Exception {
+        
+        S3Component component = new S3Component(context);
+        S3Endpoint endpoint = (S3Endpoint) component.createEndpoint("aws-s3://MyBucket?accelerateModeEnabled=true&accessKey=xxx&secretKey=yyy&region=US_WEST_1");
+
+        assertEquals("MyBucket", endpoint.getConfiguration().getBucketName());
+        assertEquals("xxx", endpoint.getConfiguration().getAccessKey());
+        assertEquals("yyy", endpoint.getConfiguration().getSecretKey());
+        assertTrue(endpoint.getConfiguration().isAccelerateModeEnabled());
+    }
+    
+    @Test
+    public void createEndpointWithDualstack() throws Exception {
+        
+        S3Component component = new S3Component(context);
+        S3Endpoint endpoint = (S3Endpoint) component.createEndpoint("aws-s3://MyBucket?dualstackEnabled=true&accessKey=xxx&secretKey=yyy&region=US_WEST_1");
+
+        assertEquals("MyBucket", endpoint.getConfiguration().getBucketName());
+        assertEquals("xxx", endpoint.getConfiguration().getAccessKey());
+        assertEquals("yyy", endpoint.getConfiguration().getSecretKey());
+        assertTrue(endpoint.getConfiguration().isDualstackEnabled());
+    }
+    
+    @Test
+    public void createEndpointWithPayloadSigning() throws Exception {
+        
+        S3Component component = new S3Component(context);
+        S3Endpoint endpoint = (S3Endpoint) component.createEndpoint("aws-s3://MyBucket?payloadSigningEnabled=true&accessKey=xxx&secretKey=yyy&region=US_WEST_1");
+
+        assertEquals("MyBucket", endpoint.getConfiguration().getBucketName());
+        assertEquals("xxx", endpoint.getConfiguration().getAccessKey());
+        assertEquals("yyy", endpoint.getConfiguration().getSecretKey());
+        assertTrue(endpoint.getConfiguration().isPayloadSigningEnabled());
+    }
+    
+    @Test
+    public void createEndpointWithForceGlobalBucketAccess() throws Exception {
+        
+        S3Component component = new S3Component(context);
+        S3Endpoint endpoint = (S3Endpoint) component.createEndpoint("aws-s3://MyBucket?forceGlobalBucketAccessEnabled=true&accessKey=xxx&secretKey=yyy&region=US_WEST_1");
+
+        assertEquals("MyBucket", endpoint.getConfiguration().getBucketName());
+        assertEquals("xxx", endpoint.getConfiguration().getAccessKey());
+        assertEquals("yyy", endpoint.getConfiguration().getSecretKey());
+        assertTrue(endpoint.getConfiguration().isForceGlobalBucketAccessEnabled());
     }
     
     @Test

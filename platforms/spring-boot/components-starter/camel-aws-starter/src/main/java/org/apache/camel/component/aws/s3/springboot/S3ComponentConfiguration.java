@@ -239,6 +239,22 @@ public class S3ComponentConfiguration
          * Define if disabled Chunked Encoding is true or false
          */
         private Boolean chunkedEncodingDisabled = false;
+        /**
+         * Define if Accelerate Mode enabled is true or false
+         */
+        private Boolean accelerateModeEnabled = false;
+        /**
+         * Define if Dualstack enabled is true or false
+         */
+        private Boolean dualstackEnabled = false;
+        /**
+         * Define if Payload Signing enabled is true or false
+         */
+        private Boolean payloadSigningEnabled = false;
+        /**
+         * Define if Force Global Bucket Access enabled is true or false
+         */
+        private Boolean forceGlobalBucketAccessEnabled = false;
 
         public Long getPartSize() {
             return partSize;
@@ -447,6 +463,39 @@ public class S3ComponentConfiguration
 
         public void setChunkedEncodingDisabled(Boolean chunkedEncodingDisabled) {
             this.chunkedEncodingDisabled = chunkedEncodingDisabled;
+        }
+
+        public Boolean getAccelerateModeEnabled() {
+            return accelerateModeEnabled;
+        }
+
+        public void setAccelerateModeEnabled(Boolean accelerateModeEnabled) {
+            this.accelerateModeEnabled = accelerateModeEnabled;
+        }
+
+        public Boolean getDualstackEnabled() {
+            return dualstackEnabled;
+        }
+
+        public void setDualstackEnabled(Boolean dualstackEnabled) {
+            this.dualstackEnabled = dualstackEnabled;
+        }
+
+        public Boolean getPayloadSigningEnabled() {
+            return payloadSigningEnabled;
+        }
+
+        public void setPayloadSigningEnabled(Boolean payloadSigningEnabled) {
+            this.payloadSigningEnabled = payloadSigningEnabled;
+        }
+
+        public Boolean getForceGlobalBucketAccessEnabled() {
+            return forceGlobalBucketAccessEnabled;
+        }
+
+        public void setForceGlobalBucketAccessEnabled(
+                Boolean forceGlobalBucketAccessEnabled) {
+            this.forceGlobalBucketAccessEnabled = forceGlobalBucketAccessEnabled;
         }
     }
 }

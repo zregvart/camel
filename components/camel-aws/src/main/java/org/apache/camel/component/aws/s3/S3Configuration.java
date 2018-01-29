@@ -17,7 +17,6 @@
 package org.apache.camel.component.aws.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.S3ClientOptions;
 import com.amazonaws.services.s3.model.EncryptionMaterials;
 
 import org.apache.camel.RuntimeCamelException;
@@ -69,15 +68,23 @@ public class S3Configuration implements Cloneable {
     private S3Operations operation;
     @UriParam(label = "consumer,advanced", defaultValue = "true")
     private boolean autocloseBody = true;
-    @UriParam(label = "common")
+    @UriParam(label = "common,advanced")
     private EncryptionMaterials encryptionMaterials;
-    @UriParam(label = "common", defaultValue = "false")
+    @UriParam(label = "common,advanced", defaultValue = "false")
     private boolean useEncryption;
     @UriParam(label = "common, advanced", defaultValue = "false")
     private boolean chunkedEncodingDisabled;
-    @UriParam(label = "producer", defaultValue = "false")
+    @UriParam(label = "common, advanced", defaultValue = "false")
+    private boolean accelerateModeEnabled;
+    @UriParam(label = "common, advanced", defaultValue = "false")
+    private boolean dualstackEnabled;
+    @UriParam(label = "common, advanced", defaultValue = "false")
+    private boolean payloadSigningEnabled;
+    @UriParam(label = "common, advanced", defaultValue = "false")
+    private boolean forceGlobalBucketAccessEnabled;
+    @UriParam(label = "producer,advanced", defaultValue = "false")
     private boolean useAwsKMS;
-    @UriParam(label = "producer")
+    @UriParam(label = "producer,advanced")
     private String awsKMSKeyId;
 
     public long getPartSize() {
@@ -394,6 +401,50 @@ public class S3Configuration implements Cloneable {
      */
     public void setChunkedEncodingDisabled(boolean chunkedEncodingDisabled) {
         this.chunkedEncodingDisabled = chunkedEncodingDisabled;
+    }
+
+    public boolean isAccelerateModeEnabled() {
+        return accelerateModeEnabled;
+    }
+
+    /**
+     * Define if Accelerate Mode enabled is true or false
+     */
+    public void setAccelerateModeEnabled(boolean accelerateModeEnabled) {
+        this.accelerateModeEnabled = accelerateModeEnabled;
+    }
+
+    public boolean isDualstackEnabled() {
+        return dualstackEnabled;
+    }
+    
+    /**
+     * Define if Dualstack enabled is true or false
+     */
+    public void setDualstackEnabled(boolean dualstackEnabled) {
+        this.dualstackEnabled = dualstackEnabled;
+    }
+
+    public boolean isPayloadSigningEnabled() {
+        return payloadSigningEnabled;
+    }
+
+    /**
+     * Define if Payload Signing enabled is true or false
+     */
+    public void setPayloadSigningEnabled(boolean payloadSigningEnabled) {
+        this.payloadSigningEnabled = payloadSigningEnabled;
+    }
+
+    public boolean isForceGlobalBucketAccessEnabled() {
+        return forceGlobalBucketAccessEnabled;
+    }
+
+    /**
+     * Define if Force Global Bucket Access enabled is true or false
+     */
+    public void setForceGlobalBucketAccessEnabled(boolean forceGlobalBucketAccessEnabled) {
+        this.forceGlobalBucketAccessEnabled = forceGlobalBucketAccessEnabled;
     }
 
     boolean hasProxyConfiguration() {
