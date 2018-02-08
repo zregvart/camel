@@ -17,8 +17,6 @@
 
 package org.apache.camel.component.mllp;
 
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.EndpointInject;
@@ -37,10 +35,10 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.instanceOf;
 
 public class MllpTcpServerConsumerConnectionTest extends CamelTestSupport {
-    static final int RECEIVE_TIMEOUT = 500;
+    static final int RECEIVE_TIMEOUT = 1000;
+    static final int READ_TIMEOUT = 500;
 
     @Rule
     public MllpClientResource mllpClient = new MllpClientResource();
@@ -60,20 +58,6 @@ public class MllpTcpServerConsumerConnectionTest extends CamelTestSupport {
         mllpClient.setMllpPort(AvailablePortFinder.getNextAvailable());
 
         super.doPreSetup();
-    }
-
-    @Override
-    protected RouteBuilder createRouteBuilder() throws Exception {
-        return new RouteBuilder() {
-            String routeId = "mllp-receiver";
-
-            public void configure() {
-                fromF("mllp://%s:%d?autoAck=false", mllpClient.getMllpHost(), mllpClient.getMllpPort())
-                    .log(LoggingLevel.INFO, routeId, "Receiving: ${body}")
-                    .to(result);
-            }
-        };
-
     }
 
     /**
@@ -96,7 +80,7 @@ public class MllpTcpServerConsumerConnectionTest extends CamelTestSupport {
         result.setExpectedCount(0);
         result.setAssertPeriod(1000);
 
-        addTestRoute(-1);
+        addTestRouteWithIdleTimeout(-1);
 
         for (int i = 1; i <= connectionCount; ++i) {
             mllpClient.connect();
@@ -120,7 +104,7 @@ public class MllpTcpServerConsumerConnectionTest extends CamelTestSupport {
         result.setExpectedCount(0);
         result.setAssertPeriod(1000);
 
-        addTestRoute(-1);
+        addTestRouteWithIdleTimeout(-1);
 
         for (int i = 1; i <= connectionCount; ++i) {
             mllpClient.connect();
@@ -149,7 +133,7 @@ public class MllpTcpServerConsumerConnectionTest extends CamelTestSupport {
         result.setExpectedCount(1);
         result.setAssertPeriod(1000);
 
-        addTestRoute(idleTimeout);
+        addTestRouteWithIdleTimeout(idleTimeout);
 
         mllpClient.connect();
         mllpClient.sendMessageAndWaitForAcknowledgement(testMessage);
@@ -166,12 +150,13 @@ public class MllpTcpServerConsumerConnectionTest extends CamelTestSupport {
         assertMockEndpointsSatisfied(15, TimeUnit.SECONDS);
     }
 
-    void addTestRoute(final int idleTimeout) throws Exception {
+    void addTestRouteWithIdleTimeout(final int idleTimeout) throws Exception {
         RouteBuilder builder = new RouteBuilder() {
-            String routeId = "mllp-receiver";
+            String routeId = "mllp-receiver-with-timeout";
 
             public void configure() {
-                fromF("mllp://%s:%d?receiveTimeout=%d&idleTimeout=%d", mllpClient.getMllpHost(), mllpClient.getMllpPort(), RECEIVE_TIMEOUT, idleTimeout)
+                fromF("mllp://%s:%d?receiveTimeout=%d&readTimeout=%d&idleTimeout=%d", mllpClient.getMllpHost(), mllpClient.getMllpPort(), RECEIVE_TIMEOUT, READ_TIMEOUT, idleTimeout)
+                    .routeId(routeId)
                     .log(LoggingLevel.INFO, routeId, "Receiving: ${body}")
                     .to(result);
             }

@@ -49,8 +49,6 @@ public class S3Configuration implements Cloneable {
     @UriParam(label = "producer", defaultValue = "" + 25 * 1024 * 1024)
     private long partSize = 25 * 1024 * 1024;
     @UriParam
-    private String amazonS3Endpoint;
-    @UriParam
     private String policy;
     @UriParam(label = "producer")
     private String storageClass;
@@ -109,17 +107,6 @@ public class S3Configuration implements Cloneable {
      */
     public void setMultiPartUpload(boolean multiPartUpload) {
         this.multiPartUpload = multiPartUpload;
-    }
-
-    /**
-     * The region with which the AWS-S3 client wants to work with.
-     */
-    public void setAmazonS3Endpoint(String amazonS3Endpoint) {
-        this.amazonS3Endpoint = amazonS3Endpoint;
-    }
-
-    public String getAmazonS3Endpoint() {
-        return amazonS3Endpoint;
     }
 
     public String getAccessKey() {
@@ -197,8 +184,7 @@ public class S3Configuration implements Cloneable {
     }
 
     /**
-     * The region where the bucket is located. This option is used in the
-     * `com.amazonaws.services.s3.model.CreateBucketRequest`.
+     * The region in which S3 client needs to work
      */
     public void setRegion(String region) {
         this.region = region;

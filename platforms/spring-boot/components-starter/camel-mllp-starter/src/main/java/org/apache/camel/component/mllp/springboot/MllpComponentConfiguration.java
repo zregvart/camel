@@ -17,6 +17,8 @@
 package org.apache.camel.component.mllp.springboot;
 
 import javax.annotation.Generated;
+import org.apache.camel.ExchangePattern;
+import org.apache.camel.component.mllp.MllpComponent;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
@@ -36,12 +38,12 @@ public class MllpComponentConfiguration
     /**
      * Set the component to log PHI data.
      */
-    private Boolean logPhi;
+    private Boolean logPhi = true;
     /**
      * Set the maximum number of bytes of PHI that will be logged in a log
      * entry.
      */
-    private Integer logPhiMaxBytes;
+    private Integer logPhiMaxBytes = 5120;
     /**
      * Sets the default configuration to use when creating MLLP endpoints.
      */
@@ -90,6 +92,30 @@ public class MllpComponentConfiguration
     public static class MllpConfigurationNestedConfiguration {
         public static final Class CAMEL_NESTED_CLASS = org.apache.camel.component.mllp.MllpConfiguration.class;
         /**
+         * Allows for bridging the consumer to the Camel routing Error Handler,
+         * which mean any exceptions occurred while the consumer is trying to
+         * receive incoming messages, or the likes, will now be processed as a
+         * message and handled by the routing Error Handler. If disabled, the
+         * consumer will use the org.apache.camel.spi.ExceptionHandler to deal
+         * with exceptions by logging them at WARN or ERROR level and ignored.
+         * 
+         * @param bridgeErrorHandler
+         */
+        private Boolean bridgeErrorHandler = true;
+        /**
+         * Sets the exchange pattern when the consumer creates an exchange.
+         * 
+         * @param exchangePattern
+         */
+        private ExchangePattern exchangePattern = ExchangePattern.InOut;
+        /**
+         * Sets whether synchronous processing should be strictly used (this
+         * component only supports synchronous operations).
+         * 
+         * @param synchronous
+         */
+        private Boolean synchronous = true;
+        /**
          * Set the CamelCharsetName property on the exchange
          * 
          * @param charsetName
@@ -121,6 +147,16 @@ public class MllpComponentConfiguration
          *            timeout in milliseconds
          */
         private Integer acceptTimeout = 60000;
+        /**
+         * TCP Server Only - Allow the endpoint to start before the TCP
+         * ServerSocket is bound. In some environments, it may be desirable to
+         * allow the endpoint to start before the TCP ServerSocket is bound.
+         * 
+         * @param lenientBind
+         *            if true, the ServerSocket will be bound asynchronously;
+         *            otherwise the ServerSocket will be bound synchronously.
+         */
+        private Boolean lenientBind = false;
         /**
          * Timeout (in milliseconds) for establishing for a TCP connection
          * <p/>
@@ -179,7 +215,7 @@ public class MllpComponentConfiguration
          * @param readTimeout
          *            timeout in milliseconds
          */
-        private Integer readTimeout = 500;
+        private Integer readTimeout = 5000;
         /**
          * Enable/disable the SO_KEEPALIVE socket option.
          * 
@@ -196,6 +232,14 @@ public class MllpComponentConfiguration
          *            false; use system default when null
          */
         private Boolean tcpNoDelay = true;
+        /**
+         * Enable/disable the SO_REUSEADDR socket option.
+         * 
+         * @param reuseAddress
+         *            enable SO_REUSEADDR when true; disable SO_REUSEADDR when
+         *            false; use system default when null
+         */
+        private Boolean reuseAddress = false;
         /**
          * Sets the SO_RCVBUF option to the specified value (in bytes)
          * 
@@ -229,7 +273,7 @@ public class MllpComponentConfiguration
          */
         private Boolean hl7Headers = true;
         /**
-         * Enable disable strict compliance to the MLLP standard. The MLLP
+         * Enable/Disable strict compliance to the MLLP standard. The MLLP
          * standard specifies [START_OF_BLOCK]hl7
          * payload[END_OF_BLOCK][END_OF_DATA], however, some systems do not send
          * the final END_OF_DATA byte. This setting controls whether or not the
@@ -266,7 +310,8 @@ public class MllpComponentConfiguration
          */
         private Boolean validatePayload = false;
         /**
-         * Enable/Disable the validation of HL7 Payloads
+         * Enable/Disable the buffering of HL7 payloads before writing to the
+         * socket.
          * 
          * @deprecated the parameter will be ignored
          * @param bufferWrites
@@ -274,6 +319,30 @@ public class MllpComponentConfiguration
          */
         @Deprecated
         private Boolean bufferWrites = false;
+
+        public Boolean getBridgeErrorHandler() {
+            return bridgeErrorHandler;
+        }
+
+        public void setBridgeErrorHandler(Boolean bridgeErrorHandler) {
+            this.bridgeErrorHandler = bridgeErrorHandler;
+        }
+
+        public ExchangePattern getExchangePattern() {
+            return exchangePattern;
+        }
+
+        public void setExchangePattern(ExchangePattern exchangePattern) {
+            this.exchangePattern = exchangePattern;
+        }
+
+        public Boolean getSynchronous() {
+            return synchronous;
+        }
+
+        public void setSynchronous(Boolean synchronous) {
+            this.synchronous = synchronous;
+        }
 
         public String getCharsetName() {
             return charsetName;
@@ -313,6 +382,14 @@ public class MllpComponentConfiguration
 
         public void setAcceptTimeout(Integer acceptTimeout) {
             this.acceptTimeout = acceptTimeout;
+        }
+
+        public Boolean getLenientBind() {
+            return lenientBind;
+        }
+
+        public void setLenientBind(Boolean lenientBind) {
+            this.lenientBind = lenientBind;
         }
 
         public Integer getConnectTimeout() {
@@ -380,6 +457,14 @@ public class MllpComponentConfiguration
 
         public void setTcpNoDelay(Boolean tcpNoDelay) {
             this.tcpNoDelay = tcpNoDelay;
+        }
+
+        public Boolean getReuseAddress() {
+            return reuseAddress;
+        }
+
+        public void setReuseAddress(Boolean reuseAddress) {
+            this.reuseAddress = reuseAddress;
         }
 
         public Integer getReceiveBufferSize() {

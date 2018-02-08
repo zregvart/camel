@@ -2,7 +2,7 @@ Components
 ^^^^^^^^^^
 
 // components: START
-Number of Components: 290 in 199 JAR artifacts (19 deprecated)
+Number of Components: 291 in 200 JAR artifacts (19 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |===
@@ -230,6 +230,9 @@ Number of Components: 290 in 199 JAR artifacts (19 deprecated)
 | link:camel-ejb/src/main/docs/ejb-component.adoc[EJB] (camel-ejb) +
 `ejb:beanName` | 2.4 | The ejb component is for invoking EJB Java beans from Camel.
 
+| link:camel-elasticsearch-rest/src/main/docs/elasticsearch-rest-component.adoc[Elastichsearch Rest] (camel-elasticsearch-rest) +
+`elasticsearch-rest:clusterName` | 2.21 | The elasticsearch component is used for interfacing with ElasticSearch server using REST API.
+
 | link:camel-elasticsearch5-rest/src/main/docs/elasticsearch5-rest-component.adoc[Elastichsearch5 Rest] (camel-elasticsearch5-rest) +
 `elasticsearch5-rest:clusterName` | 2.21 | The elasticsearch component is used for interfacing with ElasticSearch server using 5.x REST API.
 
@@ -447,7 +450,7 @@ Number of Components: 290 in 199 JAR artifacts (19 deprecated)
 `jpa:entityType` | 1.0 | The jpa component enables you to store and retrieve Java objects from databases using JPA.
 
 | link:camel-json-validator/src/main/docs/json-validator-component.adoc[JSON Schema Validator] (camel-json-validator) +
-`json-validator:resourceUri` | 2.20 | Validates the payload of a message using Everit JSON schema validator.
+`json-validator:resourceUri` | 2.20 | Validates the payload of a message using NetworkNT JSON Schema library.
 
 | link:camel-jt400/src/main/docs/jt400-component.adoc[JT400] (camel-jt400) +
 `jt400:userID:password/systemName/objectPath.type` | 1.5 | The jt400 component allows you to exchanges messages with an AS/400 system using data queues or program call.
@@ -466,9 +469,6 @@ Number of Components: 290 in 199 JAR artifacts (19 deprecated)
 
 | link:camel-kubernetes/src/main/docs/kubernetes-build-configs-component.adoc[Kubernetes Build Config] (camel-kubernetes) +
 `kubernetes-build-configs:masterUrl` | 2.17 | The Kubernetes Build Config component provides a producer to execute kubernetes build config operations.
-
-| link:camel-kubernetes/src/main/docs/kubernetes-builds-component.adoc[Kubernetes Builds] (camel-kubernetes) +
-`kubernetes-builds:masterUrl` | 2.17 | The Kubernetes Builds component provides a producer to execute kubernetes build operations.
 
 | link:camel-kubernetes/src/main/docs/kubernetes-config-maps-component.adoc[Kubernetes ConfigMap] (camel-kubernetes) +
 `kubernetes-config-maps:masterUrl` | 2.17 | The Kubernetes Configmaps component provides a producer to execute kubernetes configmap operations.
@@ -604,6 +604,9 @@ Number of Components: 290 in 199 JAR artifacts (19 deprecated)
 
 | link:camel-openshift/src/main/docs/openshift-component.adoc[OpenShift] (camel-openshift) +
 `openshift:clientId` | 2.14 | *deprecated* To manage your Openshift 2.x applications.
+
+| link:camel-kubernetes/src/main/docs/openshift-builds-component.adoc[Openshift Builds] (camel-kubernetes) +
+`openshift-builds:masterUrl` | 2.17 | The Openshift Builds component provides a producer to execute openshift build operations.
 
 | link:camel-openstack/src/main/docs/openstack-cinder-component.adoc[OpenStack Cinder] (camel-openstack) +
 `openstack-cinder:host` | 2.19 | The openstack-cinder component allows messages to be sent to an OpenStack block storage services.
@@ -843,7 +846,7 @@ Number of Components: 290 in 199 JAR artifacts (19 deprecated)
 `weather:name` | 2.12 | Polls the weather information from Open Weather Map.
 
 | link:camel-wordpress/src/main/docs/wordpress-component.adoc[Wordpress] (camel-wordpress) +
-`wordpress:operation` | 2.20.1 | Represents a Wordpress endpoint.
+`wordpress:operation` | 2.21 | Integrates Camel with Wordpress.
 
 | link:camel-xchange/src/main/docs/xchange-component.adoc[XChange] (camel-xchange) +
 `xchange:name` | 2.21 | Camel XChange support

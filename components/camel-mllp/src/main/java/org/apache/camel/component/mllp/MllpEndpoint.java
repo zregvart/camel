@@ -33,6 +33,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.Producer;
 import org.apache.camel.api.management.ManagedAttribute;
 import org.apache.camel.api.management.ManagedResource;
+import org.apache.camel.component.mllp.internal.Hl7Util;
 import org.apache.camel.impl.DefaultEndpoint;
 import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.UriEndpoint;
@@ -89,6 +90,10 @@ public class MllpEndpoint extends DefaultEndpoint {
     public MllpEndpoint(String uri, MllpComponent component, MllpConfiguration configuration) {
         super(uri, component);
         this.configuration = configuration.copy();
+
+        super.setBridgeErrorHandler(configuration.isBridgeErrorHandler());
+        super.setExchangePattern(configuration.getExchangePattern());
+        super.setSynchronous(configuration.isSynchronous());
     }
 
     @Override
@@ -106,13 +111,21 @@ public class MllpEndpoint extends DefaultEndpoint {
     }
 
     @Override
-    public ExchangePattern getExchangePattern() {
-        return ExchangePattern.InOut;
+    public void setExchangePattern(ExchangePattern exchangePattern) {
+        configuration.setExchangePattern(exchangePattern);
+        super.setExchangePattern(configuration.getExchangePattern());
     }
 
     @Override
-    public boolean isSynchronous() {
-        return true;
+    public void setSynchronous(boolean synchronous) {
+        configuration.setSynchronous(synchronous);
+        super.setSynchronous(configuration.isSynchronous());
+    }
+
+    @Override
+    public void setBridgeErrorHandler(boolean bridgeErrorHandler) {
+        configuration.setBridgeErrorHandler(bridgeErrorHandler);
+        super.setBridgeErrorHandler(configuration.isBridgeErrorHandler());
     }
 
     private void setExchangeProperties(Exchange mllpExchange) {
@@ -233,7 +246,7 @@ public class MllpEndpoint extends DefaultEndpoint {
                 LOG.warn("Unsupported Character Set {} specified for MSH-18 - using default character set {}", msh18, MllpProtocolConstants.DEFAULT_CHARSET);
             }
         } else {
-            String foundMsh18 = findMsh18(hl7Bytes);
+            String foundMsh18 = Hl7Util.findMsh18(hl7Bytes);
             if (foundMsh18 != null && !foundMsh18.isEmpty()) {
                 if (MllpProtocolConstants.MSH18_VALUES.containsKey(foundMsh18)) {
                     answer = MllpProtocolConstants.MSH18_VALUES.get(foundMsh18);
@@ -262,54 +275,7 @@ public class MllpEndpoint extends DefaultEndpoint {
         return new String(hl7Bytes, charset);
     }
 
-    // TODO:  Move this to HL7Util
-    public String findMsh18(byte[] hl7Message) {
-        if (hl7Message == null || hl7Message.length == 0) {
-            return null;
-        }
 
-        final byte fieldSeparator = hl7Message[3];
-        int endOfMSH = -1;
-        List<Integer> fieldSeparatorIndexes = new ArrayList<>(10);  // We should have at least 10 fields
-
-        for (int i = 0; i < hl7Message.length; ++i) {
-            if (fieldSeparator == hl7Message[i]) {
-                fieldSeparatorIndexes.add(i);
-            } else if (MllpProtocolConstants.SEGMENT_DELIMITER == hl7Message[i]) {
-                // If the MSH Segment doesn't have a trailing field separator, add one so the field can be extracted into a string
-                if (fieldSeparator != hl7Message[i - 1]) {
-                    fieldSeparatorIndexes.add(i);
-                }
-                endOfMSH = i;
-                break;
-            }
-        }
-
-        if (fieldSeparatorIndexes.size() >= 18) {
-            int startingFieldSeparatorIndex = fieldSeparatorIndexes.get(17);
-            int length = 0;
-
-            if (fieldSeparatorIndexes.size() >= 19) {
-                length = fieldSeparatorIndexes.get(18) - startingFieldSeparatorIndex - 1;
-            } else {
-                length = endOfMSH - startingFieldSeparatorIndex - 1;
-            }
-
-            if (length < 0) {
-                return null;
-            } else if (length == 0) {
-                return "";
-            }
-
-            String msh18value = new String(hl7Message, startingFieldSeparatorIndex + 1,
-                length,
-                StandardCharsets.US_ASCII);
-
-            return msh18value;
-        }
-
-        return null;
-    }
 
     // Pass-through configuration methods
     public void setBacklog(Integer backlog) {
@@ -322,6 +288,10 @@ public class MllpEndpoint extends DefaultEndpoint {
 
     public void setBindRetryInterval(int bindRetryInterval) {
         configuration.setBindRetryInterval(bindRetryInterval);
+    }
+
+    public void setLenientBind(boolean lenientBind) {
+        configuration.setLenientBind(lenientBind);
     }
 
     public void setAcceptTimeout(int acceptTimeout) {
