@@ -5,7 +5,7 @@
 
 The *scheduler:* component is used to generate message exchanges when a
 scheduler fires. This component is similar to the
- link:timer.html[Timer] component, but it offers more functionality in
+ <<timer-component,Timer>> component, but it offers more functionality in
 terms of scheduling. Also this component uses
 JDK `ScheduledExecutorService`. Where as the timer uses a JDK `Timer`.
 
@@ -124,7 +124,7 @@ from("scheduler://foo?period=60s").to("bean:myBean?method=someMethodName");
 
 The above route will generate an event and then invoke the
 `someMethodName` method on the bean called `myBean` in the
-link:registry.html[Registry] such as JNDI or link:spring.html[Spring].
+Registry such as JNDI or Spring.
 
 And the route in Spring DSL:
 
@@ -158,5 +158,5 @@ exchange.
 
 === See Also
 
-* link:timer.html[Timer]
-* link:quartz.html[Quartz]
+* <<timer-component,Timer>>
+* <<quartz-component,Quartz>>

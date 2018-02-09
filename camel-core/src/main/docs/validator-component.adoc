@@ -8,14 +8,14 @@ using the JAXP Validation API and based on any of the supported XML
 schema languages, which defaults to http://www.w3.org/XML/Schema[XML
 Schema]
 
-Note that the link:jing.html[Jing] component also supports the following
+Note that the <<jing-component,Jing>> component also supports the following
 useful schema languages:
 
 * http://relaxng.org/compact-tutorial-20030326.html[RelaxNG Compact
 Syntax]
 * http://relaxng.org/[RelaxNG XML Syntax]
 
-The link:msv.html[MSV] component also supports
+The <<msv-component,MSV>> component also supports
 http://relaxng.org/[RelaxNG XML Syntax].
 
 === URI format
@@ -47,7 +47,7 @@ for this component when using *Camel 2.8* or older:
 </dependency>
 ----
 
-From Camel 2.9 onwards the link:validation.html[Validation] component is
+From Camel 2.9 onwards the Validation component is
 provided directly in the camel-core.
 
 === Options

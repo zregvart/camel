@@ -10,17 +10,17 @@ http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/BlockingQueue.html[
 and consumers are invoked in a separate thread from the producer.
 
 Note that queues are only visible within a _single_
-link:camelcontext.html[CamelContext]. If you want to communicate across
+CamelContext. If you want to communicate across
 `CamelContext` instances (for example, communicating between Web
-applications), see the link:vm.html[VM] component.
+applications), see the <<vm-component,VM>> component.
 
 This component does not implement any kind of persistence or recovery,
 if the VM terminates while messages are yet to be processed. If you need
 persistence, reliability or distributed SEDA, try using either
-link:jms.html[JMS] or link:activemq.html[ActiveMQ].
+<<jms-component,JMS>> or <<jms-component,ActiveMQ>>.
 
 TIP:*Synchronous*
-The link:direct.html[Direct] component provides synchronous invocation
+The <<direct-component,Direct>> component provides synchronous invocation
 of any consumers when a producer sends a message exchange.
 
 === URI format
@@ -31,7 +31,7 @@ seda:someName[?options]
 ----
 
 Where *someName* can be any string that uniquely identifies the endpoint
-within the current link:camelcontext.html[CamelContext].
+within the current CamelContext.
 
 You can append query options to the URI in the following format:
 `?option=value&option=value&…`
@@ -133,9 +133,9 @@ ArrayBlockingQueueFactory and PriorityBlockingQueueFactory:
 
 === Use of Request Reply
 
-The link:seda.html[SEDA] component supports using
-link:request-reply.html[Request Reply], where the caller will wait for
-the link:async.html[Async] route to complete. For instance:
+The <<seda-component,SEDA>> component supports using
+Request Reply, where the caller will wait for
+the Async route to complete. For instance:
 
 [source,java]
 ----
@@ -146,13 +146,13 @@ from("seda:input").to("bean:processInput").to("bean:createResponse");
 
 In the route above, we have a TCP listener on port 9876 that accepts
 incoming requests. The request is routed to the `seda:input` queue. As
-it is a link:request-reply.html[Request Reply] message, we wait for the
+it is a Request Reply message, we wait for the
 response. When the consumer on the `seda:input` queue is complete, it
 copies the response to the original message response.
 
 NOTE: *until 2.2: Works only with 2 endpoints*
-Using link:request-reply.html[Request Reply] over link:seda.html[SEDA]
-or link:vm.html[VM] only works with 2 endpoints. You *cannot* chain
+Using Request Reply over SEDA
+or <<vm-component,VM>> only works with 2 endpoints. You *cannot* chain
 endpoints by sending to A -> B -> C etc. Only between A -> B. The reason
 is the implementation logic is fairly simple. To support 3+ endpoints
 makes the logic much more complex to handle ordering and notification
@@ -187,7 +187,7 @@ from("seda:stageName").thread(5).process(...)
 
 Can wind up with two `BlockQueues`: one from the SEDA endpoint, and one
 from the workqueue of the thread pool, which may not be what you want.
-Instead, you might wish to configure a link:direct.html[Direct] endpoint
+Instead, you might wish to configure a <<direct-component,Direct>> endpoint
 with a thread pool, which can process messages both synchronously and
 asynchronously. For example:
 
@@ -241,7 +241,7 @@ int size = seda.getExchanges().size();
 
 === See Also
 
-* link:vm.html[VM]
-* link:disruptor.html[Disruptor]
-* link:direct.html[Direct]
-* link:async.html[Async]
+* <<vm-component,VM>>
+* <<disruptor-component,Disruptor>>
+* <<direct-component,Direct>>
+* Async

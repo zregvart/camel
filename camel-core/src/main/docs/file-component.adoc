@@ -4,7 +4,7 @@
 *Available as of Camel version 1.0*
 
 The File component provides access to file systems, allowing files to be
-processed by any other Camel link:components.html[Components] or
+processed by any other Camel Components or
 messages from other components to be saved to disk.
 
 === URI format
@@ -183,8 +183,7 @@ bean completes, and thus the route is completed, the file consumer will
 perform the move operation and move the file to the `.done` sub-folder.
 
 The *move* and the *preMove* options are considered as a directory name
-(though if you use an expression such as link:file-language.html[File
-Language], or link:simple.html[Simple] then the result of the expression
+(though if you use an expression such as <<file-language,File Language>>, or <<simple-language,Simple>> then the result of the expression
 evaluation is the file name to be used - eg if you set
 
 [source]
@@ -192,7 +191,7 @@ evaluation is the file name to be used - eg if you set
 move=../backup/copy-of-${file:name}
 ----
 
-then that's using the link:file-language.html[File Language] which we
+then that's using the <<file-language,File Language>> which we
 use return the file name to be used), which can be either relative or
 absolute. If relative, the directory is created as a sub-folder from
 within the folder where the file was consumed.
@@ -229,11 +228,11 @@ processed and after it's processed, it's moved to the `.done` folder.
 === Fine grained control over Move and PreMove option
 
 The *move* and *preMove* options
-are link:expression.html[Expression]-based, so we have the full power of
-the link:file-language.html[File Language] to do advanced configuration
+are Expression-based, so we have the full power of
+the <<file-language,File Language>> to do advanced configuration
 of the directory and name pattern. +
  Camel will, in fact, internally convert the directory name you enter
-into a link:file-language.html[File Language] expression. So when we
+into a <<file-language,File Language>> expression. So when we
 enter `move=.done` Camel will convert this into:
 `${``file:parent``}/.done/${``file:onlyname`}. This is only done if
 Camel detects that you have not provided a $\{ } in the option value
@@ -256,7 +255,7 @@ choice. For example to move the files in an error folder with a
 timestamp you can use
 `moveFailed=/error/${``file:name.noext``}-${date:now:yyyyMMddHHmmssSSS}.${``file:ext`}.
 
-See more examples at link:file-language.html[File Language]
+See more examples at <<file-language,File Language>>
 
 === Message Headers
 
@@ -270,8 +269,8 @@ The following headers are supported by this component:
 
 |`CamelFileName` |Specifies the name of the file to write (relative to the endpoint
 directory). This name can be a `String`; a `String` with a
-link:file-language.html[File Language] or link:simple.html[Simple]
-expression; or an link:expression.html[Expression] object. If it's
+<<file-language,File Language>> or <<file-language,Simple>>
+expression; or an Expression object. If it's
 `null` then Camel will auto-generate a filename based on the message
 unique ID.
 
@@ -321,13 +320,13 @@ relative filename. For absolute files this is the absolute path.
 
 === Batch Consumer
 
-This component implements the link:batch-consumer.html[Batch Consumer].
+This component implements the Batch Consumer.
 
 === Exchange Properties, file consumer only
 
 As the file consumer implements the `BatchConsumer` it supports batching
 the files it polls. By batching we mean that Camel will add the
-following additional properties to the link:exchange.html[Exchange], so
+following additional properties to the Exchange, so
 you know the number of files polled, the current index, and whether the
 batch is already completed.
 
@@ -339,12 +338,12 @@ batch is already completed.
 
 |`CamelBatchIndex` |The current index of the batch. Starts from 0.
 
-|`CamelBatchComplete` |A `boolean` value indicating the last link:exchange.html[Exchange] in
+|`CamelBatchComplete` |A `boolean` value indicating the last Exchange in
 the batch. Is only `true` for the last entry.
 |===
 
 This allows you for instance to know how many files exist in this batch
-and for instance let the link:aggregator2.html[Aggregator2] aggregate
+and for instance let the Aggregator2 aggregate
 this number of files.
 
 === Using charset
@@ -478,8 +477,8 @@ from("direct:report").to("file:target/reports/?fileName=report.txt");
 === Filename Expression
 
 Filename can be set either using the *expression* option or as a
-string-based link:file-language.html[File Language] expression in the
-`CamelFileName` header. See the link:file-language.html[File Language]
+string-based <<file-language,File Language>> expression in the
+`CamelFileName` header. See the <<file-language,File Language>>
 for syntax and samples.
 
 === Consuming files from folders where others drop files directly
@@ -761,11 +760,11 @@ today's date as a sub-folder name:
 from("file://inbox?move=backup/${date:now:yyyyMMdd}/${file:name}").to("...");
 ----
 
-See link:file-language.html[File Language] for more samples.
+See <<file-language,File Language>> for more samples.
 
 === Avoiding reading the same file more than once (idempotent consumer)
 
-Camel supports link:idempotent-consumer.html[Idempotent Consumer]
+Camel supports Idempotent Consumer
 directly within the component so it will skip already processed files.
 This feature can be enabled by setting the `idempotent=true` option.
 
@@ -791,7 +790,7 @@ By default Camel uses a in memory based store for keeping track of
 consumed files, it uses a least recently used cache holding up to 1000
 entries. You can plugin your own implementation of this store by using
 the `idempotentRepository` option using the `#` sign in the value to
-indicate it's a referring to a bean in the link:registry.html[Registry]
+indicate it's a referring to a bean in the Registry
 with the specified `id`.
 
 [source,xml]
@@ -831,7 +830,7 @@ empty file.
 We configure our repository using Spring XML creating our file
 idempotent repository and define our file consumer to use our repository
 with the `idempotentRepository` using `#` sign to indicate
-link:registry.html[Registry] lookup:
+Registry lookup:
 
 === Using a JPA based idempotent repository
 
@@ -955,14 +954,14 @@ file:
 
 TIP: *URI options can reference beans using the # syntax*
 In the Spring DSL route above notice that we can refer to beans in the
-link:registry.html[Registry] by prefixing the id with `#`. So writing
+Registry by prefixing the id with `#`. So writing
 `sorter=#mySorter`, will instruct Camel to go look in the
-link:registry.html[Registry] for a bean with the ID, `mySorter`.
+Registry for a bean with the ID, `mySorter`.
 
 ==== Sorting using sortBy
 
 Camel supports pluggable sorting strategies. This strategy it to use the
-link:file-language.html[File Language] to configure the sorting. The
+<<file-language,File Language>> to configure the sorting. The
 `sortBy` option is configured as follows:
 
 [source]
@@ -986,7 +985,7 @@ This will sort by file name, you can reverse the order by prefixing
 sortBy=reverse:file:name
 ----
 
-As we have the full power of link:file-language.html[File Language] we
+As we have the full power of <<file-language,File Language>> we
 can use some of the other parameters, so if we want to sort by file size
 we do:
 
@@ -1030,8 +1029,7 @@ sortBy=file:modified;file:name
 Now there is an issue here, can you spot it? Well the modified timestamp
 of the file is too fine as it will be in milliseconds, but what if we
 want to sort by date only and then subgroup by name? +
- Well as we have the true power of link:file-language.html[File
-Language] we can use its date command that supports patterns. So this
+ Well as we have the true power of <<file-language,File Language>> we can use its date command that supports patterns. So this
 can be solved as:
 
 [source]
@@ -1085,7 +1083,7 @@ name, can be implemented as follows:
 
 *Available as of Camel 2.10*
 
-If you want to use the Camel link:error-handler.html[Error Handler] to
+If you want to use the Camel Error Handler to
 deal with any exception occurring in the file consumer, then you can
 enable the `consumer.bridgeErrorHandler` option as shown below:
 
@@ -1110,9 +1108,9 @@ the route will take it from there.
 
 IMPORTANT: *Important when using consumer.bridgeErrorHandler*
 When using consumer.bridgeErrorHandler, then
-link:intercept.html[interceptors], link:oncompletion.html[OnCompletion]s
-does *not* apply. The link:exchange.html[Exchange] is processed directly
-by the Camel link:error-handler.html[Error Handler], and does not allow
+interceptors, OnCompletions
+does *not* apply. The Exchange is processed directly
+by the Camel Error Handler, and does not allow
 prior actions such as interceptors, onCompletion to take action.
 
 === Debug logging
@@ -1122,6 +1120,6 @@ problems.
 
 === See Also
 
-* link:file-language.html[File Language]
-* link:ftp2.html[FTP]
-* link:polling-consumer.html[Polling Consumer]
+* <<file-language,File Language>>
+* FTP
+* Polling Consumer

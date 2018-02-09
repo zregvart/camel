@@ -24,7 +24,7 @@ for this component:
 </dependency>
 ------------------------------------------------------------
 
-Note that the link:msv.html[MSV] component can also support RelaxNG XML
+Note that the <<msv-component,MSV>> component can also support RelaxNG XML
 syntax.
 
 ### URI format Camel 2.16
@@ -88,7 +88,7 @@ Syntax] schema (which is supplied on the classpath).
 
 ### See Also
 
-* link:configuring-camel.html[Configuring Camel]
-* link:component.html[Component]
-* link:endpoint.html[Endpoint]
-* link:getting-started.html[Getting Started]
+* Configuring Camel
+* Component
+* Endpoint
+* Getting Started

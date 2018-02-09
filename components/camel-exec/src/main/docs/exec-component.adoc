@@ -142,8 +142,7 @@ If an out file is specified (in the endpoint via `outFile` or the
 message headers via `ExecBinding.EXEC_COMMAND_OUT_FILE`), converters
 will return the content of the out file. If no out file is used, then
 this component will convert the stdout of the process to the target
-type. For more details, please refer to the link:exec.html[usage
-examples] below.
+type. For more details, please refer to the <<exec-component,usage examples>> below.
 
 ### Usage examples
 
@@ -234,7 +233,7 @@ from("direct:exec").to("exec:cmd?args=/C echo echoString")
 
 ### See Also
 
-* link:configuring-camel.html[Configuring Camel]
-* link:component.html[Component]
-* link:endpoint.html[Endpoint]
-* link:getting-started.html[Getting Started]
+* Configuring Camel
+* Component
+* Endpoint
+* Getting Started

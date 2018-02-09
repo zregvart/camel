@@ -4,7 +4,7 @@
 *Available as of Camel version 2.11*
 
 The http://www.eaipatterns.com/ControlBus.html[Control Bus] from the
-link:enterprise-integration-patterns.html[EIP patterns] allows for the
+EIP patterns allows for the
 integration system to be monitored and managed from within the
 framework.
 
@@ -15,15 +15,15 @@ Control Bus uses the same messaging mechanism used by the application
 data, but uses separate channels to transmit data that is relevant to
 the management of components involved in the message flow.
 
-In Camel you can manage and monitor using link:camel-jmx.html[JMX], or
+In Camel you can manage and monitor using JMX, or
 by using a Java API from the `CamelContext`, or from the
 `org.apache.camel.api.management` package, +
  or use the event notifier which has an example
-link:eventnotifier-to-log-details-about-all-sent-exchanges.html[here].
+here.
 
 From Camel 2.11 onwards we have introduced a new
-link:controlbus-component.html[ControlBus Component] that allows you to
-send messages to a control bus link:endpoint.html[Endpoint] that reacts
+<<controlbus-component,ControlBus Component>> that allows you to
+send messages to a control bus Endpoint that reacts
 accordingly.
 
 === ControlBus Component
@@ -31,9 +31,9 @@ accordingly.
 *Available as of Camel 2.11*
 
 The *controlbus:* component provides easy management of Camel
-applications based on the link:controlbus.html[Control Bus] EIP
+applications based on the <<controlbus-component,Control Bus>> EIP
 pattern. 
-For example, by sending a message to an link:endpoint.html[Endpoint]
+For example, by sending a message to an Endpoint
 you can control the lifecycle of routes, or gather performance
 statistics.
 
@@ -53,7 +53,7 @@ use.
 
 |`route` |To control routes using the `routeId` and `action` parameter.
 
-|`language` |Allows you to specify a link:language.html[Language] to use for
+|`language` |Allows you to specify a <<language-component,Language>> to use for
 evaluating the message body. If there is any result from the evaluation,
 then the result is put in the message body.
 |===
@@ -129,7 +129,7 @@ String status = template.requestBody("controlbus:route?routeId=foo&action=status
 
 This requires JMX to be enabled (is by default) then you can get the
 performance statics per route, or for the
-link:camelcontext.html[CamelContext]. For example to get the statics for
+CamelContext. For example to get the statics for
 a route named foo, we can do:
 
 [source,java]
@@ -141,7 +141,7 @@ The returned statics is in XML format. Its the same data you can get
 from JMX with the `dumpRouteStatsAsXml` operation on the
 `ManagedRouteMBean`.
 
-To get statics for the entire link:camelcontext.html[CamelContext] you
+To get statics for the entire CamelContext you
 just omit the routeId parameter as shown below:
 
 [source,java]
@@ -151,7 +151,7 @@ String xml = template.requestBody("controlbus:route?action=stats", null, String.
 
 === Using Simple language
 
-You can use the link:simple.html[Simple] language with the control bus,
+You can use the <<simple-language,Simple>> language with the control bus,
 for example to stop a specific route, you can send a message to the
 `"controlbus:language:simple"` endpoint containing the following
 message:
@@ -171,8 +171,8 @@ String status = template.requestBody("controlbus:language:simple", "${camelConte
 
 It's easier to use the `route` command to control lifecycle of
 routes. The `language` command allows you to execute a language script
-that has stronger powers such as link:groovy.html[Groovy] or to some
-extend the link:simple.html[Simple] language.
+that has stronger powers such as <<groovy-language,Groovy>> or to some
+extend the <<simple-language,Simple>> language.
 
 For example to shutdown Camel itself you can do:
 
@@ -185,4 +185,4 @@ We use `async=true` to stop Camel asynchronously as otherwise we
 would be trying to stop Camel while it was in-flight processing the
 message we sent to the control bus component.
 
-TIP: You can also use other languages such as link:groovy.html[Groovy], etc.
+TIP: You can also use other languages such as <<groovy-language,Groovy>>, etc.
