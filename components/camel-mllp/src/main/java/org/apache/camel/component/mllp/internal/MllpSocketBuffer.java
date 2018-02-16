@@ -29,6 +29,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import org.apache.camel.component.mllp.MllpComponent;
 import org.apache.camel.component.mllp.MllpEndpoint;
 import org.apache.camel.component.mllp.MllpProtocolConstants;
 import org.apache.camel.component.mllp.MllpSocketException;
@@ -39,7 +40,6 @@ import org.slf4j.LoggerFactory;
  * An OutputStream modeled after the ByteArrayOutputStream specifically for MLLP operations.
  */
 public class MllpSocketBuffer {
-    static final Charset DEFAULT_CHARSET = StandardCharsets.US_ASCII;
     static final int MIN_BUFFER_SIZE = 2048;
     static final int MAX_BUFFER_SIZE = 0x40000000;  // Approximately 1-GB
 
@@ -270,7 +270,7 @@ public class MllpSocketBuffer {
 
     @Override
     public synchronized String toString() {
-        return toString(DEFAULT_CHARSET);
+        return toString(MllpComponent.getDefaultCharset());
     }
 
     public synchronized String toString(Charset charset) {
@@ -283,14 +283,17 @@ public class MllpSocketBuffer {
 
     public synchronized String toString(String charsetName) {
         if (availableByteCount > 0) {
-            if (Charset.isSupported(charsetName)) {
-                Charset charset = Charset.forName(charsetName);
-                return toString(charset);
-            } else if (MllpProtocolConstants.MSH18_VALUES.containsKey(charsetName)) {
-                return toString(MllpProtocolConstants.MSH18_VALUES.get(charsetName));
-            } else {
-                return toString(DEFAULT_CHARSET);
+            try {
+                if (Charset.isSupported(charsetName)) {
+                    return toString(Charset.forName(charsetName));
+                }
+                log.warn("Unsupported character set name {} - using the MLLP default character set {}", charsetName, MllpComponent.getDefaultCharset());
+            } catch (Exception charsetEx) {
+                log.warn("Ignoring exception encountered determining character set for name {} - using the MLLP default character set {}",
+                    charsetName, MllpComponent.getDefaultCharset(), charsetEx);
             }
+
+            return toString(MllpComponent.getDefaultCharset());
         }
 
         return "";
@@ -326,32 +329,62 @@ public class MllpSocketBuffer {
         return "";
     }
 
+    public String toPrintFriendlyStringAndReset() {
+        String answer = toPrintFriendlyString();
+
+        reset();
+
+        return answer;
+    }
+
     public synchronized String toHl7String() {
-        return this.toHl7String(StandardCharsets.US_ASCII.name());
+        return this.toHl7String(MllpComponent.getDefaultCharset());
+    }
+
+    public String toHl7StringAndReset() {
+        String answer = toHl7String();
+
+        reset();
+
+        return answer;
     }
 
     public synchronized String toHl7String(String charsetName) {
-        String hl7String = null;
+        if (charsetName != null && !charsetName.isEmpty()) {
+            try {
+                if (Charset.isSupported(charsetName)) {
+                    return toHl7String(Charset.forName(charsetName));
+                }
+                log.warn("Unsupported character set name {} - using the MLLP default character set {}", charsetName, MllpComponent.getDefaultCharset());
+            } catch (Exception charsetEx) {
+                log.warn("Ignoring exception encountered determining character set for name {} - using the MLLP default character set {}",
+                    charsetName, MllpComponent.getDefaultCharset(), charsetEx);
+            }
+        }
 
+        return toHl7String(MllpComponent.getDefaultCharset());
+    }
+
+    public synchronized String toHl7String(Charset charset) {
         if (hasCompleteEnvelope()) {
             int offset = hasStartOfBlock() ? startOfBlockIndex + 1 : 1;
             int length = hasEndOfBlock() ? endOfBlockIndex - offset : availableByteCount - startOfBlockIndex - 1;
             if (length > 0) {
-                try {
-                    hl7String = new String(buffer,
-                        offset,
-                        length,
-                        charsetName);
-                } catch (UnsupportedEncodingException unsupportedEncodingEx) {
-                    log.warn("Failed to create string using {} charset - falling back to default charset {}", charsetName, MllpProtocolConstants.DEFAULT_CHARSET);
-                    hl7String = new String(buffer, offset, length, MllpProtocolConstants.DEFAULT_CHARSET);
-                }
+                return new String(buffer, offset, length, charset != null ? charset : MllpComponent.getDefaultCharset());
             } else {
-                hl7String = "";
+                return "";
             }
         }
 
-        return hl7String;
+        return null;
+    }
+
+    public String toHl7StringAndReset(String charsetName) {
+        String answer = toHl7String(charsetName);
+
+        reset();
+
+        return answer;
     }
 
     /**
@@ -370,6 +403,14 @@ public class MllpSocketBuffer {
         return "";
     }
 
+    public String toPrintFriendlyHl7StringAndReset() {
+        String answer = toPrintFriendlyHl7String();
+
+        reset();
+
+        return answer;
+    }
+
     public synchronized byte[] toMllpPayload() {
         byte[] mllpPayload = null;
 
@@ -386,6 +427,14 @@ public class MllpSocketBuffer {
         }
 
         return mllpPayload;
+    }
+
+    public byte[] toMllpPayloadAndReset() {
+        byte[] answer = toMllpPayload();
+
+        reset();
+
+        return answer;
     }
 
     public synchronized int getMllpPayloadLength() {
@@ -567,27 +616,30 @@ public class MllpSocketBuffer {
         try {
             int readCount = socketInputStream.read(buffer, availableByteCount, buffer.length - availableByteCount);
             if (readCount == MllpProtocolConstants.END_OF_STREAM) {
-                final String exceptionMessage = "END_OF_STREAM returned from SocketInputStream.read(byte[], off, len)";
-                resetSocket(socket, exceptionMessage);
-                throw new SocketException(exceptionMessage);
+                resetSocket(socket);
+                throw new SocketException("END_OF_STREAM returned from SocketInputStream.read(byte[], off, len)");
             }
             if (readCount > 0) {
                 for (int i = 0; (startOfBlockIndex == -1 || endOfBlockIndex == -1) && i < readCount; ++i) {
                     updateIndexes(buffer[availableByteCount + i], i);
                 }
                 availableByteCount += readCount;
-                log.trace("Read {} bytes for a total of {} bytes", readCount, availableByteCount);
+
+                if (hasStartOfBlock()) {
+                    log.trace("Read {} bytes for a total of {} bytes", readCount, availableByteCount);
+                } else {
+                    log.warn("Ignoring {} bytes received before START_OF_BLOCK", size(), toPrintFriendlyStringAndReset());
+                }
             }
         } catch (SocketTimeoutException timeoutEx) {
             throw timeoutEx;
         } catch (SocketException socketEx) {
-            final String exceptionMessage = "SocketException encountered in readSocketInputStream";
-            resetSocket(socket, exceptionMessage);
-            throw new MllpSocketException(exceptionMessage, socketEx);
+            resetSocket(socket);
+            throw new MllpSocketException("SocketException encountered in readSocketInputStream", socketEx);
         } catch (IOException ioEx) {
             final String exceptionMessage = "IOException thrown from SocketInputStream.read(byte[], off, len)";
-            resetSocket(socket, exceptionMessage);
-            throw new MllpSocketException(exceptionMessage, ioEx);
+            resetSocket(socket);
+            throw new MllpSocketException("IOException thrown from SocketInputStream.read(byte[], off, len)", ioEx);
         } finally {
             log.trace("Exiting readSocketInputStream - size = {}", size());
         }
@@ -614,7 +666,7 @@ public class MllpSocketBuffer {
             if (logMessage != null && !logMessage.isEmpty()) {
                 log.info("{} - {} socket {}", reset ? "Resetting" : "Closing", logMessage, socket);
             } else {
-                log.info("{} socket {}", reset ? "Resetting" : "Closing", socket);
+                log.debug("{} socket {}", reset ? "Resetting" : "Closing", socket);
             }
 
             endpoint.updateLastConnectionTerminatedTicks();

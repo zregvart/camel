@@ -34,7 +34,7 @@ import org.apache.camel.spi.UriParam;
 import org.apache.camel.util.ObjectHelper;
 
 /**
- * The aws-mq is used for managing Amazon KMS 
+ * The aws-kms is used for managing Amazon KMS
  */
 @UriEndpoint(firstVersion = "2.21.0", scheme = "aws-kms", title = "AWS KMS", syntax = "aws-kms:label", producerOnly = true, label = "cloud,management")
 public class KMSEndpoint extends ScheduledPollEndpoint {
@@ -66,6 +66,14 @@ public class KMSEndpoint extends ScheduledPollEndpoint {
         super.doStart();
 
         kmsClient = configuration.getKmsClient() != null ? configuration.getKmsClient() : createKMSClient();
+    }
+    
+    @Override
+    public void doStop() throws Exception {
+        if (kmsClient != null) {
+            kmsClient.shutdown();
+        }
+        super.doStop();
     }
 
     public KMSConfiguration getConfiguration() {

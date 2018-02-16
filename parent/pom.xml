@@ -43,7 +43,7 @@
     <activemq-version>5.15.3</activemq-version>
     <activemq-artemis-version>2.4.0</activemq-artemis-version>
     <aether-version>1.0.2.v20150114</aether-version>
-    <ahc-version>2.3.0</ahc-version>
+    <ahc-version>2.4.1</ahc-version>
     <ant-bundle-version>1.7.0_6</ant-bundle-version>
     <antlr-bundle-version>3.5.2_1</antlr-bundle-version>
     <antlr-runtime-bundle-version>3.5.2_1</antlr-runtime-bundle-version>
@@ -60,7 +60,7 @@
     <aries-spifly-version>1.0.8</aries-spifly-version>
     <aries-util-version>1.1.3</aries-util-version>
     <arquillian-container-se-managed-version>1.0.0.Final</arquillian-container-se-managed-version>
-    <arquillian-version>1.2.1.Final</arquillian-version>
+    <arquillian-version>1.3.0.Final</arquillian-version>
     <arquillian-weld-embedded-version>2.0.0.Beta4</arquillian-weld-embedded-version>
     <asciidoctorj-version>1.5.6</asciidoctorj-version>
     <asm-version>5.0.4</asm-version>
@@ -120,14 +120,14 @@
     <jta-api-1.2-version>1.2</jta-api-1.2-version>
     <cglib-bundle-version>3.2.6_1</cglib-bundle-version>
     <cglib-version>3.2.6</cglib-version>
-    <chronicle-bytes-version>1.10.13</chronicle-bytes-version>
+    <chronicle-bytes-version>1.10.19</chronicle-bytes-version>
     <chronicle-core-version>1.10.1</chronicle-core-version>
     <chronicle-engine-version>1.13.27</chronicle-engine-version>
     <chronicle-map-version>2.4.17</chronicle-map-version>
-    <chronicle-network-version>1.10.0</chronicle-network-version>
-    <chronicle-queue-version>4.6.69</chronicle-queue-version>
-    <chronicle-threads-version>1.9.5</chronicle-threads-version>
-    <chronicle-wire-version>1.10.16</chronicle-wire-version>
+    <chronicle-network-version>1.10.1</chronicle-network-version>
+    <chronicle-queue-version>4.6.70</chronicle-queue-version>
+    <chronicle-threads-version>1.9.8</chronicle-threads-version>
+    <chronicle-wire-version>1.10.17</chronicle-wire-version>
     <chunk-templates-version>3.3.1</chunk-templates-version>
     <chunk-templates-bundle-version>3.3.1_1</chunk-templates-bundle-version>
     <classmate-version>1.3.4</classmate-version>
@@ -140,7 +140,7 @@
     <commons-beanutils-bundle-version>1.8.3_1</commons-beanutils-bundle-version>
     <commons-codec-version>1.11</commons-codec-version>
     <commons-collections-version>3.2.2</commons-collections-version>
-    <commons-compress-version>1.15</commons-compress-version>
+    <commons-compress-version>1.16.1</commons-compress-version>
     <commons-configuration-version>1.9</commons-configuration-version>
     <commons-configuration-bundle-version>1.9_1</commons-configuration-bundle-version>
     <commons-configuration2-version>2.2</commons-configuration2-version>
@@ -216,7 +216,7 @@
     <etcd4j-version>2.14.0</etcd4j-version>
     <exec-maven-plugin-version>1.6.0</exec-maven-plugin-version>
     <ezmorph-bundle-version>1.0.6_1</ezmorph-bundle-version>
-    <fabric8-maven-plugin-version>3.5.33</fabric8-maven-plugin-version>
+    <fabric8-maven-plugin-version>3.5.37</fabric8-maven-plugin-version>
     <facebook4j-core-version>2.4.10</facebook4j-core-version>
     <facebook4j-core-bundle-version>2.4.10_1</facebook4j-core-bundle-version>
     <fastinfoset-version>1.2.13_1</fastinfoset-version>
@@ -232,7 +232,7 @@
     <google-findbugs-jsr305-version>3.0.2</google-findbugs-jsr305-version>
     <google-findbugs-annotations2-version>2.0.3</google-findbugs-annotations2-version>
     <flatpack-version>3.4.3</flatpack-version>
-    <flink-version>1.4.0</flink-version>
+    <flink-version>1.4.1</flink-version>
     <fop-bundle-version>2.2_1</fop-bundle-version>
     <fop-version>2.2</fop-version>
     <ftpserver-version>1.1.1</ftpserver-version>
@@ -265,9 +265,9 @@
     <gmetric4j-version>1.0.10</gmetric4j-version>
     <google-guava-version>19.0</google-guava-version>
     <google-api-client-version>1.22.0</google-api-client-version>
-    <google-api-services-drive-version>v2-rev263-1.22.0</google-api-services-drive-version>
-    <google-api-services-calendar-version>v3-rev243-1.22.0</google-api-services-calendar-version>
-    <google-api-services-mail-version>v1-rev63-1.22.0</google-api-services-mail-version>
+    <google-api-services-drive-version>v2-rev297-1.22.0</google-api-services-drive-version>
+    <google-api-services-calendar-version>v3-rev291-1.22.0</google-api-services-calendar-version>
+    <google-api-services-mail-version>v1-rev81-1.22.0</google-api-services-mail-version>
     <google-api-services-bigquery-version>v2-rev352-1.22.0</google-api-services-bigquery-version>
     <google-api-services-pubsub-version>v1-rev12-1.22.0</google-api-services-pubsub-version>
     <google-truth-version>0.30</google-truth-version>
@@ -316,7 +316,7 @@
     <ibatis-version>2.3.4.726</ibatis-version>
     <ical4j-version>1.0.7</ical4j-version>
     <ignite-version>2.3.0</ignite-version>
-    <infinispan-version>9.1.5.Final</infinispan-version>
+    <infinispan-version>9.1.6.Final</infinispan-version>
     <infinispan-spring-boot-version>1.0.0.Final</infinispan-spring-boot-version>
     <influx-java-driver-version>2.8</influx-java-driver-version>
     <influx-java-driver-bundle-version>2.8_1</influx-java-driver-bundle-version>
@@ -356,7 +356,7 @@
     <javax.el-api-version>2.2.5</javax.el-api-version>
     <javax.el-version>2.2.5</javax.el-version>
     <javax-inject-bundle-version>1_2</javax-inject-bundle-version>
-    <javax-mail-version>1.6.0</javax-mail-version>
+    <javax-mail-version>1.6.1</javax-mail-version>
     <javax.servlet-api-version>3.1.0</javax.servlet-api-version>
     <javax.ws.rs-api-version>2.0.1</javax.ws.rs-api-version>
     <jaxb-bundle-version>2.2.11_1</jaxb-bundle-version>
@@ -442,7 +442,7 @@
     <kafka-version>1.0.0</kafka-version>
     <kafka-bundle-version>1.0.0_1</kafka-bundle-version>
     <karaf2-version>2.4.4</karaf2-version>
-    <karaf4-version>4.1.4</karaf4-version>
+    <karaf4-version>4.1.5</karaf4-version>
     <kie-version>7.3.0.Final</kie-version>
     <krati-version>0.4.9</krati-version>
     <kubernetes-client-version>3.1.8</kubernetes-client-version>
@@ -497,7 +497,7 @@
     <mchange-commons-java-version>0.2.11</mchange-commons-java-version>
     <!-- TODO: spring-boot uses metrics 3.1.x -->
     <metrics-version>3.1.5</metrics-version>
-    <milo-version>0.2.0</milo-version>
+    <milo-version>0.2.1</milo-version>
     <mina-bundle-version>1.1.7_6</mina-bundle-version>
     <mina-version>1.1.7</mina-version>
     <mina2-version>2.0.16</mina2-version>
@@ -505,7 +505,7 @@
     <mock-javamail-version>1.9</mock-javamail-version>
     <mockwebserver-version>0.0.17</mockwebserver-version>
     <mockito-version>2.11.0</mockito-version>
-    <mongo-java-driver-version>3.6.2</mongo-java-driver-version>
+    <mongo-java-driver-version>3.6.3</mongo-java-driver-version>
     <mongo-hadoop-version>1.5.0</mongo-hadoop-version>
     <mqtt-client-version>1.14</mqtt-client-version>
     <msv-version>2013.6.1</msv-version>
@@ -568,6 +568,7 @@
     <protobuf-maven-plugin-version>0.5.1</protobuf-maven-plugin-version>
     <protonpack-version>1.8</protonpack-version>
     <pubnub-version>4.18.0</pubnub-version>
+    <qpid-broker-version>7.0.1</qpid-broker-version>
     <qpid-bundle-version>0.28_1</qpid-bundle-version>
     <qpid-proton-j-version>0.25.0</qpid-proton-j-version>
     <qpid-jms-client-version>0.29.0</qpid-jms-client-version>
@@ -578,7 +579,7 @@
     <quickfixj-version>2.0.0</quickfixj-version>
     <rabbitmq-amqp-client-version>5.1.2</rabbitmq-amqp-client-version>
     <reactive-streams-version>1.0.2</reactive-streams-version>
-    <reactor-version>3.1.3.RELEASE</reactor-version>
+    <reactor-version>3.1.4.RELEASE</reactor-version>
     <reflections-version>0.9.11</reflections-version>
     <reflections-bundle-version>0.9.11_1</reflections-bundle-version>
     <regexp-bundle-version>1.4_1</regexp-bundle-version>
@@ -633,7 +634,7 @@
     <spring-boot-version>1.5.10.RELEASE</spring-boot-version>
     <!-- use same version of spring-cloud 1.3.x -->
     <spring-cloud-commons-version>1.3.1.RELEASE</spring-cloud-commons-version>
-    <spring-cloud-netflix-version>1.4.2.RELEASE</spring-cloud-netflix-version>
+    <spring-cloud-netflix-version>1.4.3.RELEASE</spring-cloud-netflix-version>
     <spring-castor-bundle-version>1.2.0</spring-castor-bundle-version>
     <spring-data-commons-version>1.13.6.RELEASE</spring-data-commons-version>
     <spring-data-keyvalue-version>1.2.6.RELEASE</spring-data-keyvalue-version>
@@ -679,6 +680,7 @@
     <swagger-java-version>1.5.18</swagger-java-version>
     <swagger-java-parser-version>1.0.33</swagger-java-parser-version>
     <swagger-java-guava-version>20.0</swagger-java-guava-version>
+    <swagger-jackson-version>2.9.0</swagger-jackson-version>
     <swagger-ui-version>2.2.10</swagger-ui-version>
     <stax-api-version>1.0.1</stax-api-version>
     <stax2-api-bundle-version>3.1.4</stax2-api-bundle-version>
@@ -703,13 +705,14 @@
     <velocity-bundle-version>1.7_6</velocity-bundle-version>
     <velocity-tools-version>2.0</velocity-tools-version>
     <velocity-version>2.0</velocity-version>
-    <vertx-version>3.4.2</vertx-version>
+    <vertx-version>3.5.1</vertx-version>
+    <vertx-jackson-version>2.9.0</vertx-jackson-version>
     <vysper-version>0.7</vysper-version>
     <weld1-version>1.1.28.Final</weld1-version>
     <weld2-version>2.4.6.Final</weld2-version>
-    <weld3-version>3.0.2.Final</weld3-version>
+    <weld3-version>3.0.3.Final</weld3-version>
     <werken-xpath-bundle-version>0.9.4_5</werken-xpath-bundle-version>
-    <wiremock-version>2.14.0</wiremock-version>
+    <wiremock-version>2.15.0</wiremock-version>
     <woodstox-version>4.4.1</woodstox-version>
     <ws-commons-util-bundle-version>1.0.2_2</ws-commons-util-bundle-version>
     <wsdl4j-bundle-version>1.6.3_1</wsdl4j-bundle-version>
@@ -719,7 +722,7 @@
     <xbean-spring-version>4.5</xbean-spring-version>
     <!-- xbean-asm4-bundle is used by openjpa -->
     <xbean-asm4-bundle-version>3.14</xbean-asm4-bundle-version>
-    <xchange-version>4.3.2</xchange-version>
+    <xchange-version>4.3.3</xchange-version>
     <xerces-bundle-version>2.11.0_1</xerces-bundle-version>
     <xerces-version>2.11.0</xerces-version>
     <!-- needed to manage the xml-apis version in camel-xmljson -->

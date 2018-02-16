@@ -146,6 +146,14 @@ public class S3Endpoint extends ScheduledPollEndpoint {
             LOG.trace("Bucket policy updated");
         }
     }
+    
+    @Override
+    public void doStop() throws Exception {
+        if (s3Client != null) {
+            s3Client.shutdown();
+        }
+        super.doStop();
+    }
 
     public Exchange createExchange(S3Object s3Object) {
         return createExchange(getExchangePattern(), s3Object);
@@ -180,6 +188,7 @@ public class S3Endpoint extends ScheduledPollEndpoint {
         message.setHeader(S3Constants.CACHE_CONTROL, objectMetadata.getCacheControl());
         message.setHeader(S3Constants.S3_HEADERS, objectMetadata.getRawMetadata());
         message.setHeader(S3Constants.SERVER_SIDE_ENCRYPTION, objectMetadata.getSSEAlgorithm());
+        message.setHeader(S3Constants.USER_METADATA, objectMetadata.getUserMetadata());
 
         /**
          * If includeBody != true, it is safe to close the object here. If
