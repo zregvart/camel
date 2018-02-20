@@ -67,20 +67,14 @@ public class JsonPathEngine {
         this.writeAsString = writeAsString;
         this.headerName = headerName;
 
-        Configuration defaults = Configuration.defaultConfiguration();
+        Configuration.ConfigurationBuilder builder = Configuration.builder();
         if (options != null) {
-            Configuration.ConfigurationBuilder builder = Configuration.builder().jsonProvider(defaults.jsonProvider()).options(options);
-            if (suppressExceptions) {
-                builder.options(SUPPRESS_EXCEPTIONS);
-            }
-            this.configuration = builder.build();
-        } else {
-            Configuration.ConfigurationBuilder builder = Configuration.builder().jsonProvider(defaults.jsonProvider());
-            if (suppressExceptions) {
-                builder.options(SUPPRESS_EXCEPTIONS);
-            }
-            this.configuration = builder.build();
+            builder.options(options);
         }
+        if (suppressExceptions) {
+            builder.options(SUPPRESS_EXCEPTIONS);
+        }
+        this.configuration = builder.build();
 
         boolean hasSimple = false;
         if (allowSimple) {
@@ -271,7 +265,8 @@ public class JsonPathEngine {
                     }
                 }
             } catch (Throwable e) {
-                // ignore
+                LOG.debug("Cannot load " + JACKSON_JSON_ADAPTER + " from classpath to enable JacksonJsonAdapter due "
+                    + e.getMessage() + ". JacksonJsonAdapter is not enabled.", e);
             }
             initJsonAdapter = true;
         }
