@@ -14,28 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.camel.itest.restlet.example;
+package org.apache.camel.itest.karaf;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.junit.PaxExam;
 
-@XmlRootElement(name = "Product")
-public class Product {
-    private long id;
-    private String description;
+@RunWith(PaxExam.class)
+public class CamelFhirTest extends BaseKarafTest {
 
-    public long getId() {
-        return id;
+    public static final String COMPONENT = extractName(CamelFhirTest.class);
+
+    @Test
+    public void test() throws Exception {
+        testDataFormat(COMPONENT, "fhirJson");
+        testDataFormat(COMPONENT, "fhirXml");
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String d) {
-        this.description = d;
-    }
 }

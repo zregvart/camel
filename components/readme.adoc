@@ -426,7 +426,7 @@ Number of Components: 291 in 199 JAR artifacts (19 deprecated)
 `jetty:httpUri` | 1.2 | The jetty component provides HTTP-based endpoints for consuming and producing HTTP requests.
 
 | link:camel-websocket/src/main/docs/websocket-component.adoc[Jetty Websocket] (camel-websocket) +
-`websocket:host:port/resourceUri` | 2.10 | The websocket component provides websocket endpoints for communicating with clients using websocket.
+`websocket:host:port/resourceUri` | 2.10 | The websocket component provides websocket endpoints with Jetty for communicating with clients using websocket.
 
 | link:camel-jgroups/src/main/docs/jgroups-component.adoc[JGroups] (camel-jgroups) +
 `jgroups:clusterName` | 2.13 | The jgroups component provides exchange of messages between Camel and JGroups clusters.
@@ -828,7 +828,7 @@ Number of Components: 291 in 199 JAR artifacts (19 deprecated)
 `twitter-timeline:timelineType` | 2.10 | The Twitter Timeline component consumes twitter timeline or update the status of specific user.
 
 | link:camel-undertow/src/main/docs/undertow-component.adoc[Undertow] (camel-undertow) +
-`undertow:httpURI` | 2.16 | The undertow component provides HTTP-based endpoints for consuming and producing HTTP requests.
+`undertow:httpURI` | 2.16 | The undertow component provides HTTP and WebSocket based endpoints for consuming and producing HTTP/WebSocket requests.
 
 | link:../camel-core/src/main/docs/validator-component.adoc[Validator] (camel-core) +
 `validator:resourceUri` | 1.1 | Validates the payload of a message using XML Schema and JAXP Validation.

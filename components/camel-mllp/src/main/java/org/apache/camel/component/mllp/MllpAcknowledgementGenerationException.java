@@ -14,29 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.camel.itest.restlet.example;
 
-import javax.xml.bind.annotation.XmlRootElement;
+package org.apache.camel.component.mllp;
 
-@XmlRootElement(name = "CheckDomainAvailabilityResult")
-public class CheckDomainAvailabilityResult {
-    private String requestId;
-    private String responseBody;
+/*
+ * Exception thrown by MLLP Consumer if autoAck is set to true and an acknowledgement cannot be generated.
+ */
+public class MllpAcknowledgementGenerationException extends MllpException {
 
-    public String getRequestId() {
-        return requestId;
+    public MllpAcknowledgementGenerationException(String message) {
+        super(message);
     }
 
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
+    public MllpAcknowledgementGenerationException(String message, byte[] hl7MessageBytes) {
+        super(message, hl7MessageBytes);
     }
 
-    public String getResponseBody() {
-        return responseBody;
-    }
-
-    public void setResponseBody(String responseBody) {
-        this.responseBody = responseBody;
+    public MllpAcknowledgementGenerationException(String message, byte[] hl7MessageBytes, Throwable cause) {
+        super(message, hl7MessageBytes, cause);
     }
 
 }

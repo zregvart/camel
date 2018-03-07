@@ -17,7 +17,7 @@
  * under the License.
  */
 
-def MAVEN_PARAMS = '-B -e -fae -V -Dmaven.repo.local=/home/jenkins/jenkins-slave/maven-repositories/0'
+def MAVEN_PARAMS = '-U -B -e -fae -V -Dmaven.repo.local=/home/jenkins/jenkins-slave/maven-repositories/0 -Dmaven.compiler.fork=true -Dsurefire.rerunFailingTestsCount=2'
 
 pipeline {
 
@@ -33,6 +33,7 @@ pipeline {
         buildDiscarder(
             logRotator(artifactNumToKeepStr: '5', numToKeepStr: '10')
         )
+        disableConcurrentBuilds()
     }
 
     stages {
@@ -56,7 +57,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh "./mvnw $MAVEN_PARAMS -Pintegration -Dnoassembly -Dmaven.test.failure.ignore=true test"
+                sh "./mvnw $MAVEN_PARAMS -Dnoassembly -Dmaven.test.failure.ignore=true test"
             }
             post {
                 always {
