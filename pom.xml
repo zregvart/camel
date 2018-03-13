@@ -35,6 +35,34 @@
   <url>http://camel.apache.org</url>
   <inceptionYear>2007</inceptionYear>
 
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>The MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>The 3-Clause BSD License</name>
+            <url>https://opensource.org/licenses/BSD-3-Clause</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>Academic Free License ("AFL") v. 3.0</name>
+            <url>https://opensource.org/licenses/AFL-3.0</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>W3C® SOFTWARE NOTICE AND LICENSE</name>
+            <url>https://www.w3.org/Consortium/Legal/copyright-software-19980720</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
   <prerequisites>
     <maven>3.3.3</maven>
   </prerequisites>
