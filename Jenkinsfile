@@ -22,7 +22,7 @@ def MAVEN_PARAMS = '-U -B -e -fae -V -Dmaven.repo.local=/home/jenkins/jenkins-sl
 pipeline {
 
     agent {
-        label 'ubuntu'
+        label 'checkin'
     }
 
     tools {
