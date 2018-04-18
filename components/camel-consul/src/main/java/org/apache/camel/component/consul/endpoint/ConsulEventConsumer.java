@@ -18,6 +18,8 @@ package org.apache.camel.component.consul.endpoint;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.EventClient;
@@ -31,11 +33,15 @@ import org.apache.camel.Processor;
 import org.apache.camel.component.consul.ConsulConfiguration;
 import org.apache.camel.component.consul.ConsulConstants;
 import org.apache.camel.component.consul.ConsulEndpoint;
+import org.apache.camel.spi.ExecutorServiceManager;
 
 public final class ConsulEventConsumer extends AbstractConsulConsumer<EventClient> {
+    private final ExecutorServiceManager executorServiceManager;
+    private ScheduledExecutorService scheduledExecutorService;
 
     public ConsulEventConsumer(ConsulEndpoint endpoint, ConsulConfiguration configuration, Processor processor) {
         super(endpoint, configuration, processor, Consul::eventClient);
+        this.executorServiceManager = endpoint.getCamelContext().getExecutorServiceManager();
     }
 
     @Override
@@ -43,22 +49,40 @@ public final class ConsulEventConsumer extends AbstractConsulConsumer<EventClien
         return new EventWatcher(client);
     }
 
+    @Override
+    protected void doStart() throws Exception {
+        super.doStart();
+        this.scheduledExecutorService = this.executorServiceManager.newSingleThreadScheduledExecutor(this, "ConsulEventConsumer");
+    }
+
+    @Override
+    protected void doStop() throws Exception {
+        executorServiceManager.shutdownGraceful(scheduledExecutorService);
+        super.doStop();
+    }
+
     // *************************************************************************
     // Watch
     // *************************************************************************
 
     private class EventWatcher extends AbstractWatcher implements EventResponseCallback {
+
         EventWatcher(EventClient client) {
             super(client);
         }
 
         @Override
-        public void watch(EventClient client) {
-            client.listEvents(
-                key,
-                QueryOptions.blockSeconds(configuration.getBlockSeconds(), index.get()).build(),
-                this
-            );
+        public void watch(final EventClient client) {
+            scheduledExecutorService.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    client.listEvents(
+                        key,
+                        QueryOptions.blockSeconds(configuration.getBlockSeconds(), index.get()).build(),
+                        EventWatcher.this
+                    );
+                }
+            }, configuration.getBlockSeconds(), TimeUnit.SECONDS);
         }
 
         @Override
