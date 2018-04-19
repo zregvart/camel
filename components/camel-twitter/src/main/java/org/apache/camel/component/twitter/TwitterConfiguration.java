@@ -74,6 +74,8 @@ public class TwitterConfiguration {
     private Double radius;
     @UriParam(label = "consumer,advanced", defaultValue = "km", enums = "km,mi")
     private String distanceMetric;
+    @UriParam(label = "consumer,advanced", defaultValue = "true")
+    private boolean extendedMode = true;
 
     /**
      * Singleton, on demand instances of Twitter4J's Twitter & TwitterStream.
@@ -109,6 +111,7 @@ public class TwitterConfiguration {
         confBuilder.setOAuthConsumerSecret(consumerSecret);
         confBuilder.setOAuthAccessToken(accessToken);
         confBuilder.setOAuthAccessTokenSecret(accessTokenSecret);
+        confBuilder.setTweetModeExtended(isExtendedMode());
         if (getHttpProxyHost() != null) {
             confBuilder.setHttpProxyHost(getHttpProxyHost());
         }
@@ -394,6 +397,17 @@ public class TwitterConfiguration {
      */
     public void setDistanceMetric(String distanceMetric) {
         this.distanceMetric = distanceMetric;
+    }
+    
+    /**
+     * Used for enabling full text from twitter (eg receive tweets that contains more than 140 characters).
+     */
+    public void setExtendedMode(Boolean extendedMode) {
+        this.extendedMode = extendedMode;
+    }
+
+    public boolean isExtendedMode() {
+        return extendedMode;
     }
 
 }
