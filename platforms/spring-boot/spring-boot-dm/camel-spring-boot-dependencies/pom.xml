@@ -28,6 +28,9 @@
   <packaging>pom</packaging>
   <name>Camel :: Platforms :: Spring-Boot :: Dependency Management :: Dependencies BOM</name>
   <description>Camel Spring-Boot Dependencies BOM</description>
+  <properties>
+    <qpid-jms-client-version>0.30.0</qpid-jms-client-version>
+  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
