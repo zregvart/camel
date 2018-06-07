@@ -3,7 +3,6 @@ Components
 
 // components: START
 Number of Components: 292 in 199 JAR artifacts (19 deprecated)
-=======
 
 [width="100%",cols="4,1,5",options="header"]
 |===
