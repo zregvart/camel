@@ -48,7 +48,7 @@ from where you're using the API now on.
 
 
 // component options: START
-The Weather component supports 3 options, which are listed below.
+The Weather component supports 3 options which are listed below.
 
 
 
