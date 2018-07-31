@@ -2,7 +2,11 @@ Components
 ^^^^^^^^^^
 
 // components: START
+<<<<<<< HEAD
 Number of Components: 292 in 199 JAR artifacts (19 deprecated)
+=======
+Number of Components: 301 in 204 JAR artifacts (21 deprecated)
+>>>>>>> 65868cf... Component docs for camel-fhir
 
 [width="100%",cols="4,1,5",options="header"]
 |===
@@ -253,6 +257,9 @@ Number of Components: 292 in 199 JAR artifacts (19 deprecated)
 
 | link:camel-facebook/src/main/docs/facebook-component.adoc[Facebook] (camel-facebook) +
 `facebook:methodName` | 2.14 | The Facebook component provides access to all of the Facebook APIs accessible using Facebook4J.
+
+| link:camel-fhir/src/main/docs/fhir-component.adoc[FHIR] (camel-fhir) +
+`fhir:apiName/methodName` | 2.23 | The fhir component is used for working with the FHIR protocol (health care).
 
 | link:../camel-core/src/main/docs/file-component.adoc[File] (camel-core) +
 `file:directoryName` | 1.0 | The file component is used for reading or writing files.
@@ -1066,7 +1073,7 @@ Miscellaneous Components
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 // others: START
-Number of Miscellaneous Components: 39 in 39 JAR artifacts (13 deprecated)
+Number of Miscellaneous Components: 40 in 40 JAR artifacts (13 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |===
