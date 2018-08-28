@@ -46,7 +46,7 @@ Endpoint prefix can be one of:
 
 
 // component options: START
-The FHIR component supports 2 options, which are listed below.
+The FHIR component supports 2 options which are listed below.
 
 
 

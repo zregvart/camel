@@ -15,6 +15,7 @@ JSON parser to parse to/from JSON format to/from a HAPI-FHIR's `IBaseResource`.
 The FHIR JSon dataformat supports 14 options which are listed below.
 
 
+
 [width="100%",cols="2s,1m,1m,6",options="header"]
 |===
 | Name | Default | Java Type | Description
