@@ -1151,10 +1151,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
-      <artifactId>camel-xmlrpc</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
       <artifactId>camel-xmpp</artifactId>
     </dependency>
     <dependency>
@@ -2428,11 +2424,6 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-xmljson-starter</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-xmlrpc-starter</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
