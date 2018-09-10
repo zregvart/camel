@@ -43,7 +43,7 @@ The Google Calendar Component uses the following URI format:
 
 
 // component options: START
-The Google Calendar Stream component supports 3 options, which are listed below.
+The Google Calendar Stream component supports 3 options which are listed below.
 
 
 

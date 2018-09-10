@@ -18,8 +18,10 @@ package org.apache.camel.component.google.calendar.stream.springboot;
 
 import java.util.List;
 import javax.annotation.Generated;
+import org.apache.camel.component.google.calendar.GoogleCalendarClientFactory;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * The google-calendar component provides access to Google Calendar in a
@@ -34,20 +36,14 @@ public class GoogleCalendarStreamComponentConfiguration
             ComponentConfigurationPropertiesCommon {
 
     /**
-     * Whether to enable auto configuration of the google-calendar-stream
-     * component. This is enabled by default.
-     */
-    private Boolean enabled;
-    /**
      * The configuration
      */
     private GoogleCalendarStreamConfigurationNestedConfiguration configuration;
     /**
-     * The client Factory. The option is a
-     * org.apache.camel.component.google.calendar.GoogleCalendarClientFactory
-     * type.
+     * The client Factory
      */
-    private String clientFactory;
+    @NestedConfigurationProperty
+    private GoogleCalendarClientFactory clientFactory;
     /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
@@ -64,11 +60,11 @@ public class GoogleCalendarStreamComponentConfiguration
         this.configuration = configuration;
     }
 
-    public String getClientFactory() {
+    public GoogleCalendarClientFactory getClientFactory() {
         return clientFactory;
     }
 
-    public void setClientFactory(String clientFactory) {
+    public void setClientFactory(GoogleCalendarClientFactory clientFactory) {
         this.clientFactory = clientFactory;
     }
 
@@ -104,7 +100,7 @@ public class GoogleCalendarStreamComponentConfiguration
         private String refreshToken;
         /**
          * Google Calendar application name. Example would be
-         * camel-google-calendar/1.0
+         * "camel-google-calendar/1.0"
          */
         private String applicationName;
         /**
