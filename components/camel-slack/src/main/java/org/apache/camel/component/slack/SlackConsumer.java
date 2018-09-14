@@ -17,6 +17,7 @@
 package org.apache.camel.component.slack;
 
 import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -86,17 +87,19 @@ public class SlackConsumer extends ScheduledBatchPollingConsumer {
 
     private Queue<Exchange> createExchanges(List list) {
         Queue<Exchange> answer = new LinkedList<>();
-        Iterator it = list.iterator();
-        int i = 0;
-        while (it.hasNext()) {
-            Object object = (Object)it.next();
-            JSONObject singleMess = (JSONObject)object;
-            if (i == 0) {
-                timestamp = (String)singleMess.get("ts");
+        if (ObjectHelper.isNotEmpty(list)) {
+            Iterator it = list.iterator();
+            int i = 0;
+            while (it.hasNext()) {
+                Object object = (Object)it.next();
+                JSONObject singleMess = (JSONObject)object;
+                if (i == 0) {
+                    timestamp = (String)singleMess.get("ts");
+                }
+                i++;
+                Exchange exchange = slackEndpoint.createExchange(singleMess);
+                answer.add(exchange);
             }
-            i++;
-            Exchange exchange = slackEndpoint.createExchange(singleMess);
-            answer.add(exchange);
         }
         return answer;
     }
