@@ -61,7 +61,7 @@ public class GoogleCalendarStreamConfiguration implements Cloneable {
     private int maxResults = 10;
     
     @UriParam(defaultValue = "primary")
-    private String calendarSummaryName = "primary";
+    private String calendarId = "primary";
     
     @UriParam(defaultValue = "true")
     private boolean consumeFromNow = true;
@@ -173,17 +173,17 @@ public class GoogleCalendarStreamConfiguration implements Cloneable {
         this.maxResults = maxResults;
     }
 
-    public String getCalendarSummaryName() {
-        return calendarSummaryName;
+    public String getCalendarId() {
+        return calendarId;
     }
 
     /**
-     * Calendar Summary Name to use
+     * The calendarId to be used
      */
-    public void setCalendarSummaryName(String calendarSummaryName) {
-        this.calendarSummaryName = calendarSummaryName;
-    } 
-    
+    public void setCalendarId(String calendarId) {
+        this.calendarId = calendarId;
+    }
+
     public boolean isConsumeFromNow() {
         return consumeFromNow;
     }
