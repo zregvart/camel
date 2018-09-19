@@ -707,7 +707,7 @@
     <velocity-bundle-version>1.7_6</velocity-bundle-version>
     <velocity-tools-version>2.0</velocity-tools-version>
     <velocity-version>2.0</velocity-version>
-    <vertx-version>3.5.2</vertx-version>
+    <vertx-version>3.5.3</vertx-version>
     <vertx-jackson-version>2.9.5</vertx-jackson-version>
     <vysper-version>0.7</vysper-version>
     <weld1-version>1.1.28.Final</weld1-version>
