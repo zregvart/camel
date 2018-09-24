@@ -19,7 +19,9 @@ package org.apache.camel.component.rest.swagger.springboot;
 import java.net.URI;
 import javax.annotation.Generated;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
+import org.apache.camel.util.jsse.SSLContextParameters;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * An awesome REST endpoint backed by Swagger specifications.
@@ -82,6 +84,16 @@ public class RestSwaggerComponentConfiguration
      */
     private URI specificationUri;
     /**
+     * Customize TLS parameters used by the component. If not set defaults to
+     * the TLS parameters set in the Camel context
+     */
+    @NestedConfigurationProperty
+    private SSLContextParameters sslContextParameters;
+    /**
+     * Enable usage of global SSL context parameters.
+     */
+    private Boolean useGlobalSslContextParameters = false;
+    /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
      * placeholders.
@@ -134,6 +146,24 @@ public class RestSwaggerComponentConfiguration
 
     public void setSpecificationUri(URI specificationUri) {
         this.specificationUri = specificationUri;
+    }
+
+    public SSLContextParameters getSslContextParameters() {
+        return sslContextParameters;
+    }
+
+    public void setSslContextParameters(
+            SSLContextParameters sslContextParameters) {
+        this.sslContextParameters = sslContextParameters;
+    }
+
+    public Boolean getUseGlobalSslContextParameters() {
+        return useGlobalSslContextParameters;
+    }
+
+    public void setUseGlobalSslContextParameters(
+            Boolean useGlobalSslContextParameters) {
+        this.useGlobalSslContextParameters = useGlobalSslContextParameters;
     }
 
     public Boolean getResolvePropertyPlaceholders() {
