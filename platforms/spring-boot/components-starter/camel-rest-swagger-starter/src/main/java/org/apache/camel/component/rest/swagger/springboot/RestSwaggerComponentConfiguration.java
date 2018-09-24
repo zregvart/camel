@@ -19,7 +19,9 @@ package org.apache.camel.component.rest.swagger.springboot;
 import java.net.URI;
 import javax.annotation.Generated;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
+import org.apache.camel.util.jsse.SSLContextParameters;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * An awesome REST endpoint backed by Swagger specifications.
@@ -83,10 +85,10 @@ public class RestSwaggerComponentConfiguration
     private URI specificationUri;
     /**
      * Customize TLS parameters used by the component. If not set defaults to
-     * the TLS parameters set in the Camel context. The option is a
-     * org.apache.camel.util.jsse.SSLContextParameters type.
+     * the TLS parameters set in the Camel context
      */
-    private String sslContextParameters;
+    @NestedConfigurationProperty
+    private SSLContextParameters sslContextParameters;
     /**
      * Enable usage of global SSL context parameters.
      */
@@ -146,11 +148,12 @@ public class RestSwaggerComponentConfiguration
         this.specificationUri = specificationUri;
     }
 
-    public String getSslContextParameters() {
+    public SSLContextParameters getSslContextParameters() {
         return sslContextParameters;
     }
 
-    public void setSslContextParameters(String sslContextParameters) {
+    public void setSslContextParameters(
+            SSLContextParameters sslContextParameters) {
         this.sslContextParameters = sslContextParameters;
     }
 
