@@ -476,7 +476,6 @@
     <feature version='${cxf-version-range}'>cxf-core</feature>
     <feature version='${cxf-version-range}'>cxf-jaxrs</feature>
     <feature version='${cxf-version-range}'>cxf-jaxws</feature>
-    <feature version='${cxf-version-range}'>cxf-http-provider</feature>
     <feature version='${cxf-version-range}'>cxf-databinding-jaxb</feature>
     <feature version='${cxf-version-range}'>cxf-bindings-soap</feature>
     <bundle>mvn:org.apache.camel/camel-http-common/${project.version}</bundle>
