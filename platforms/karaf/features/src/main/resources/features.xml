@@ -1556,6 +1556,7 @@
     <bundle>mvn:org.apache.camel/camel-mongodb-gridfs/${project.version}</bundle>
   </feature>
   <feature name='camel-mqtt' version='${project.version}' resolver='(obr)' start-level='50'>
+    <details>camel-mqtt is deprecated, use camel-paho instead</details>
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>mvn:org.fusesource.mqtt-client/mqtt-client/${mqtt-client-version}</bundle>
     <bundle dependency='true'>mvn:org.fusesource.hawtdispatch/hawtdispatch/${hawtdispatch-version}</bundle>
