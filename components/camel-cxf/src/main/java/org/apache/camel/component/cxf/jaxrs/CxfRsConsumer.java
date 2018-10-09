@@ -18,6 +18,7 @@ package org.apache.camel.component.cxf.jaxrs;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.camel.Suspendable;
 import org.apache.camel.impl.DefaultConsumer;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
@@ -35,7 +36,7 @@ import org.apache.cxf.transport.MessageObserver;
  * and forward them to Camel route for processing. 
  * It is also responsible for converting and sending back responses to CXF client. 
  */
-public class CxfRsConsumer extends DefaultConsumer {
+public class CxfRsConsumer extends DefaultConsumer implements Suspendable {
     private Server server;
 
     public CxfRsConsumer(CxfRsEndpoint endpoint, Processor processor) {
