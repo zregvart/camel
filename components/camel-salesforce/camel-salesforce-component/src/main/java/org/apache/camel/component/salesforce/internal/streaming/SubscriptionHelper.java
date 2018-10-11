@@ -227,20 +227,18 @@ public class SubscriptionHelper extends ServiceSupport {
     }
 
     // launch an async task to restart
-    private void restartClient() {
-
+    void restartClient() {
         // launch a new restart command
         final SalesforceHttpClient httpClient = component.getConfig().getHttpClient();
         httpClient.getExecutor().execute(new Runnable() {
             @Override
             public void run() {
-
                 LOG.info("Restarting on unexpected disconnect from Salesforce...");
                 boolean abort = false;
 
-                // wait for disconnect
-                LOG.debug("Waiting to disconnect...");
                 while (!client.isDisconnected()) {
+                    // wait for disconnect
+                    LOG.debug("Waiting to disconnect...");
                     try {
                         Thread.sleep(DISCONNECT_INTERVAL);
                     } catch (InterruptedException e) {
@@ -282,8 +280,10 @@ public class SubscriptionHelper extends ServiceSupport {
                             lastError = e;
                         }
 
+                        // this is the new client doStart created
                         if (client.isHandshook()) {
                             LOG.info("Successfully restarted!");
+                            reconnectConsumers();
                             // reset backoff interval
                             restartBackoff.set(client.getBackoffIncrement());
                         } else {
@@ -301,6 +301,7 @@ public class SubscriptionHelper extends ServiceSupport {
                 }
 
             }
+
         });
     }
 
@@ -317,9 +318,19 @@ public class SubscriptionHelper extends ServiceSupport {
 
     @Override
     protected void doStop() throws Exception {
-        client.getChannel(META_DISCONNECT).removeListener(disconnectListener);
-        client.getChannel(META_CONNECT).removeListener(connectListener);
-        client.getChannel(META_HANDSHAKE).removeListener(handshakeListener);
+        if (client == null) {
+            return;
+        }
+
+        final ClientSessionChannel disconnectChannel = client.getChannel(META_DISCONNECT);
+        disconnectChannel.removeListener(disconnectListener);
+        disconnectChannel.unsubscribe();
+        final ClientSessionChannel connectChannel = client.getChannel(META_CONNECT);
+        connectChannel.removeListener(connectListener);
+        connectChannel.unsubscribe();
+        final ClientSessionChannel handshakeChannel = client.getChannel(META_HANDSHAKE);
+        handshakeChannel.removeListener(handshakeListener);
+        handshakeChannel.unsubscribe();
 
         client.disconnect();
         boolean disconnected = client.waitFor(timeout, State.DISCONNECTED);
@@ -419,6 +430,13 @@ public class SubscriptionHelper extends ServiceSupport {
 
         // subscribe asynchronously
         clientChannel.subscribe(listener);
+    }
+
+    void reconnectConsumers() {
+        LOG.info("Reconnecting consumers");
+        for (SalesforceConsumer consumer: listenerMap.keySet()) {
+            subscribe(consumer.getTopicName(), consumer);
+        }
     }
 
     void setupReplay(final SalesforceEndpoint endpoint) {
