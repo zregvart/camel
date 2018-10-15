@@ -29,8 +29,6 @@ public class CamelKubernetesTest extends BaseKarafTest {
     public void test() throws Exception {
         testComponent(COMPONENT, "kubernetes-config-maps");
         testComponent(COMPONENT, "kubernetes-deployments");
-        testComponent(COMPONENT, "kubernetes-hpa");
-        testComponent(COMPONENT, "kubernetes-job");
         testComponent(COMPONENT, "kubernetes-namespaces");
         testComponent(COMPONENT, "kubernetes-nodes");
         testComponent(COMPONENT, "kubernetes-persistent-volumes-claims");
