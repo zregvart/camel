@@ -43,8 +43,6 @@ public class CamelKubernetesTest extends AbstractSpringBootTestSupport {
     public void componentTests() throws Exception {
         this.runComponentTest(createTestConfig(), "kubernetes-config-maps");
         this.runComponentTest(createTestConfig(), "kubernetes-deployments");
-        this.runComponentTest(createTestConfig(), "kubernetes-hpa");
-        this.runComponentTest(createTestConfig(), "kubernetes-job");
         this.runComponentTest(createTestConfig(), "kubernetes-namespaces");
         this.runComponentTest(createTestConfig(), "kubernetes-nodes");
         this.runComponentTest(createTestConfig(), "kubernetes-persistent-volumes-claims");
