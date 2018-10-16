@@ -50,7 +50,6 @@ public class EmbeddedKafkaBroker extends ExternalResource {
 
     private KafkaServer kafkaServer;
     private File logDir;
-    private ZkUtils zkUtils;
 
     public EmbeddedKafkaBroker(int brokerId, String zkConnection) {
         this(brokerId, AvailablePortFinder.getNextAvailable(), zkConnection, new Properties());
@@ -67,7 +66,7 @@ public class EmbeddedKafkaBroker extends ExternalResource {
     }
 
     public ZkUtils getZkUtils() {
-        return zkUtils;
+        return kafkaServer.zkUtils();
     }
 
     public void createTopic(String topic, int partitionCount) {
@@ -95,11 +94,6 @@ public class EmbeddedKafkaBroker extends ExternalResource {
 
 
     private KafkaServer startBroker(Properties props) {
-    	zkUtils = ZkUtils.apply(
-    			zkConnection,
-                30000,
-                30000,
-                false);
         List<KafkaMetricsReporter> kmrList = new ArrayList<>();
         Buffer<KafkaMetricsReporter> metricsList = scala.collection.JavaConversions.asScalaBuffer(kmrList);
         KafkaServer server = new KafkaServer(new KafkaConfig(props), new SystemTime(), Option.<String>empty(), metricsList);
