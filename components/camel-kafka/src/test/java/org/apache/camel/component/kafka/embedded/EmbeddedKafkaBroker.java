@@ -95,8 +95,8 @@ public class EmbeddedKafkaBroker extends ExternalResource {
 
 
     private KafkaServer startBroker(Properties props) {
-    	zkUtils = ZkUtils.apply(
-    			zkConnection,
+        zkUtils = ZkUtils.apply(
+                zkConnection,
                 30000,
                 30000,
                 false);
