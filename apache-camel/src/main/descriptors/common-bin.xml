@@ -349,6 +349,7 @@
         <include>org.apache.camel:camel-ahc-ws-starter</include>
         <include>org.apache.camel:camel-amqp-starter</include>
         <include>org.apache.camel:camel-apns-starter</include>
+        <include>org.apache.camel:camel-as2-starter</include>
         <include>org.apache.camel:camel-asn1-starter</include>
         <include>org.apache.camel:camel-asterisk-starter</include>
         <include>org.apache.camel:camel-atmosphere-websocket-starter</include>
