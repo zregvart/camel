@@ -448,8 +448,8 @@
     <karaf4-version>4.1.5</karaf4-version>
     <kie-version>7.3.0.Final</kie-version>
     <krati-version>0.4.9</krati-version>
-    <kubernetes-client-version>3.1.12.fuse-730001</kubernetes-client-version>
-    <kubernetes-model-version>2.0.10.fuse-730007</kubernetes-model-version>
+    <kubernetes-client-version>3.1.12.fuse-730004</kubernetes-client-version>
+    <kubernetes-model-version>2.0.10.fuse-730009</kubernetes-model-version>
     <kxml2-bundle-version>2.3.0_3</kxml2-bundle-version>
     <leveldbjni-version>1.8</leveldbjni-version>
     <leveldb-api-version>0.9</leveldb-api-version>
