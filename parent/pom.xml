@@ -233,8 +233,8 @@
     <google-findbugs-annotations2-version>2.0.3</google-findbugs-annotations2-version>
     <flatpack-version>3.4.3</flatpack-version>
     <flink-version>1.4.1</flink-version>
-    <fop-bundle-version>2.2_1</fop-bundle-version>
-    <fop-version>2.2</fop-version>
+    <fop-bundle-version>2.3_1</fop-bundle-version>
+    <fop-version>2.3</fop-version>
     <ftpserver-version>1.1.1</ftpserver-version>
     <freemarker-bundle-version>2.3.23_1</freemarker-bundle-version>
     <freemarker-version>2.3.23</freemarker-version>
@@ -734,7 +734,7 @@
     <xmlbeans-maven-plugin-version>2.3.3</xmlbeans-maven-plugin-version>
     <xmlbeans-version>2.6.0</xmlbeans-version>
     <xmlgraphics-commons-bundle-version>2.1_1</xmlgraphics-commons-bundle-version>
-    <xmlgraphics-batik-version>1.9.1</xmlgraphics-batik-version>
+    <xmlgraphics-batik-version>1.10</xmlgraphics-batik-version>
     <xmlresolver-bundle-version>1.2_5</xmlresolver-bundle-version>
     <xmlsec-version>2.0.10</xmlsec-version>
     <xmlunit-version>2.3.0</xmlunit-version>
