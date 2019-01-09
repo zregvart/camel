@@ -21,12 +21,10 @@ import org.apache.camel.ContextTestSupport;
 import org.apache.camel.ValidationException;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.junit.Test;
 
 public class ValidatorXmlSchemaTest extends ContextTestSupport {
 
-    @Test
-    public void shouldPass() throws Exception {
+    public void testShouldPass() throws Exception {
         final String body = "<user><name>Jan</name></user>";
         MockEndpoint mock = getMockEndpoint("mock:result");
 
@@ -38,8 +36,7 @@ public class ValidatorXmlSchemaTest extends ContextTestSupport {
         assertMockEndpointsSatisfied();
     }
 
-    @Test
-    public void shouldThrowException() throws Exception {
+    public void testShouldThrowException() throws Exception {
         final String body = "<fail/>";
         MockEndpoint mock = getMockEndpoint("mock:result");
 
