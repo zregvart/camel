@@ -21,7 +21,7 @@ def AGENT_LABEL = 'checkin'
 
 def MAVEN_PARAMS = '-U -B -e -fae -V -Dmaven.repo.local=/home/jenkins/.m2/repository -Dmaven.compiler.fork=true -Dsurefire.rerunFailingTestsCount=2'
 
-def karaf_itests_result, spring_boot_itests_result
+def karaf_itests_result, spring_boot_itests_result, tests_result
 
 pipeline {
 
@@ -91,7 +91,9 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh "./mvnw $MAVEN_PARAMS -Dnoassembly -Dmaven.test.failure.ignore=true test"
+                script {
+                    tests_result = sh script: "./mvnw $MAVEN_PARAMS -Dmaven.test.failure.ignore=true test", returnStatus: true
+                }
             }
             post {
                 always {
@@ -114,7 +116,7 @@ pipeline {
             script {
                 echo "Karaf Itests result is ${karaf_itests_result}"
                 echo "Spring-boot Itests result is ${spring_boot_itests_result}"
-                currentBuild.result = jdk9_result == 0 && jdk10_result == 0 && jdk11_result == 0 ? 'SUCCESS' : 'FAILURE'
+                currentBuild.result = tests_result == 0 ? 'SUCCESS' : 'FAILURE'
             }
         }
     }
