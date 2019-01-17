@@ -27,6 +27,8 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class CamelSpringCloudTest extends AbstractSpringBootTestSupport {
 
+    private static final String ribbonVersion = System.getProperty("spring-cloud-netflix-version");
+
     @Deployment
     public static Archive<?> createSpringBootPackage() throws Exception {
         return ArquillianPackager.springBootPackage(createTestConfig());
@@ -35,6 +37,9 @@ public class CamelSpringCloudTest extends AbstractSpringBootTestSupport {
     public static ITestConfig createTestConfig() {
         return new ITestConfigBuilder()
                 .module(inferModuleName(CamelSpringCloudTest.class))
+                .dependency("org.apache.camel:camel-spring-cloud-netflix-starter")
+                .dependency("org.springframework.boot:spring-boot-starter-web")
+                .dependency("org.springframework.cloud:spring-cloud-starter-ribbon:"+ribbonVersion)
                 .build();
     }
 

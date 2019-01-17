@@ -342,6 +342,7 @@ public final class ArquillianPackager {
         ignore.add("org.infinispan");
         ignore.add("org.jboss.logging");
         ignore.add("org.jboss.marshalling");
+        ignore.add("net.sourceforge.htmlunit:htmlunit-cssparser");
 
         Map<String, Map<String, String>> status = new TreeMap<>();
         Set<String> mismatches = new TreeSet<>();
