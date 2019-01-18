@@ -36,6 +36,16 @@
     <maven-surefire-plugin-version>2.19</maven-surefire-plugin-version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-ribbon</artifactId>
+        <version>${spring-cloud-netflix-version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
 
     <dependency>
@@ -171,6 +181,9 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
+          <systemPropertyVariables>
+            <spring-cloud-netflix-version>${spring-cloud-netflix-version}</spring-cloud-netflix-version>
+          </systemPropertyVariables>
           <childDelegation>false</childDelegation>
           <forkedProcessTimeoutInSeconds>15000</forkedProcessTimeoutInSeconds>
           <rerunFailingTestsCount>1</rerunFailingTestsCount>
@@ -192,7 +205,7 @@
             </property>
             <property>
               <name>itest.springboot.includeTestDependencies</name>
-              <value>true</value>
+              <value>false</value>
             </property>
             <property>
               <name>itest.springboot.mavenOfflineResolution</name>
