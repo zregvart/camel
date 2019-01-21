@@ -28,16 +28,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import org.apache.camel.runtimecatalog.Pair;
-
 /**
  * Copied from org.apache.camel.util.URISupport
  */
 public final class URISupport {
 
     public static final String RAW_TOKEN_PREFIX = "RAW";
-    public static final char[] RAW_TOKEN_START = { '(', '{' };
-    public static final char[] RAW_TOKEN_END = { ')', '}' };
+    public static final char[] RAW_TOKEN_START = {'(', '{'};
+    public static final char[] RAW_TOKEN_END = {')', '}'};
 
     private static final String CHARSET = "UTF-8";
 
@@ -76,7 +74,7 @@ public final class URISupport {
     /**
      * Strips the query parameters from the uri
      *
-     * @param uri  the uri
+     * @param uri the uri
      * @return the uri without the query parameter
      */
     public static String stripQuery(String uri) {
@@ -116,7 +114,7 @@ public final class URISupport {
      * <p/>
      * Returns the value as-is if not starting with the prefix.
      *
-     * @param value  the value
+     * @param value the value
      * @param prefix the prefix to remove from value
      * @return the value without the prefix
      */
@@ -130,9 +128,10 @@ public final class URISupport {
     /**
      * Parses the query part of the uri (eg the parameters).
      * <p/>
-     * The URI parameters will by default be URI encoded. However you can define a parameter
-     * values with the syntax: <tt>key=RAW(value)</tt> which tells Camel to not encode the value,
-     * and use the value as is (eg key=value) and the value has <b>not</b> been encoded.
+     * The URI parameters will by default be URI encoded. However you can define
+     * a parameter values with the syntax: <tt>key=RAW(value)</tt> which tells
+     * Camel to not encode the value, and use the value as is (eg key=value) and
+     * the value has <b>not</b> been encoded.
      *
      * @param uri the uri
      * @return the parameters, or an empty map if no parameters (eg never null)
@@ -147,9 +146,10 @@ public final class URISupport {
     /**
      * Parses the query part of the uri (eg the parameters).
      * <p/>
-     * The URI parameters will by default be URI encoded. However you can define a parameter
-     * values with the syntax: <tt>key=RAW(value)</tt> which tells Camel to not encode the value,
-     * and use the value as is (eg key=value) and the value has <b>not</b> been encoded.
+     * The URI parameters will by default be URI encoded. However you can define
+     * a parameter values with the syntax: <tt>key=RAW(value)</tt> which tells
+     * Camel to not encode the value, and use the value as is (eg key=value) and
+     * the value has <b>not</b> been encoded.
      *
      * @param uri the uri
      * @param useRaw whether to force using raw values
@@ -166,11 +166,11 @@ public final class URISupport {
 
         // must check for trailing & as the uri.split("&") will ignore those
         if (uri.endsWith("&")) {
-            throw new URISyntaxException(uri, "Invalid uri syntax: Trailing & marker found. "
-                    + "Check the uri and remove the trailing & marker.");
+            throw new URISyntaxException(uri, "Invalid uri syntax: Trailing & marker found. " + "Check the uri and remove the trailing & marker.");
         }
 
-        // need to parse the uri query parameters manually as we cannot rely on splitting by &,
+        // need to parse the uri query parameters manually as we cannot rely on
+        // splitting by &,
         // as & can be used in a parameter value as well.
 
         try {
@@ -206,7 +206,8 @@ public final class URISupport {
                     }
                 }
 
-                // if we are in raw mode, then we keep adding until we hit the end marker
+                // if we are in raw mode, then we keep adding until we hit the
+                // end marker
                 if (isRaw) {
                     if (isKey) {
                         key.append(ch);
@@ -214,24 +215,28 @@ public final class URISupport {
                         value.append(ch);
                     }
 
-                    // we only end the raw marker if it's ")&", "}&", or at the end of the value
+                    // we only end the raw marker if it's ")&", "}&", or at the
+                    // end of the value
 
                     boolean end = ch == rawTokenEnd && (next == '&' || next == '\u0000');
                     if (end) {
-                        // raw value end, so add that as a parameter, and reset flags
+                        // raw value end, so add that as a parameter, and reset
+                        // flags
                         addParameter(key.toString(), value.toString(), rc, useRaw || isRaw);
                         key.setLength(0);
                         value.setLength(0);
                         isKey = true;
                         isValue = false;
                         isRaw = false;
-                        // skip to next as we are in raw mode and have already added the value
+                        // skip to next as we are in raw mode and have already
+                        // added the value
                         i++;
                     }
                     continue;
                 }
 
-                // if its a key and there is a = sign then the key ends and we are in value mode
+                // if its a key and there is a = sign then the key ends and we
+                // are in value mode
                 if (isKey && ch == '=') {
                     isKey = false;
                     isValue = true;
@@ -243,7 +248,8 @@ public final class URISupport {
                 if (ch == '&') {
                     // parameter is ended, as we hit & separator
                     String aKey = key.toString();
-                    // the key may be a placeholder of options which we then do not know what is
+                    // the key may be a placeholder of options which we then do
+                    // not know what is
                     boolean validKey = !aKey.startsWith("{{") && !aKey.endsWith("}}");
                     if (validKey) {
                         addParameter(aKey, value.toString(), rc, useRaw || isRaw);
@@ -267,7 +273,8 @@ public final class URISupport {
             // any left over parameters, then add that
             if (key.length() > 0) {
                 String aKey = key.toString();
-                // the key may be a placeholder of options which we then do not know what is
+                // the key may be a placeholder of options which we then do not
+                // know what is
                 boolean validKey = !aKey.startsWith("{{") && !aKey.endsWith("}}");
                 if (validKey) {
                     addParameter(aKey, value.toString(), rc, useRaw || isRaw);
@@ -293,12 +300,13 @@ public final class URISupport {
 
         // does the key already exist?
         if (map.containsKey(name)) {
-            // yes it does, so make sure we can support multiple values, but using a list
+            // yes it does, so make sure we can support multiple values, but
+            // using a list
             // to hold the multiple values
             Object existing = map.get(name);
             List<String> list;
             if (existing instanceof List) {
-                list = (List<String>) existing;
+                list = (List<String>)existing;
             } else {
                 // create a new list to hold the multiple values
                 list = new ArrayList<String>();
@@ -337,10 +345,10 @@ public final class URISupport {
         return answer;
     }
 
-    private static int scanRawToEnd(String str, int start, String tokenStart, char tokenEnd,
-                                    List<Pair<Integer>> answer) {
+    private static int scanRawToEnd(String str, int start, String tokenStart, char tokenEnd, List<Pair<Integer>> answer) {
         // we search the first end bracket to close the RAW token
-        // as opposed to parsing query, this doesn't allow the occurrences of end brackets
+        // as opposed to parsing query, this doesn't allow the occurrences of
+        // end brackets
         // inbetween because this may be used on the host/path parts of URI
         // and thus we cannot rely on '&' for detecting the end of a RAW token
         int end = str.indexOf(tokenEnd, start + tokenStart.length());
@@ -382,9 +390,10 @@ public final class URISupport {
     /**
      * Assembles a query from the given map.
      *
-     * @param options  the map with the options (eg key/value pairs)
+     * @param options the map with the options (eg key/value pairs)
      * @param ampersand to use & for Java code, and &amp; for XML
-     * @return a query string with <tt>key1=value&key2=value2&...</tt>, or an empty string if there is no options.
+     * @return a query string with <tt>key1=value&key2=value2&...</tt>, or an
+     *         empty string if there is no options.
      * @throws URISyntaxException is thrown if uri has invalid syntax.
      */
     public static String createQueryString(Map<String, String> options, String ampersand, boolean encode) throws URISyntaxException {
@@ -399,7 +408,7 @@ public final class URISupport {
                         rc.append(ampersand);
                     }
 
-                    String key = (String) o;
+                    String key = (String)o;
                     Object value = options.get(key);
 
                     // use the value as a String
@@ -444,7 +453,8 @@ public final class URISupport {
     /**
      * Tests whether the value is <tt>null</tt> or an empty string.
      *
-     * @param value  the value, if its a String it will be tested for text length as well
+     * @param value the value, if its a String it will be tested for text length
+     *            as well
      * @return true if empty
      */
     public static boolean isEmpty(Object value) {
@@ -454,14 +464,15 @@ public final class URISupport {
     /**
      * Tests whether the value is <b>not</b> <tt>null</tt> or an empty string.
      *
-     * @param value  the value, if its a String it will be tested for text length as well
+     * @param value the value, if its a String it will be tested for text length
+     *            as well
      * @return true if <b>not</b> empty
      */
     public static boolean isNotEmpty(Object value) {
         if (value == null) {
             return false;
         } else if (value instanceof String) {
-            String text = (String) value;
+            String text = (String)value;
             return text.trim().length() > 0;
         } else {
             return true;
