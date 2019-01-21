@@ -20,18 +20,17 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-import org.apache.camel.catalog.Pair;
-
 /**
  * Encoder for unsafe URI characters.
  * <p/>
- * A good source for details is <a href="http://en.wikipedia.org/wiki/Url_encode">wikipedia url encode</a> article.
+ * A good source for details is
+ * <a href="http://en.wikipedia.org/wiki/Url_encode">wikipedia url encode</a>
+ * article.
  */
 public final class UnsafeUriCharactersEncoder {
     private static BitSet unsafeCharactersRfc1738;
     private static BitSet unsafeCharactersHttp;
-    private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
-        'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     static {
         unsafeCharactersRfc1738 = new BitSet(256);
@@ -133,15 +132,16 @@ public final class UnsafeUriCharactersEncoder {
                     char next2 = i + 2 < chars.length ? chars[i + 2] : ' ';
 
                     if (isHexDigit(next) && isHexDigit(next2) && !URISupport.isRaw(i, rawPairs)) {
-                        // its already encoded (decimal encoded) so just append as is
+                        // its already encoded (decimal encoded) so just append
+                        // as is
                         sb.append(ch);
                     } else {
                         // must escape then, as its an unsafe character
-                        appendEscape(sb, (byte) ch);
+                        appendEscape(sb, (byte)ch);
                     }
                 } else {
                     // must escape then, as its an unsafe character
-                    appendEscape(sb, (byte) ch);
+                    appendEscape(sb, (byte)ch);
                 }
             } else {
                 sb.append(ch);
