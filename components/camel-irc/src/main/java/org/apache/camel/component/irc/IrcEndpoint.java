@@ -134,7 +134,7 @@ public class IrcEndpoint extends DefaultEndpoint {
     }
 
     public IrcConsumer createConsumer(Processor processor) throws Exception {
-        IrcConsumer answer = new IrcConsumer(this, processor, component.getIRCConnection(configuration));
+        IrcConsumer answer = new IrcConsumer(this, new IrcProcessor(processor), component.getIRCConnection(configuration));
         configureConsumer(answer);
         return answer;
     }
