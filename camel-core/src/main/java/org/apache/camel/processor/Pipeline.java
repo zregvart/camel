@@ -45,9 +45,6 @@ public class Pipeline extends MulticastProcessor {
 
     private String id;
 
-    private PipelineExchangeAdjuster exchangeAdjuster;
-
-
     public Pipeline(CamelContext camelContext, Collection<Processor> processors) {
         super(camelContext, processors);
     }
@@ -78,10 +75,6 @@ public class Pipeline extends MulticastProcessor {
         return new Pipeline(camelContext, toBeProcessed);
     }
 
-    public void setExchangeAdjuster(PipelineExchangeAdjuster exchangeAdjuster) {
-        this.exchangeAdjuster = exchangeAdjuster;
-    }
-
     @Override
     public void process(Exchange exchange) throws Exception {
         AsyncProcessorHelper.process(this, exchange);
@@ -103,11 +96,6 @@ public class Pipeline extends MulticastProcessor {
 
             // get the next processor
             Processor processor = processors.next();
-
-            // correct or adjust exchange data if necessary
-            if (exchangeAdjuster != null) {
-                exchangeAdjuster.adjustExchange(nextExchange, processor);
-            }
 
             AsyncProcessor async = AsyncProcessorConverterHelper.convert(processor);
             boolean sync = process(exchange, nextExchange, callback, processors, async);
