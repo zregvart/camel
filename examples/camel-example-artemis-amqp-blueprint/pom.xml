@@ -37,6 +37,7 @@
 
   <properties>
     <category>Messaging</category>
+    <skipTests>true</skipTests>
   </properties>
 
   <dependencies>
