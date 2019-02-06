@@ -35,14 +35,12 @@ public class CamelJbpmTest extends AbstractSpringBootTestSupport {
     public static ITestConfig createTestConfig() {
         return new ITestConfigBuilder()
                 .module(inferModuleName(CamelJbpmTest.class))
-                .unitTestExpectedNumber(0)
                 .build();
     }
 
     @Test
     public void componentTests() throws Exception {
         this.runComponentTest(config);
-        this.runModuleUnitTestsIfEnabled(config);
     }
 
 
