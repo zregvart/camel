@@ -40,7 +40,6 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class InOutCamelWorkItemHandlerTest {
 
@@ -63,7 +62,7 @@ public class InOutCamelWorkItemHandlerTest {
     public void testExecuteInOutGlobalCamelContext() throws Exception {
 
         String camelEndpointId = "testCamelRoute";
-        String camelRouteUri = "direct://" + camelEndpointId;
+        String camelRouteUri = "direct:" + camelEndpointId;
 
         String testReponse = "testResponse";
 
@@ -77,33 +76,38 @@ public class InOutCamelWorkItemHandlerTest {
         when(outExchange.getOut()).thenReturn(outMessage);
         when(outMessage.getBody()).thenReturn(testReponse);
 
-        ServiceRegistry.get().register("GlobalCamelService", camelContext);
+        try {
+            ServiceRegistry.get().register("GlobalCamelService", camelContext);
 
-        TestWorkItemManager manager = new TestWorkItemManager();
-        WorkItemImpl workItem = new WorkItemImpl();
-        workItem.setParameter("CamelEndpointId", camelEndpointId);
-        workItem.setParameter("Request", "someRequest");
-        workItem.setDeploymentId("testDeploymentId");
-        workItem.setProcessInstanceId(1L);
-        workItem.setId(1L);
+            TestWorkItemManager manager = new TestWorkItemManager();
+            WorkItemImpl workItem = new WorkItemImpl();
+            workItem.setParameter("CamelEndpointId", camelEndpointId);
+            workItem.setParameter("Request", "someRequest");
+            workItem.setDeploymentId("testDeploymentId");
+            workItem.setProcessInstanceId(1L);
+            workItem.setId(1L);
 
-        AbstractCamelWorkItemHandler handler = new InOutCamelWorkItemHandler();
+            AbstractCamelWorkItemHandler handler = new InOutCamelWorkItemHandler();
 
-        handler.executeWorkItem(workItem,
-                manager);
-        assertThat(manager.getResults(), is(notNullValue()));
-        assertThat(manager.getResults().size(), equalTo(1));
-        assertThat(manager.getResults().containsKey(workItem.getId()), is(true));
-        Map<String, Object> results = manager.getResults(workItem.getId());
-        assertThat(results.size(), equalTo(2));
-        assertThat(results.get("Response"), equalTo(testReponse));
+            handler.executeWorkItem(workItem, manager);
+            assertThat(manager.getResults(), is(notNullValue()));
+            assertThat(manager.getResults().size(), equalTo(1));
+            assertThat(manager.getResults().containsKey(workItem.getId()), is(true));
+            Map<String, Object> results = manager.getResults(workItem.getId());
+            assertThat(results.size(), equalTo(2));
+            assertThat(results.get("Response"), equalTo(testReponse));
+
+        } finally {
+            ServiceRegistry.get().remove("GlobalCamelService");
+        }
+
     }
 
     @Test
     public void testExecuteInOutLocalCamelContext() throws Exception {
 
         String camelEndpointId = "testCamelRoute";
-        String camelRouteUri = "direct://" + camelEndpointId;
+        String camelRouteUri = "direct:" + camelEndpointId;
 
         String testReponse = "testResponse";
 
@@ -122,7 +126,92 @@ public class InOutCamelWorkItemHandlerTest {
         when(outMessage.getBody()).thenReturn(testReponse);
 
         // Register the RuntimeManager bound camelcontext.
-        ServiceRegistry.get().register(runtimeManagerId + "_CamelService", camelContext);
+        try {
+            ServiceRegistry.get().register(runtimeManagerId + "_CamelService", camelContext);
+
+            WorkItemImpl workItem = new WorkItemImpl();
+            workItem.setParameter(JBPMConstants.CAMEL_ENDPOINT_ID_WI_PARAM, camelEndpointId);
+            workItem.setParameter("Request", "someRequest");
+            workItem.setDeploymentId("testDeploymentId");
+            workItem.setProcessInstanceId(1L);
+            workItem.setId(1L);
+
+            AbstractCamelWorkItemHandler handler = new InOutCamelWorkItemHandler(runtimeManager);
+
+            TestWorkItemManager manager = new TestWorkItemManager();
+            handler.executeWorkItem(workItem, manager);
+            assertThat(manager.getResults(), is(notNullValue()));
+            assertThat(manager.getResults().size(), equalTo(1));
+            assertThat(manager.getResults().containsKey(workItem.getId()), is(true));
+
+            Map<String, Object> results = manager.getResults(workItem.getId());
+            assertThat(results.size(), equalTo(2));
+            assertThat(results.get(JBPMConstants.RESPONSE_WI_PARAM), equalTo(testReponse));
+        } finally {
+            ServiceRegistry.get().remove(runtimeManagerId + "_CamelService");
+        }
+    }
+
+    @Test
+    public void testExecuteInOutLocalCamelContextLazyInit() throws Exception {
+
+        String camelEndpointId = "testCamelRoute";
+        String camelRouteUri = "direct:" + camelEndpointId;
+
+        String testReponse = "testResponse";
+
+        String runtimeManagerId = "testRuntimeManager";
+
+        when(runtimeManager.getIdentifier()).thenReturn(runtimeManagerId);
+
+        when(producerTemplate.send(eq(camelRouteUri), ArgumentMatchers.any(Exchange.class))).thenReturn(outExchange);
+        when(producerTemplate.getCamelContext()).thenReturn(camelContext);
+
+        when(camelContext.createProducerTemplate()).thenReturn(producerTemplate);
+        HeadersMapFactory hmf = new DefaultHeadersMapFactory();
+        when(camelContext.getHeadersMapFactory()).thenReturn(hmf);
+
+        when(outExchange.getOut()).thenReturn(outMessage);
+        when(outMessage.getBody()).thenReturn(testReponse);
+
+        WorkItemImpl workItem = new WorkItemImpl();
+        workItem.setParameter(JBPMConstants.CAMEL_ENDPOINT_ID_WI_PARAM, camelEndpointId);
+        workItem.setParameter("Request", "someRequest");
+        workItem.setDeploymentId("testDeploymentId");
+        workItem.setProcessInstanceId(1L);
+        workItem.setId(1L);
+
+        AbstractCamelWorkItemHandler handler = new InOutCamelWorkItemHandler(runtimeManager);
+
+        // Register the context after we've created the WIH to test lazy-init.
+        try {
+            ServiceRegistry.get().register(runtimeManagerId + "_CamelService", camelContext);
+
+            TestWorkItemManager manager = new TestWorkItemManager();
+            handler.executeWorkItem(workItem, manager);
+            assertThat(manager.getResults(), is(notNullValue()));
+            assertThat(manager.getResults().size(), equalTo(1));
+            assertThat(manager.getResults().containsKey(workItem.getId()), is(true));
+
+            Map<String, Object> results = manager.getResults(workItem.getId());
+            assertThat(results.size(), equalTo(2));
+            assertThat(results.get(JBPMConstants.RESPONSE_WI_PARAM), equalTo(testReponse));
+        } finally {
+            ServiceRegistry.get().remove(runtimeManagerId + "_CamelService");
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testExecuteInOutLocalCamelContextLazyInitFail() throws Exception {
+
+        String camelEndpointId = "testCamelRoute";
+        String camelRouteUri = "direct:" + camelEndpointId;
+
+        String testReponse = "testResponse";
+
+        String runtimeManagerId = "testRuntimeManager";
+
+        when(runtimeManager.getIdentifier()).thenReturn(runtimeManagerId);
 
         WorkItemImpl workItem = new WorkItemImpl();
         workItem.setParameter(JBPMConstants.CAMEL_ENDPOINT_ID_WI_PARAM, camelEndpointId);
@@ -134,15 +223,9 @@ public class InOutCamelWorkItemHandlerTest {
         AbstractCamelWorkItemHandler handler = new InOutCamelWorkItemHandler(runtimeManager);
 
         TestWorkItemManager manager = new TestWorkItemManager();
-        handler.executeWorkItem(workItem,
-                manager);
-        assertThat(manager.getResults(), is(notNullValue()));
-        assertThat(manager.getResults().size(), equalTo(1));
-        assertThat(manager.getResults().containsKey(workItem.getId()), is(true));
-        
-        Map<String, Object> results = manager.getResults(workItem.getId());
-        assertThat(results.size(), equalTo(2));
-        assertThat(results.get(JBPMConstants.RESPONSE_WI_PARAM), equalTo(testReponse));
+        // This is expected to throw an exception.
+        handler.executeWorkItem(workItem, manager);
+
     }
-   
+
 }
