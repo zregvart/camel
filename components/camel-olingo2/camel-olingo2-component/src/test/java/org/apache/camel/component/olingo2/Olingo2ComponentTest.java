@@ -253,19 +253,27 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
      * and filter already seen items on subsequent exchanges
      * Use a delay since the mock endpoint does not always get
      * the correct number of exchanges before being satisfied.
+     *
+     * Note:
+     * - consumer.splitResults is set to false since this ensures the first returned message
+     *   contains all the results. This is preferred for the purposes of this test. The default
+     *   will mean the first n messages contain the results (where n is the result total) then
+     *   subsequent messages will be empty
      */
     @Test
     public void testConsumerReadFilterAlreadySeen() throws Exception {
         final Map<String, Object> headers = new HashMap<>();
-        String endpoint = "olingo2://read/Manufacturers?filterAlreadySeen=true&consumer.delay=2&consumer.sendEmptyMessageWhenIdle=true";
-        final ODataFeed manufacturers = (ODataFeed)requestBodyAndHeaders(endpoint, null, headers);
-        assertNotNull(manufacturers);
-        int expectedManufacturers = manufacturers.getEntries().size();
+        String endpoint = "olingo2://read/Manufacturers?filterAlreadySeen=true&consumer.delay=2&consumer.sendEmptyMessageWhenIdle=true&consumer.splitResult=false";
 
         int expectedMsgCount = 3;
         MockEndpoint mockEndpoint = getMockEndpoint("mock:consumer-alreadyseen");
         mockEndpoint.expectedMessageCount(expectedMsgCount);
         mockEndpoint.setResultWaitTime(60000);
+
+        final ODataFeed manufacturers = (ODataFeed)requestBodyAndHeaders(endpoint, null, headers);
+        assertNotNull(manufacturers);
+        int expectedManufacturers = manufacturers.getEntries().size();
+
         mockEndpoint.assertIsSatisfied();
 
         for (int i = 0; i < expectedMsgCount; ++i) {
@@ -278,8 +286,7 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
                 assertTrue(body instanceof ODataFeed);
                 ODataFeed set = (ODataFeed) body;
                 assertEquals(expectedManufacturers, set.getEntries().size());
-            }
-            else {
+            } else {
                 //
                 // Subsequent polling messages should be empty
                 // since the filterAlreadySeen property is true
@@ -303,6 +310,9 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
         String endpoint = "direct:read-people-nofilterseen";
         int expectedMsgCount = 3;
 
+        MockEndpoint mockEndpoint = getMockEndpoint("mock:producer-noalreadyseen");
+        mockEndpoint.expectedMessageCount(expectedMsgCount);
+
         int expectedEntities = -1;
         for (int i = 0; i < expectedMsgCount; ++i) {
             final ODataFeed manufacturers = (ODataFeed)requestBodyAndHeaders(endpoint, null, headers);
@@ -312,8 +322,6 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
             }
         }
 
-        MockEndpoint mockEndpoint = getMockEndpoint("mock:producer-noalreadyseen");
-        mockEndpoint.expectedMessageCount(expectedMsgCount);
         mockEndpoint.assertIsSatisfied();
 
         for (int i = 0; i < expectedMsgCount; ++i) {
@@ -338,6 +346,9 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
         String endpoint = "direct:read-people-filterseen";
         int expectedMsgCount = 3;
 
+        MockEndpoint mockEndpoint = getMockEndpoint("mock:producer-alreadyseen");
+        mockEndpoint.expectedMessageCount(expectedMsgCount);
+
         int expectedEntities = -1;
         for (int i = 0; i < expectedMsgCount; ++i) {
             final ODataFeed manufacturers = (ODataFeed)requestBodyAndHeaders(endpoint, null, headers);
@@ -347,8 +358,6 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
             }
         }
 
-        MockEndpoint mockEndpoint = getMockEndpoint("mock:producer-alreadyseen");
-        mockEndpoint.expectedMessageCount(expectedMsgCount);
         mockEndpoint.assertIsSatisfied();
 
         for (int i = 0; i < expectedMsgCount; ++i) {
@@ -361,13 +370,55 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
                 // First polled messages contained all the manufacturers
                 //
                 assertEquals(expectedEntities, set.getEntries().size());
-            }
-            else {
+            } else {
                 //
                 // Subsequent messages should be empty
                 // since the filterAlreadySeen property is true
                 //
                 assertEquals(0, set.getEntries().size());
+            }
+        }
+    }
+
+    /**
+     * Read entity set of the Manufacturers object and split the results
+     * into individual messages
+     */
+    @Test
+    public void testConsumerReadSplitResults() throws Exception {
+        final Map<String, Object> headers = new HashMap<>();
+        String endpoint = "olingo2://read/Manufacturers?consumer.splitResult=true";
+
+        int expectedMsgCount = 2;
+        MockEndpoint mockEndpoint = getMockEndpoint("mock:consumer-splitresult");
+        mockEndpoint.expectedMessageCount(expectedMsgCount);
+
+        final ODataFeed odataFeed = (ODataFeed)requestBodyAndHeaders(endpoint, null, headers);
+        assertNotNull(odataFeed);
+
+        mockEndpoint.assertIsSatisfied();
+
+        //
+        // 2 individual messages in the exchange,
+        // each containing a different entity.
+        //
+        for (int i = 0; i < expectedMsgCount; ++i) {
+            Object body = mockEndpoint.getExchanges().get(i).getIn().getBody();
+            assertTrue(body instanceof ODataEntry);
+            ODataEntry entry = (ODataEntry)body;
+            Map<String, Object> properties = entry.getProperties();
+            assertNotNull(properties);
+
+            Object name = properties.get("Name");
+            assertNotNull(name);
+            switch(i) {
+            case 0:
+                assertEquals("Star Powered Racing", name);
+                break;
+            case 1:
+                assertEquals("Horse Powered Racing", name);
+                break;
+            default:
             }
         }
     }
@@ -423,8 +474,9 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
                 //
                 // Consumer endpoint
                 //
-                from("olingo2://read/Manufacturers?filterAlreadySeen=true&consumer.delay=2&consumer.sendEmptyMessageWhenIdle=true")
-                    .to("mock:consumer-alreadyseen");
+                from("olingo2://read/Manufacturers?filterAlreadySeen=true&consumer.delay=2&consumer.sendEmptyMessageWhenIdle=true&consumer.splitResult=false").to("mock:consumer-alreadyseen");
+
+                from("olingo2://read/Manufacturers?consumer.splitResult=true").to("mock:consumer-splitresult");
             }
         };
     }
