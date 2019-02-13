@@ -1234,7 +1234,7 @@ public class CxfEndpoint extends DefaultEndpoint implements AsyncEndpoint, Heade
                     resContext.putAll(inMsg);
                     // remove the recursive reference if present
                     resContext.remove(Message.INVOCATION_CONTEXT);
-                    setResponseContext(resContext);
+                    reloadResponseContext(resContext);
                 }
                 resList = CastUtils.cast(inMsg.getContent(List.class));
             }
