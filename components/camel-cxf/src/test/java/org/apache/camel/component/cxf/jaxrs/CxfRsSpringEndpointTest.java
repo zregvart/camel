@@ -23,13 +23,13 @@ import org.apache.camel.component.cxf.spring.SpringJAXRSClientFactoryBean;
 import org.apache.camel.component.cxf.spring.SpringJAXRSServerFactoryBean;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.apache.cxf.version.Version;
-import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class CxfRsSpringEndpointTest extends CamelSpringTestSupport {
     
-    @Test
+    @Ignore
     public void testCreateCxfRsServerFactoryBean() {
         CxfRsEndpoint endpoint = resolveMandatoryEndpoint("cxfrs://bean://rsServer", CxfRsEndpoint.class);
         SpringJAXRSServerFactoryBean sfb = (SpringJAXRSServerFactoryBean)endpoint.createJAXRSServerFactoryBean();
@@ -49,7 +49,7 @@ public class CxfRsSpringEndpointTest extends CamelSpringTestSupport {
         assertEquals("Wrong property value", "aValue", endpointProps.get("aKey"));
     }
     
-    @Test
+    @Ignore
     public void testCreateCxfRsClientFactoryBean() {
         CxfRsEndpoint endpoint = resolveMandatoryEndpoint("cxfrs://bean://rsClient", CxfRsEndpoint.class);
         SpringJAXRSClientFactoryBean cfb = (SpringJAXRSClientFactoryBean)endpoint.createJAXRSClientFactoryBean();
