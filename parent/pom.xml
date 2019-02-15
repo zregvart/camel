@@ -319,6 +319,7 @@
     <ical4j-version>1.0.7</ical4j-version>
     <ignite-version>2.6.0</ignite-version>
     <infinispan-version>9.4.6.Final-redhat-00002</infinispan-version>
+    <infinispan-community-version>9.4.6.Final</infinispan-community-version>
     <infinispan-spring-boot-version>1.0.0.Final</infinispan-spring-boot-version>
     <influx-java-driver-version>2.9</influx-java-driver-version>
     <influx-java-driver-bundle-version>2.9_1</influx-java-driver-bundle-version>
