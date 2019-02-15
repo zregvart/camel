@@ -41,7 +41,7 @@
     <abdera-version>1.1.3</abdera-version>
     <!-- Note that activemq dependency is only used for testing! -->
     <activemq-version>5.11.0.redhat-630356</activemq-version>
-    <activemq-artemis-version>2.4.0</activemq-artemis-version>
+    <activemq-artemis-version>2.6.3.redhat-00015</activemq-artemis-version>
     <aether-version>1.0.2.v20150114</aether-version>
     <ahc-version>2.4.3</ahc-version>
     <ant-bundle-version>1.7.0_6</ant-bundle-version>
@@ -53,8 +53,8 @@
     <apache-gora-version>0.8</apache-gora-version>
     <apache-mime4j-version>0.7.2</apache-mime4j-version>
     <aries-blueprint-api-version>1.0.1</aries-blueprint-api-version>
-    <aries-blueprint-cm-version>1.0.6</aries-blueprint-cm-version>
-    <aries-blueprint-core-version>1.4.4</aries-blueprint-core-version>
+    <aries-blueprint-cm-version>1.3.1</aries-blueprint-cm-version>
+    <aries-blueprint-core-version>1.10.1</aries-blueprint-core-version>
     <aries-blueprint-proxy-version>1.0.1</aries-blueprint-proxy-version>
     <aries-blueprint-proxy-impl-version>1.0.4</aries-blueprint-proxy-impl-version>
     <aries-spifly-version>1.0.8</aries-spifly-version>
@@ -137,9 +137,9 @@
     <cometd-java-client-version>3.1.2</cometd-java-client-version>
     <cometd-java-server-bundle-version>2.3.1_2</cometd-java-server-bundle-version>
     <cometd-java-server>3.1.2</cometd-java-server>
-    <commons-beanutils-version>1.9.3</commons-beanutils-version>
-    <commons-codec-version>1.11</commons-codec-version>
-    <commons-collections-version>3.2.2</commons-collections-version>
+    <commons-beanutils-version>1.9.3.redhat-1</commons-beanutils-version>
+    <commons-codec-version>1.10.0.redhat-5</commons-codec-version>
+    <commons-collections-version>3.2.2.redhat-2</commons-collections-version>
     <commons-compress-version>1.16.1</commons-compress-version>
     <commons-configuration-version>1.9</commons-configuration-version>
     <commons-configuration-bundle-version>1.9_1</commons-configuration-bundle-version>
@@ -153,10 +153,10 @@
     <commons-digester-version>2.1</commons-digester-version>
     <commons-exec-version>1.3</commons-exec-version>
     <commons-httpclient-bundle-version>3.1_7</commons-httpclient-bundle-version>
-    <commons-io-version>2.6</commons-io-version>
+    <commons-io-version>2.5.0.redhat-3</commons-io-version>
     <commons-jexl2-version>2.1.1</commons-jexl2-version>
     <commons-jxpath-version>1.3</commons-jxpath-version>
-    <commons-lang-version>2.6</commons-lang-version>
+    <commons-lang-version>2.6.0.redhat-7</commons-lang-version>
     <commons-lang3-version>3.8</commons-lang3-version>
     <commons-logging-version>1.2</commons-logging-version>
     <commons-math-version>2.2</commons-math-version>
@@ -298,7 +298,7 @@
     <hbase-version>1.2.6</hbase-version>
     <hessian-version>4.0.51</hessian-version>
     <hibernate-validator-version>5.3.5.Final-redhat-2</hibernate-validator-version>
-    <hibernate-version>5.0.12.Final</hibernate-version>
+    <hibernate-version>5.3.7.Final-redhat-00001</hibernate-version>
     <hikaricp-version>2.3.13</hikaricp-version>
     <hk2-version>2.3.0</hk2-version>
     <hk2-osgi-resource-version>1.0.1</hk2-osgi-resource-version>
@@ -308,9 +308,9 @@
     <htmlunit-core-js-version>2.23</htmlunit-core-js-version>
     <htrace-version>3.1.0-incubating</htrace-version>
     <httpunit-version>1.7</httpunit-version>
-    <httpcore4-version>4.4.9</httpcore4-version>
-    <httpclient4-version>4.5.5</httpclient4-version>
-    <httpasyncclient-version>4.1.3</httpasyncclient-version>
+    <httpcore4-version>4.4.4.redhat-2</httpcore4-version>
+    <httpclient4-version>4.5.2.redhat-2</httpclient4-version>
+    <httpasyncclient-version>4.1.3.redhat-2</httpasyncclient-version>
     <httpclient-version>3.1</httpclient-version>
     <hystrix-version>1.5.12</hystrix-version>
     <hystrix-bundle-version>1.5.12_1</hystrix-bundle-version>
@@ -355,19 +355,18 @@
     <javacc-maven-plugin-version>2.6</javacc-maven-plugin-version>
     <javacrumbs-version>0.22</javacrumbs-version>
     <javapoet-version>1.10.0</javapoet-version>
-    <javassist-bundle-version>3.12.1.GA_3</javassist-bundle-version>
-    <javassist-version>3.20.0-GA</javassist-version>
+    <javassist-version>3.23.1.GA-redhat-00001</javassist-version>
     <javax.el-api-version>2.2.5</javax.el-api-version>
     <javax.el-version>2.2.5</javax.el-version>
     <javax-inject-bundle-version>1_2</javax-inject-bundle-version>
-    <javax-mail-version>1.6.1</javax-mail-version>
+    <javax-mail-version>1.6.1.redhat-1</javax-mail-version>
     <javax.servlet-api-version>3.1.0</javax.servlet-api-version>
     <javax.ws.rs-api-version>2.1.1</javax.ws.rs-api-version>
     <jaxb-bundle-version>2.2.11_1</jaxb-bundle-version>
     <jaxen-version>1.1.6</jaxen-version>
     <jbpm-version>7.14.0.Final</jbpm-version>
     <jboss-javaee-6-version>1.0.0.Final</jboss-javaee-6-version>
-    <jboss-logging-version>3.3.0.Final</jboss-logging-version>
+    <jboss-logging-version>3.3.2.Final-redhat-00001</jboss-logging-version>
     <jboss-marshalling-version>1.4.10.Final</jboss-marshalling-version>
     <jboss-transaction-spi.version>7.5.1.Final</jboss-transaction-spi.version>
     <jboss-xnio-version>3.3.8.Final</jboss-xnio-version>
@@ -445,7 +444,7 @@
     <kafka_2.11-version>2.0.0</kafka_2.11-version>
     <kafka-bundle-version>2.0.0_1</kafka-bundle-version>
     <karaf2-version>2.4.4</karaf2-version>
-    <karaf4-version>4.1.5</karaf4-version>
+    <karaf4-version>4.2.0.fuse-730018</karaf4-version>
     <kie-version>7.14.0.Final</kie-version>
     <krati-version>0.4.9</krati-version>
     <kubernetes-client-version>3.1.8</kubernetes-client-version>
@@ -517,12 +516,12 @@
     <mustache-bundle-version>0.9.5_1</mustache-bundle-version>
     <mvel-version>2.4.0.Final</mvel-version>
     <mybatis-version>3.4.5</mybatis-version>
-    <narayana-version>5.8.0.Final</narayana-version>
+    <narayana-version>5.9.0.Final-redhat-00001</narayana-version>
     <neethi-bundle-version>3.0.1</neethi-bundle-version>
     <nekohtml-version>1.9.22</nekohtml-version>
     <neoscada-version>0.4.0</neoscada-version>
     <netty3-version>3.10.6.Final</netty3-version>
-    <netty-version>4.1.16.Final-redhat-2</netty-version>
+    <netty-version>4.1.25.Final-redhat-00003</netty-version>
     <netty40-version>4.0.56.Final</netty40-version>
     <networknt-json-schema-validator-version>0.1.16</networknt-json-schema-validator-version>
     <noggit-bundle-version>0.5_1</noggit-bundle-version>
@@ -559,7 +558,7 @@
     <osgi-version>4.3.1</osgi-version>
     <paho-version>1.2.0</paho-version>
     <paranamer-bundle-version>2.8_1</paranamer-bundle-version>
-    <pax-cdi-version>1.0.0</pax-cdi-version>
+    <pax-cdi-version>1.1.2</pax-cdi-version>
     <pax-exam-version>4.9.2</pax-exam-version>
     <pax-tiny-bundle-version>1.3.2</pax-tiny-bundle-version>
     <pax-logging-version>1.8.6</pax-logging-version>
@@ -611,7 +610,7 @@
     <serp-bundle-version>1.14.1_1</serp-bundle-version>
     <servicemix-specs-version>2.9.0</servicemix-specs-version>
     <servlet-api-3.0-version>1.0</servlet-api-3.0-version>
-    <servlet-version-range>[3,4)</servlet-version-range>
+    <servlet-version-range>[3.1,5)</servlet-version-range>
     <shiro-version>1.4.0</shiro-version>
     <shrinkwrap-descriptors-version>2.0.0-alpha-10</shrinkwrap-descriptors-version>
     <shrinkwrap-resolver-version>2.2.4</shrinkwrap-resolver-version>
@@ -696,7 +695,7 @@
     <twitter4j-bundle-version>4.0.7_1</twitter4j-bundle-version>
     <twitter4j-version>4.0.7</twitter4j-version>
     <uberfire-maven-support-version>1.3.0.Final</uberfire-maven-support-version>
-    <undertow-version>1.4.18.SP7-redhat-1</undertow-version>
+    <undertow-version>2.0.15.Final-redhat-00001</undertow-version>
     <univocity-parsers-version>2.3.1</univocity-parsers-version>
     <unix-socket-factory-version>2015-01-27T15-02-14</unix-socket-factory-version>
     <unix-socket-factory-bundle-version>1.0.0</unix-socket-factory-bundle-version>

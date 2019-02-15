@@ -259,6 +259,14 @@ public abstract class AbstractFeatureTest {
         return sb.toString();
     }
 
+    public static UrlReference getKarafFeatureUrl() {
+        return mavenBundle().groupId("org.apache.karaf.features").artifactId("standard").version(getKarafVersion()).type("xml/features");
+    }
+
+    public static UrlReference getKarafFeatureSpringLegacyUrl() {
+        return mavenBundle().groupId("org.apache.karaf.features").artifactId("spring-legacy").version(getKarafVersion()).type("xml/features");
+    }
+
     public static UrlReference getCamelKarafFeatureUrl() {
         return mavenBundle().groupId("org.apache.camel.karaf").artifactId("apache-camel").version(getCamelKarafFeatureVersion()).type("xml/features");
     }
@@ -363,6 +371,9 @@ public abstract class AbstractFeatureTest {
 
                                          // install junit
                                          CoreOptions.junitBundles(),
+
+                                         features(getKarafFeatureUrl(), "aries-blueprint"),
+                                         features(getKarafFeatureSpringLegacyUrl(), "spring/4.3"),
 
                                          // install camel
                                          features(getCamelKarafFeatureUrl(), camelFeatures),
