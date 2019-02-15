@@ -127,6 +127,21 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-client</artifactId>
+      <version>${kubernetes-client-version}</version>
+      <classifier>bundle</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <version>${kubernetes-client-version}</version>
+      <classifier>bundle</classifier>
+      <scope>test</scope>
+    </dependency>
+
     <!-- test and logging -->
     <dependency>
       <groupId>junit</groupId>
