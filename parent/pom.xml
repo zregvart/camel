@@ -102,6 +102,7 @@
     <braintree-jackson-version>2.9.5</braintree-jackson-version>
     <brave-zipkin-version>4.13.4</brave-zipkin-version>
     <build-helper-maven-plugin-version>1.10</build-helper-maven-plugin-version>
+    <bytebuddy-version>1.8.7</bytebuddy-version>
     <c3p0-version>0.9.5.2</c3p0-version>
     <c3p0-bundle-version>0.9.5.2_2</c3p0-bundle-version>
     <caffeine-version>2.6.2</caffeine-version>
@@ -4519,6 +4520,11 @@
             <artifactId>jta</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>net.bytebuddy</groupId>
+        <artifactId>byte-buddy</artifactId>
+        <version>${bytebuddy-version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.derby</groupId>
