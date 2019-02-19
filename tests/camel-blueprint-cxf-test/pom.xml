@@ -51,7 +51,19 @@
           <artifactId>org.apache.servicemix.bundles.jasypt</artifactId>
         </exclusion>
       </exclusions>
-      <version>${karaf2-version}</version>
+      <version>${karaf4-version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.jaas</groupId>
+      <artifactId>org.apache.karaf.jaas.boot</artifactId>
+      <version>${karaf4-version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.jaas.blueprint</groupId>
+      <artifactId>org.apache.karaf.jaas.blueprint.jasypt</artifactId>
+      <version>${karaf4-version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
