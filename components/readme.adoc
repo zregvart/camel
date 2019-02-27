@@ -2,7 +2,7 @@ Components
 ^^^^^^^^^^
 
 // components: START
-Number of Components: 292 in 198 JAR artifacts (20 deprecated)
+Number of Components: 301 in 206 JAR artifacts (21 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |===
@@ -308,6 +308,12 @@ Number of Components: 292 in 198 JAR artifacts (20 deprecated)
 | link:camel-google-pubsub/src/main/docs/google-pubsub-component.adoc[Google Pubsub] (camel-google-pubsub) +
 `google-pubsub:projectId:destinationName` | 2.19 | Messaging client for Google Cloud Platform PubSub Service
 
+| link:camel-google-sheets/src/main/docs/google-sheets-component.adoc[Google Sheets] (camel-google-sheets) +
+`google-sheets:apiName/methodName` | 2.23 | The google-sheets component provides access to Google Sheets.
+
+| link:camel-google-sheets/src/main/docs/google-sheets-stream-component.adoc[Google Sheets Stream] (camel-google-sheets) +
+`google-sheets-stream:apiName` | 2.23 | The google-sheets component provides access to Google Sheets.
+
 | link:camel-gora/src/main/docs/gora-component.adoc[Gora] (camel-gora) +
 `gora:name` | 2.14 | The gora component allows you to work with NoSQL databases using the Apache Gora framework.
 
@@ -406,6 +412,9 @@ Number of Components: 292 in 198 JAR artifacts (20 deprecated)
 
 | link:camel-influxdb/src/main/docs/influxdb-component.adoc[InfluxDB] (camel-influxdb) +
 `influxdb:connectionBean` | 2.18 | The influxdb component allows you to interact with InfluxDB, a time series database.
+
+| link:camel-ipfs/src/main/docs/ipfs-component.adoc[IPFS] (camel-ipfs) +
+`ipfs:host:port/cmd` | 2.23 | The camel-ipfs component provides access to the Interplanetary File System (IPFS).
 
 | link:camel-irc/src/main/docs/irc-component.adoc[IRC] (camel-irc) +
 `irc:hostname:port` | 1.1 | The irc component implements an IRC (Internet Relay Chat) transport.
@@ -542,6 +551,9 @@ Number of Components: 292 in 198 JAR artifacts (20 deprecated)
 | link:camel-metrics/src/main/docs/metrics-component.adoc[Metrics] (camel-metrics) +
 `metrics:metricsType:metricsName` | 2.14 | To collect various metrics directly from Camel routes using the DropWizard metrics library.
 
+| link:camel-micrometer/src/main/docs/micrometer-component.adoc[Micrometer] (camel-micrometer) +
+`micrometer:metricsType:metricsName` | 2.22 | To collect various metrics directly from Camel routes using the Micrometer library.
+
 | link:camel-mina/src/main/docs/mina-component.adoc[Mina] (camel-mina) +
 `mina:protocol:host:port` | 1.0 | *deprecated* Socket level networking using TCP or UDP with the Apache Mina 1.x library.
 
@@ -595,6 +607,9 @@ Number of Components: 292 in 198 JAR artifacts (20 deprecated)
 
 | link:camel-netty4-http/src/main/docs/netty4-http-component.adoc[Netty4 HTTP] (camel-netty4-http) +
 `netty4-http:protocol:host:port/path` | 2.14 | Netty HTTP server and client using the Netty 4.x library.
+
+| link:camel-nsq/src/main/docs/nsq-component.adoc[NSQ] (camel-nsq) +
+`nsq:lookupServer` | 2.23 | Represents a nsq endpoint.
 
 | link:camel-olingo2/camel-olingo2-component/src/main/docs/olingo2-component.adoc[Olingo2] (camel-olingo2) +
 `olingo2:apiName/methodName` | 2.14 | Communicates with OData 2.0 services using Apache Olingo.
@@ -721,6 +736,9 @@ Number of Components: 292 in 198 JAR artifacts (20 deprecated)
 
 | link:../camel-core/src/main/docs/seda-component.adoc[SEDA] (camel-core) +
 `seda:name` | 1.1 | The seda component provides asynchronous call to another endpoint from any CamelContext in the same JVM.
+
+| link:camel-service/src/main/docs/service-component.adoc[Service] (camel-service) +
+`service:serviceName:delegateUri` | 2.22 | Represents an endpoint which is registered to a Service Registry such as Consul, Etcd.
 
 | link:camel-servicenow/camel-servicenow-component/src/main/docs/servicenow-component.adoc[ServiceNow] (camel-servicenow) +
 `servicenow:instanceName` | 2.18 | The servicenow component is used to integrate Camel with ServiceNow cloud services.
@@ -854,11 +872,17 @@ Number of Components: 292 in 198 JAR artifacts (20 deprecated)
 | link:camel-weather/src/main/docs/weather-component.adoc[Weather] (camel-weather) +
 `weather:name` | 2.12 | Polls the weather information from Open Weather Map.
 
+| link:camel-web3j/src/main/docs/web3j-component.adoc[Web3j Ethereum Blockchain] (camel-web3j) +
+`web3j:nodeAddress` | 2.22 | The web3j component uses the Web3j client API and allows you to add/read nodes to/from a web3j compliant content repositories.
+
 | link:camel-wordpress/src/main/docs/wordpress-component.adoc[Wordpress] (camel-wordpress) +
 `wordpress:operation` | 2.21 | Integrates Camel with Wordpress.
 
 | link:camel-xchange/src/main/docs/xchange-component.adoc[XChange] (camel-xchange) +
 `xchange:name` | 2.21 | Camel XChange support
+
+| link:camel-xmlrpc/src/main/docs/xmlrpc-component.adoc[XML RPC] (camel-xmlrpc) +
+`xmlrpc:address` | 2.11 | *deprecated* The xmlrpc component is used for sending messages to a XML RPC service.
 
 | link:camel-xmlsecurity/src/main/docs/xmlsecurity-component.adoc[XML Security] (camel-xmlsecurity) +
 `xmlsecurity:command:name` | 2.12 | Used to sign and verify exchanges using the XML signature specification.
@@ -871,6 +895,9 @@ Number of Components: 292 in 198 JAR artifacts (20 deprecated)
 
 | link:../camel-core/src/main/docs/xslt-component.adoc[XSLT] (camel-core) +
 `xslt:resourceUri` | 1.3 | Transforms the message using a XSLT template.
+
+| link:camel-yql/src/main/docs/yql-component.adoc[Yahoo Query Language] (camel-yql) +
+`yql:query` | 2.21 | The YQL (Yahoo! Query Language) platform enables you to query, filter, and combine data across the web.
 
 | link:camel-yammer/src/main/docs/yammer-component.adoc[Yammer] (camel-yammer) +
 `yammer:function` | 2.12 | The yammer component allows you to interact with the Yammer enterprise social network.
@@ -892,7 +919,7 @@ Data Formats
 ^^^^^^^^^^^^
 
 // dataformats: START
-Number of Data Formats: 47 in 38 JAR artifacts (4 deprecated)
+Number of Data Formats: 48 in 39 JAR artifacts (4 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |===
@@ -982,6 +1009,8 @@ Number of Data Formats: 47 in 38 JAR artifacts (4 deprecated)
 
 | link:camel-xmljson/src/main/docs/xmljson-dataformat.adoc[XML JSon] (camel-xmljson) | 2.10 | *deprecated* XML JSon data format can convert from XML to JSON and vice-versa directly, without stepping through intermediate POJOs.
 
+| link:camel-xmlrpc/src/main/docs/xmlrpc-dataformat.adoc[XML RPC] (camel-xmlrpc) | 2.11 | The XML RPC data format is used for working with the XML RPC protocol.
+
 | link:camel-xmlsecurity/src/main/docs/secureXML-dataformat.adoc[XML Security] (camel-xmlsecurity) | 2.0 | The XML Security data format facilitates encryption and decryption of XML payloads.
 
 | link:camel-xstream/src/main/docs/xstream-dataformat.adoc[XStream] (camel-xstream) | 1.3 | XSTream data format is used for unmarshal a XML payload to POJO or to marshal POJO back to XML payload.
@@ -1060,7 +1089,7 @@ Miscellaneous Components
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 // others: START
-Number of Miscellaneous Components: 40 in 40 JAR artifacts (13 deprecated)
+Number of Miscellaneous Components: 45 in 45 JAR artifacts (13 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |===
@@ -1106,6 +1135,8 @@ Number of Miscellaneous Components: 40 in 40 JAR artifacts (13 deprecated)
 
 | link:camel-rx/src/main/docs/rx.adoc[RX] (camel-rx) | 2.11 | *deprecated* Camel Reactive using RxJava library
 
+| link:camel-rxjava2/src/main/docs/rxjava2.adoc[Rxjava2] (camel-rxjava2) | 2.22 | RxJava2 based back-end for Camel's reactive streams component
+
 | link:camel-scala/src/main/docs/scala.adoc[Scala DSL] (camel-scala) | 1.4 | *deprecated* Camel Scala DSL
 
 | link:camel-scr/src/main/docs/scr.adoc[SCR] (camel-scr) | 2.15 | *deprecated* Camel with OSGi SCR (Declarative Services)
@@ -1118,7 +1149,11 @@ Number of Miscellaneous Components: 40 in 40 JAR artifacts (13 deprecated)
 
 | link:camel-spring-cloud/src/main/docs/spring-cloud.adoc[Spring Cloud] (camel-spring-cloud) | 2.19 | Camel Cloud integration with Spring Cloud
 
+| link:camel-spring-cloud-consul/src/main/docs/spring-cloud-consul.adoc[Spring Cloud Consul] (camel-spring-cloud-consul) | 2.19 | Camel Cloud integration with Spring Cloud Consul
+
 | link:camel-spring-cloud-netflix/src/main/docs/spring-cloud-netflix.adoc[Spring Cloud Netflix] (camel-spring-cloud-netflix) | 2.19 | Camel Cloud integration with Spring Cloud Netflix
+
+| link:camel-spring-cloud-zookeeper/src/main/docs/spring-cloud-zookeeper.adoc[Spring Cloud Zookeeper] (camel-spring-cloud-zookeeper) | 2.19 | Camel Cloud integration with Spring Cloud Zookeeper
 
 | link:camel-spring-javaconfig/src/main/docs/spring-javaconfig.adoc[Spring Java Configuration] (camel-spring-javaconfig) | 2.0 | Using Camel with Spring Java Configuration
 
@@ -1137,6 +1172,10 @@ Number of Miscellaneous Components: 40 in 40 JAR artifacts (13 deprecated)
 | link:camel-test-karaf/src/main/docs/test-karaf.adoc[Test Karaf] (camel-test-karaf) | 2.18 | Camel integration testing with Apache Karaf
 
 | link:camel-test-spring/src/main/docs/test-spring.adoc[Test Spring] (camel-test-spring) | 2.10 | Camel unit testing with Spring
+
+| link:camel-testcontainers/src/main/docs/testcontainers.adoc[Testcontainers] (camel-testcontainers) | 2.22 | Camel support for testcontainers
+
+| link:camel-testcontainers-spring/src/main/docs/testcontainers-spring.adoc[Testcontainers Spring] (camel-testcontainers-spring) | 2.22 | Camel unit testing with Spring and testcontainers
 
 | link:camel-testng/src/main/docs/testng.adoc[TestNG] (camel-testng) | 2.8 | *deprecated* Camel unit testing with TestNG
 
