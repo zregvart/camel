@@ -143,6 +143,8 @@ public class Olingo4ComponentConfiguration
         /**
          * Set this to true to filter out results that have already been
          * communicated by this component.
+         * 
+         * @param filterAlreadySeen
          */
         private Boolean filterAlreadySeen = false;
 
