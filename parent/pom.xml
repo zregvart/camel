@@ -99,10 +99,10 @@
     <boxjavalibv2.version>3.2.1</boxjavalibv2.version>
     <box-java-sdk-version>2.10.0</box-java-sdk-version>
     <braintree-gateway-version>2.77.0</braintree-gateway-version>
-    <braintree-jackson-version>2.9.5</braintree-jackson-version>
+    <braintree-jackson-version>2.9.8</braintree-jackson-version>
     <brave-zipkin-version>4.13.4</brave-zipkin-version>
     <build-helper-maven-plugin-version>1.10</build-helper-maven-plugin-version>
-    <bytebuddy-version>1.8.7</bytebuddy-version>
+    <bytebuddy-version>1.9.5</bytebuddy-version>
     <c3p0-version>0.9.5.2</c3p0-version>
     <c3p0-bundle-version>0.9.5.2_2</c3p0-bundle-version>
     <caffeine-version>2.6.2</caffeine-version>
@@ -707,7 +707,7 @@
     <velocity-tools-version>2.0</velocity-tools-version>
     <velocity-version>2.0</velocity-version>
     <vertx-version>3.5.3</vertx-version>
-    <vertx-jackson-version>2.9.5</vertx-jackson-version>
+    <vertx-jackson-version>2.9.8</vertx-jackson-version>
     <vysper-version>0.7</vysper-version>
     <weld1-version>1.1.28.Final</weld1-version>
     <weld2-version>2.4.6.Final</weld2-version>
