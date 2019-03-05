@@ -71,7 +71,7 @@ public class LinkedInComponent extends AbstractApiComponent<LinkedInApiName, Lin
     public LinkedInConfiguration getConfiguration() {
         return super.getConfiguration();
     }
- 
+
     @Override
     protected Endpoint createEndpoint(String uri, String methodName, LinkedInApiName apiName,
                                       LinkedInConfiguration endpointConfiguration) {
@@ -119,25 +119,4 @@ public class LinkedInComponent extends AbstractApiComponent<LinkedInApiName, Lin
             configuration.getRedirectUri(), configuration.getScopes());
     }
 
-    @Override
-    protected void doStop() throws Exception {
-        if (requestFilter != null) {
-            closeLogException(requestFilter);
-        }
-    }
-
-    protected void closeRequestFilter(LinkedInOAuthRequestFilter requestFilter) {
-        // only close if not a shared filter
-        if (this.requestFilter != requestFilter) {
-            closeLogException(requestFilter);
-        }
-    }
-
-    private void closeLogException(LinkedInOAuthRequestFilter requestFilter) {
-        try {
-            requestFilter.close();
-        } catch (Exception e) {
-            LOG.warn("Error closing OAuth2 request filter: " + e.getMessage(), e);
-        }
-    }
 }
