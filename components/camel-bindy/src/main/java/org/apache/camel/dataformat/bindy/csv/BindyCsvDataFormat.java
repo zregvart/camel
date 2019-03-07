@@ -171,7 +171,15 @@ public class BindyCsvDataFormat extends BindyAbstractDataFormat {
             while (scanner.hasNextLine()) {
     
                 // Read the line
-                String line = scanner.nextLine().trim();
+                String line = scanner.nextLine();
+
+                // if separator is a tab, don't trim any leading whitespaces (could be empty values separated by tabs)
+                if (separator.equals("\t")) {
+                    // trim only trailing whitespaces
+                    line = line.replaceAll("\\s+$", "");
+                } else {
+                    line = line.trim();
+                }
     
                 if (ObjectHelper.isEmpty(line)) {
                     // skip if line is empty
