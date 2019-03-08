@@ -1931,7 +1931,12 @@
     <bundle>mvn:org.apache.camel/camel-sap-netweaver/${project.version}</bundle>
   </feature>
   <feature name='camel-salesforce' version='${project.version}' resolver='(obr)' start-level='50'>
-    <feature>jetty</feature>
+    <bundle dependency='true'>mvn:org.eclipse.jetty/jetty-util/${jetty-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.jetty/jetty-io/${jetty-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.jetty/jetty-client/${jetty-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.jetty/jetty-http/${jetty-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.jetty/jetty-xml/${jetty-version}</bundle>
+    <bundle dependency='true'>mvn:org.eclipse.jetty/jetty-util-ajax/${jetty-version}</bundle>
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
