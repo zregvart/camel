@@ -20,12 +20,15 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.w3c.dom.NodeList;
 
@@ -139,6 +142,49 @@ public final class CollectionHelper {
         Map<String, Object> answer = new LinkedHashMap<>();
         doFlatternKeysInMap(map, "", ObjectHelper.isNotEmpty(separator) ? separator : "", answer);
         return answer;
+    }
+    
+    /**
+     * Build a map from varargs.
+     */
+    public static <K, V> Map<K, V> mapOf(Supplier<Map<K, V>> creator, K key, V value, Object... keyVals) {
+        Map<K, V> map = creator.get();
+        map.put(key, value);
+
+        for (int i = 0; i < keyVals.length; i += 2) {
+            map.put(
+                (K) keyVals[i],
+                (V) keyVals[i + 1]
+            );
+        }
+
+        return map;
+    }
+
+
+    /**
+     * Build an immutable map from varargs.
+     */
+    public static <K, V> Map<K, V> immutableMapOf(Supplier<Map<K, V>> creator, K key, V value, Object... keyVals) {
+        return Collections.unmodifiableMap(
+            mapOf(creator, key, value, keyVals)
+        );
+    }
+
+    /**
+     * Build a map from varargs.
+     */
+    public static <K, V> Map<K, V> mapOf(K key, V value, Object... keyVals) {
+        return mapOf(HashMap::new, key, value, keyVals);
+    }
+
+    /**
+     * Build an immutable map from varargs.
+     */
+    public static <K, V> Map<K, V> immutableMapOf(K key, V value, Object... keyVals) {
+        return Collections.unmodifiableMap(
+            mapOf(HashMap::new, key, value, keyVals)
+        );
     }
 
     private static void doFlatternKeysInMap(Map<String, Object> source, String prefix, String separator, Map<String, Object> target) {
