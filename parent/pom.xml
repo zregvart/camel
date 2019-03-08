@@ -1437,11 +1437,6 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
-        <artifactId>camel-jbpm</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
         <artifactId>camel-jclouds</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -2907,11 +2902,6 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-jaxb-starter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-jbpm-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
