@@ -142,7 +142,6 @@
         <include>org.apache.camel:camel-jasypt</include>
         <include>org.apache.camel:camel-javaspace</include>
         <include>org.apache.camel:camel-jaxb</include>
-        <include>org.apache.camel:camel-jbpm</include>
         <include>org.apache.camel:camel-jcr</include>
         <include>org.apache.camel:camel-jcache</include>
         <include>org.apache.camel:camel-jclouds</include>
@@ -456,7 +455,6 @@
         <include>org.apache.camel:camel-jasypt-starter</include>
         <include>org.apache.camel:camel-javaspace-starter</include>
         <include>org.apache.camel:camel-jaxb-starter</include>
-        <include>org.apache.camel:camel-jbpm-starter</include>
         <include>org.apache.camel:camel-jcache-starter</include>
         <include>org.apache.camel:camel-jcr-starter</include>
         <include>org.apache.camel:camel-jdbc-starter</include>
