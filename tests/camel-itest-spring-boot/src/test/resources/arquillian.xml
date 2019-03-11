@@ -27,6 +27,8 @@
             <property name="debug">false</property>
 
             <property name="librariesPath">${user.dir}/target</property>
+
+            <property name="waitTime">60</property>
         </configuration>
 
     </container>
