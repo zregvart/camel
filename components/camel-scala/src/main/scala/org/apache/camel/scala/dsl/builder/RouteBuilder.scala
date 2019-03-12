@@ -130,9 +130,13 @@ class RouteBuilder extends Preamble with DSL with RoutesBuilder with Languages w
     dlc.setDeadLetterUri(uri)
     dlc
   }
+  @deprecated("This method is deprecated", "--")
   def loggingErrorHandler : LoggingErrorHandlerBuilder = new LoggingErrorHandlerBuilder
+  @deprecated("This method is deprecated", "--")
   def loggingErrorHandler(log: String) : LoggingErrorHandlerBuilder = loggingErrorHandler(LoggerFactory.getLogger(log))
+  @deprecated("This method is deprecated", "--")
   def loggingErrorHandler(log: Logger) : LoggingErrorHandlerBuilder = new LoggingErrorHandlerBuilder(log)
+  @deprecated("This method is deprecated", "--")
   def loggingErrorHandler(log: Logger, level: LoggingLevel) : LoggingErrorHandlerBuilder = new LoggingErrorHandlerBuilder(log, level)
   def defaultErrorHandler = builder.defaultErrorHandler
 
