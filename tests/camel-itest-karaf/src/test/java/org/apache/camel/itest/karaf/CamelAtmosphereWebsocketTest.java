@@ -16,11 +16,13 @@
  */
 package org.apache.camel.itest.karaf;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.junit.PaxExam;
 
 @RunWith(PaxExam.class)
+@Ignore("ENTESB-10352: Not supported with Servlet API 4.0")
 public class CamelAtmosphereWebsocketTest extends BaseKarafTest {
 
     public static final String COMPONENT = extractName(CamelAtmosphereWebsocketTest.class);
