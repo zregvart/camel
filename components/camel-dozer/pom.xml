@@ -55,7 +55,7 @@
     </dependency>
     <!-- must use this glassfish EL implementation -->
     <dependency>
-      <groupId>org.glassfish.web</groupId>
+      <groupId>org.glassfish</groupId>
       <artifactId>javax.el</artifactId>
       <version>${javax.el-version}</version>
     </dependency>

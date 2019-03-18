@@ -16,6 +16,9 @@
  */
 package org.apache.camel.itest.karaf;
 
+import java.util.EnumSet;
+
+import org.apache.karaf.features.FeaturesService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.junit.PaxExam;
@@ -27,6 +30,7 @@ public class CamelBoxTest extends BaseKarafTest {
 
     @Test
     public void test() throws Exception {
+        featuresService.installFeature("pax-http-undertow", EnumSet.noneOf(FeaturesService.Option.class));
         testComponent(COMPONENT);
     }
 

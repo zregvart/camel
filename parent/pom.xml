@@ -246,7 +246,6 @@
     <geronimo-annotation-1.2-spec-version>1.0</geronimo-annotation-1.2-spec-version>
     <geronimo-atinject-1.0-spec-version>1.0</geronimo-atinject-1.0-spec-version>
     <geronimo-ejb_3.1_spec-version>1.0.2</geronimo-ejb_3.1_spec-version>
-    <geronimo-el-spec-version>1.0.1</geronimo-el-spec-version>
     <geronimo-interceptor-1.1-spec-version>1.0</geronimo-interceptor-1.1-spec-version>
     <geronimo-interceptor-1.2-spec-version>1.0</geronimo-interceptor-1.2-spec-version>
     <geronimo-j2ee-connector-spec-version>2.0.0</geronimo-j2ee-connector-spec-version>
@@ -357,8 +356,8 @@
     <javacrumbs-version>0.22</javacrumbs-version>
     <javapoet-version>1.10.0</javapoet-version>
     <javassist-version>3.24.1-GA</javassist-version>
-    <javax.el-api-version>2.2.5</javax.el-api-version>
-    <javax.el-version>2.2.5</javax.el-version>
+    <javax.el-api-version>3.0.0</javax.el-api-version>
+    <javax.el-version>3.0.0</javax.el-version>
     <javax-inject-bundle-version>1_2</javax-inject-bundle-version>
     <javax-mail-version>1.6.1</javax-mail-version>
     <javax.servlet-api-version>3.1.0</javax.servlet-api-version>
