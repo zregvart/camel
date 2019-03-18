@@ -44,6 +44,7 @@ import org.apache.camel.component.as2.api.util.SigningUtils;
 import org.apache.camel.component.as2.internal.AS2ApiCollection;
 import org.apache.camel.component.as2.internal.AS2ServerManagerApiMethod;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.apache.camel.test.AvailablePortFinder;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpVersion;
@@ -74,7 +75,7 @@ public class AS2ServerManagerIntegrationTest extends AbstractAS2TestSupport {
 
     private static final String METHOD = "POST";
     private static final String TARGET_HOST = "localhost";
-    private static final int TARGET_PORT = 8888;
+    private static final int TARGET_PORT = AvailablePortFinder.getNextAvailable(8080);
     private static final String AS2_VERSION = "1.1";
     private static final String USER_AGENT = "Camel AS2 Endpoint";
     private static final String REQUEST_URI = "/";
