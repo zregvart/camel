@@ -33,6 +33,11 @@
 
   <properties>
     <camel.osgi.export.pkg>org.apache.camel.component.sparkrest.*</camel.osgi.export.pkg>
+    <camel.osgi.import.pkg>
+      ${camel.osgi.import.defaults},
+      javax.servlet.*;version="[3.1,5)",
+      *
+    </camel.osgi.import.pkg>
   </properties>
 
   <dependencies>
