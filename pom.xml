@@ -173,7 +173,17 @@
     </repository>
     <repository>
       <id>rh</id>
-      <url>https://maven.repository.redhat.com/nexus/content/groups/product-techpreview</url>
+      <url>https://maven.repository.redhat.com/ga</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>rh_techpreview</id>
+      <url>https://maven.repository.redhat.com/techpreview/all</url>
       <releases>
         <enabled>true</enabled>
       </releases>
