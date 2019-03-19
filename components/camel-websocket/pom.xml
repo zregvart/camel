@@ -41,6 +41,7 @@
       !org.apache.camel.component.websocket.*,
       org.eclipse.jetty.util.ssl;version="[9.2,10)";resolution:=optional,
       ${camel.osgi.import.defaults},
+      javax.servlet.*;version="[3.1,5)",
       *
     </camel.osgi.import.pkg>
     <camel.osgi.export.service>org.apache.camel.spi.ComponentResolver;component=websocket</camel.osgi.export.service>
