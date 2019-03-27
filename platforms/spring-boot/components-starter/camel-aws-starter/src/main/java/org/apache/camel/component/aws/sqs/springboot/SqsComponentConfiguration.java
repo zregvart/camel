@@ -18,6 +18,7 @@ package org.apache.camel.component.aws.sqs.springboot;
 
 import javax.annotation.Generated;
 import com.amazonaws.services.sqs.AmazonSQS;
+import org.apache.camel.component.aws.sqs.SqsOperations;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -208,8 +209,23 @@ public class SqsComponentConfiguration
          */
         private String region;
         private Integer concurrentConsumers = 1;
+        /**
+         * To define the queueUrl explicitly. All other parameters, which would
+         * influence the queueUrl, are ignored. This parameter is intended to be
+         * used, to connect to a mock implementation of SQS, for testing
+         * purposes.
+         */
+        private String queueUrl;
+        /**
+         * To define a proxy host when instantiating the SQS client
+         */
         private String proxyHost;
         private Integer proxyPort;
+        /**
+         * The operation to do in case the user don't want to send only a
+         * message
+         */
+        private SqsOperations operation;
 
         public String getAmazonAWSHost() {
             return amazonAWSHost;
@@ -388,6 +404,14 @@ public class SqsComponentConfiguration
             this.concurrentConsumers = concurrentConsumers;
         }
 
+        public String getQueueUrl() {
+            return queueUrl;
+        }
+
+        public void setQueueUrl(String queueUrl) {
+            this.queueUrl = queueUrl;
+        }
+
         public String getProxyHost() {
             return proxyHost;
         }
@@ -402,6 +426,14 @@ public class SqsComponentConfiguration
 
         public void setProxyPort(Integer proxyPort) {
             this.proxyPort = proxyPort;
+        }
+
+        public SqsOperations getOperation() {
+            return operation;
+        }
+
+        public void setOperation(SqsOperations operation) {
+            this.operation = operation;
         }
     }
 }
