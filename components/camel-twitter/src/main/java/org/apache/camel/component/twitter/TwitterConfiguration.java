@@ -17,10 +17,8 @@
 package org.apache.camel.component.twitter;
 
 import org.apache.camel.component.twitter.data.EndpointType;
-import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.UriParam;
 import org.apache.camel.spi.UriParams;
-import org.apache.camel.spi.UriPath;
 import org.apache.camel.util.ObjectHelper;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
@@ -50,8 +48,8 @@ public class TwitterConfiguration {
     private long sinceId  = 1;
     @UriParam(label = "consumer,filter")
     private String lang;
-    @UriParam(label = "consumer,filter")
-    private Integer count;
+    @UriParam(label = "consumer,filter", defaultValue = "5")
+    private Integer count = 5;
     @UriParam(label = "consumer,filter", defaultValue = "1")
     private Integer numberOfPages = 1;
     @UriParam(label = "consumer,sort", defaultValue = "true")
@@ -124,7 +122,7 @@ public class TwitterConfiguration {
         if (httpProxyPort != null) {
             confBuilder.setHttpProxyPort(httpProxyPort);
         }
-        
+
         return confBuilder.build();
     }
 
@@ -200,7 +198,7 @@ public class TwitterConfiguration {
     public void setAccessTokenSecret(String accessTokenSecret) {
         this.accessTokenSecret = accessTokenSecret;
     }
-    
+
     public EndpointType getType() {
         return type;
     }
@@ -307,7 +305,7 @@ public class TwitterConfiguration {
     public void setHttpProxyHost(String httpProxyHost) {
         this.httpProxyHost = httpProxyHost;
     }
-    
+
     public String getHttpProxyHost() {
         return httpProxyHost;
     }
@@ -398,7 +396,7 @@ public class TwitterConfiguration {
     public void setDistanceMetric(String distanceMetric) {
         this.distanceMetric = distanceMetric;
     }
-    
+
     /**
      * Used for enabling full text from twitter (eg receive tweets that contains more than 140 characters).
      */
