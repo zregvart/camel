@@ -63,6 +63,8 @@ public class SqsConfiguration implements Cloneable {
     private boolean extendMessageVisibility;
     @UriParam(label = "consumer", defaultValue = "1")
     private int concurrentConsumers = 1;
+    @UriParam(label = "advanced")
+    private String queueUrl;
 
     // producer properties
     @UriParam(label = "producer")
@@ -71,6 +73,8 @@ public class SqsConfiguration implements Cloneable {
     private MessageGroupIdStrategy messageGroupIdStrategy;
     @UriParam(label = "producer", defaultValue = "useExchangeId", enums = "useExchangeId,useContentBasedDeduplication")
     private MessageDeduplicationIdStrategy messageDeduplicationIdStrategy = new ExchangeIdMessageDeduplicationIdStrategy();
+    @UriParam(label = "producer")
+    private SqsOperations operation;
 
     // queue properties
     @UriParam(label = "queue")
@@ -346,13 +350,24 @@ public class SqsConfiguration implements Cloneable {
         this.concurrentConsumers = concurrentConsumers;
     }
 
+    public String getQueueUrl() {
+        return queueUrl;
+    }
+
     /**
-     * To define a proxy host when instantiating the SQS client
+     * To define the queueUrl explicitly. All other parameters, which would influence the queueUrl, are ignored.
+     * This parameter is intended to be used, to connect to a mock implementation of SQS, for testing purposes.
      */
+    public void setQueueUrl(String queueUrl) {
+        this.queueUrl = queueUrl;
+    }
+
     public String getProxyHost() {
         return proxyHost;
     }
-
+    /**
+     * To define a proxy host when instantiating the SQS client
+     */
     public void setProxyHost(String proxyHost) {
         this.proxyHost = proxyHost;
     }
@@ -406,6 +421,17 @@ public class SqsConfiguration implements Cloneable {
         } else {
             throw new IllegalArgumentException("Unrecognised MessageDeduplicationIdStrategy: " + strategy);
         }
+    }
+    
+    public SqsOperations getOperation() {
+        return operation;
+    }
+
+    /**
+     * The operation to do in case the user don't want to send only a message
+     */
+    public void setOperation(SqsOperations operation) {
+        this.operation = operation;
     }
     
     // *************************************************
