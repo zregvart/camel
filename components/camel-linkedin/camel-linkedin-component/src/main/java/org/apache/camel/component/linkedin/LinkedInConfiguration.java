@@ -230,7 +230,8 @@ public class LinkedInConfiguration {
                 && (redirectUri == null ? other.redirectUri == null : redirectUri.equals(other.redirectUri))
                 && Arrays.equals(scopes, other.scopes)
                 && (httpParams == null ? other.httpParams == null : httpParams.equals(other.httpParams))
-                && (lazyAuth == other.lazyAuth);
+                && (lazyAuth == other.lazyAuth)
+                && (accessToken == null ? other.accessToken == null : accessToken.equals(other.accessToken));
         }
         return false;
     }
@@ -239,16 +240,35 @@ public class LinkedInConfiguration {
     public int hashCode() {
         return new HashCodeBuilder().append(userName).append(userPassword).append(secureStorage)
             .append(clientId).append(clientSecret)
-            .append(redirectUri).append(scopes).append(httpParams).append(lazyAuth).toHashCode();
+            .append(redirectUri).append(scopes).append(httpParams).append(lazyAuth).append(accessToken).toHashCode();
     }
 
     public void validate() throws IllegalArgumentException {
-        ObjectHelper.notEmpty(userName, "userName");
-        if (ObjectHelper.isEmpty(userPassword) && secureStorage == null) {
-            throw new IllegalArgumentException("Property userPassword or secureStorage is required");
+            //if access token is null, authentication credentials have to be validated
+        if (ObjectHelper.isEmpty(accessToken)) {
+            ObjectHelper.notEmpty(userName, "userName");
+            if (ObjectHelper.isEmpty(userPassword) && secureStorage == null) {
+                throw new IllegalArgumentException("Property userPassword or secureStorage is required");
+            }
+            ObjectHelper.notEmpty(clientId, "clientId");
+            ObjectHelper.notEmpty(clientSecret, "clientSecret");
+        } else {
+            //if accessToken is net, other parameters hav to be empty
+            if (!ObjectHelper.isEmpty(userName)) {
+                throw new IllegalArgumentException("Property accessToken can not be defined if property userName is set");
+            }
+            if (!ObjectHelper.isEmpty(userPassword)) {
+                throw new IllegalArgumentException("Property accessToken can not be defined if property userPassword is set");
+            }
+            if (!ObjectHelper.isEmpty(clientId)) {
+                throw new IllegalArgumentException("Property accessToken can not be defined if property clientId is set");
+            }
+            if (!ObjectHelper.isEmpty(clientSecret)) {
+                throw new IllegalArgumentException("Property accessToken can not be defined if property clientSecret is set");
+            }
         }
-        ObjectHelper.notEmpty(clientId, "clientId");
-        ObjectHelper.notEmpty(clientSecret, "clientSecret");
+
+        //redirectUri has to be valid for both cases
         ObjectHelper.notEmpty(redirectUri, "redirectUri");
     }
 }
