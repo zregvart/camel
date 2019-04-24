@@ -49,6 +49,12 @@
             <groupId>org.apache.chemistry.opencmis</groupId>
             <artifactId>chemistry-opencmis-client-impl</artifactId>
             <version>${cmis-version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-rt-ws-policy</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         
         <!-- osgi support -->
