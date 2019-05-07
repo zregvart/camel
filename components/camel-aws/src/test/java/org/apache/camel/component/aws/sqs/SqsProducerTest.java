@@ -78,15 +78,15 @@ public class SqsProducerTest {
     @Before
     public void setup() throws Exception {
         sqsConfiguration = new SqsConfiguration();
-        sqsConfiguration.setDelaySeconds( 0 );
+        sqsConfiguration.setDelaySeconds(0);
         sqsConfiguration.setQueueName("queueName");
         SendMessageResult sendMessageResult =
-            new SendMessageResult().withMD5OfMessageBody( MESSAGE_MD5 ).withMessageId( MESSAGE_ID );
-        when(amazonSQSClient.sendMessage(any(SendMessageRequest.class))).thenReturn( sendMessageResult );
+            new SendMessageResult().withMD5OfMessageBody(MESSAGE_MD5).withMessageId(MESSAGE_ID);
+        when(amazonSQSClient.sendMessage(any(SendMessageRequest.class))).thenReturn(sendMessageResult);
         when(sqsEndpoint.getClient()).thenReturn(amazonSQSClient);
         when(sqsEndpoint.getConfiguration()).thenReturn(sqsConfiguration);
         when(sqsEndpoint.getQueueUrl()).thenReturn(QUEUE_URL);
-        when(sqsEndpoint.getHeaderFilterStrategy()).thenReturn( new SqsHeaderFilterStrategy() );
+        when(sqsEndpoint.getHeaderFilterStrategy()).thenReturn(new SqsHeaderFilterStrategy());
         when(exchange.getIn()).thenReturn(inMessage);
         when(exchange.getPattern()).thenReturn(ExchangePattern.InOnly);
         when(exchange.getExchangeId()).thenReturn(SAMPLE_EXCHANGE_ID);
