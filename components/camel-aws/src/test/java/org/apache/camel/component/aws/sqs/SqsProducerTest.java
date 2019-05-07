@@ -80,7 +80,8 @@ public class SqsProducerTest {
         sqsConfiguration = new SqsConfiguration();
         sqsConfiguration.setDelaySeconds(0);
         sqsConfiguration.setQueueName("queueName");
-        SendMessageResult sendMessageResult = new SendMessageResult().withMD5OfMessageBody(MESSAGE_MD5).withMessageId(MESSAGE_ID);
+        SendMessageResult sendMessageResult =
+            new SendMessageResult().withMD5OfMessageBody(MESSAGE_MD5).withMessageId(MESSAGE_ID);
         when(amazonSQSClient.sendMessage(any(SendMessageRequest.class))).thenReturn(sendMessageResult);
         when(sqsEndpoint.getClient()).thenReturn(amazonSQSClient);
         when(sqsEndpoint.getConfiguration()).thenReturn(sqsConfiguration);
