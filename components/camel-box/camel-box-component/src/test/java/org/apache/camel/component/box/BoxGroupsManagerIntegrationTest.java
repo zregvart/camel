@@ -219,6 +219,9 @@ public class BoxGroupsManagerIntegrationTest extends AbstractBoxTestSupport {
                 from("direct://GETGROUPMEMBERSHIPS")
                     .to("box://" + PATH_PREFIX + "/getGroupMemberships?inBody=groupId");
 
+                // test route for updateGroupInfo
+                from("direct://UPDATEGROUPINFO").to("box://" + PATH_PREFIX + "/updateGroupInfo");
+
                 // test route for updateGroupMembershipInfo
                 from("direct://UPDATEGROUPMEMBERSHIPINFO").to("box://" + PATH_PREFIX + "/updateGroupMembershipInfo");
 
