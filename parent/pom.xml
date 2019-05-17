@@ -68,6 +68,7 @@
     <assertj-version>3.9.1</assertj-version>
     <asterisk-java-version>1.0.0-final</asterisk-java-version>
     <asterisk-java-bundle-version>1.0.0-final_1</asterisk-java-bundle-version>
+    <atlassian-fugue-version>3.0.0</atlassian-fugue-version>
     <atmos-client-version>2.2.2</atmos-client-version>
     <atmosphere-version>2.4.20</atmosphere-version>
     <atmosphere-version-range>[2.4,3.0)</atmosphere-version-range>
@@ -400,8 +401,8 @@
     <jing-bundle-version>20030619_5</jing-bundle-version>
     <jing-version>20030619</jing-version>
     <jini-version>2.1</jini-version>
-    <jira-rest-client-version>1.2-m01</jira-rest-client-version>
-    <jira-rest-client-api-version>2.0.0-m30</jira-rest-client-api-version>
+    <jira-guava-version>26.0-jre</jira-guava-version>
+    <jira-rest-client-api-version>5.1.0</jira-rest-client-api-version>
     <jmh-version>1.20</jmh-version>
     <jodatime-bundle-version>1.6.2</jodatime-bundle-version>
     <jodatime2-bundle-version>2.9.9</jodatime2-bundle-version>
@@ -4612,13 +4613,6 @@
         <groupId>com.cloudbees.thirdparty</groupId>
         <artifactId>zendesk-java-client</artifactId>
         <version>${zendesk-client-version}</version>
-      </dependency>
-
-      <!-- Optional Jira -->
-      <dependency>
-        <groupId>com.atlassian.jira</groupId>
-        <artifactId>jira-rest-java-client</artifactId>
-        <version>${jira-rest-client-version}</version>
       </dependency>
 
       <!-- optional misc -->
