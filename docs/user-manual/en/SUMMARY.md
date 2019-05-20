@@ -261,7 +261,7 @@
 	* [Jetty Websocket](websocket-component.adoc)
 	* [JGroups](jgroups-component.adoc)
 	* [Jing](jing-component.adoc)
-	* [JIRA](jira-component.adoc)
+	* [Jira](jira-component.adoc)
 	* [JMS](jms-component.adoc)
 	* [JMX](jmx-component.adoc)
 	* [JOLT](jolt-component.adoc)
