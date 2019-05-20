@@ -71,11 +71,6 @@
         <version>1.2.46</version>
       </dependency>
       <dependency>
-        <groupId>com.atlassian.jira</groupId>
-        <artifactId>jira-rest-java-client</artifactId>
-        <version>1.2-m01</version>
-      </dependency>
-      <dependency>
         <groupId>com.cloudbees.thirdparty</groupId>
         <artifactId>zendesk-java-client</artifactId>
         <version>0.6.2</version>
@@ -3136,6 +3131,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-security</artifactId>
+        <version>3.2.5</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-rt-transports-http</artifactId>
         <version>3.2.5</version>
       </dependency>
@@ -3247,12 +3247,12 @@
       <dependency>
         <groupId>org.apache.kafka</groupId>
         <artifactId>kafka-clients</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.1.redhat-00002</version>
       </dependency>
       <dependency>
         <groupId>org.apache.kafka</groupId>
         <artifactId>kafka_2.11</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.1</version>
       </dependency>
       <dependency>
         <groupId>org.apache.mina</groupId>
@@ -3783,6 +3783,12 @@
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
         <version>6.8.21</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.beanshell</groupId>
+            <artifactId>bsh</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>rhino</groupId>
