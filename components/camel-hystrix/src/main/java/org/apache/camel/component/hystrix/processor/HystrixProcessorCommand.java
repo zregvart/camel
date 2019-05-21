@@ -42,7 +42,7 @@ public class HystrixProcessorCommand extends HystrixCommand {
     private final Object lock = new Object();
 
     public HystrixProcessorCommand(Setter setter, Exchange exchange, Processor processor, Processor fallback,
-                                   HystrixProcessorCommandFallbackViaNetwork fallbackCommand) {
+            HystrixProcessorCommandFallbackViaNetwork fallbackCommand) {
         super(setter);
         this.exchange = exchange;
         this.processor = processor;
@@ -52,9 +52,12 @@ public class HystrixProcessorCommand extends HystrixCommand {
 
     @Override
     protected Message getFallback() {
-        // guard by lock as the run command can be running concurrently in case hystrix caused a timeout which
-        // can cause the fallback timer to trigger this fallback at the same time the run command may be running
-        // after its processor.process method which could cause both threads to mutate the state on the exchange
+        // guard by lock as the run command can be running concurrently in case hystrix
+        // caused a timeout which
+        // can cause the fallback timer to trigger this fallback at the same time the
+        // run command may be running
+        // after its processor.process method which could cause both threads to mutate
+        // the state on the exchange
         synchronized (lock) {
             fallbackInUse.set(true);
         }
@@ -64,11 +67,13 @@ public class HystrixProcessorCommand extends HystrixCommand {
             throw new UnsupportedOperationException("No fallback available.");
         }
 
-        // grab the exception that caused the error (can be failure in run, or from hystrix if short circuited)
+        // grab the exception that caused the error (can be failure in run, or from
+        // hystrix if short circuited)
         Throwable exception = getExecutionException();
 
         if (exception != null) {
-            LOG.debug("Error occurred processing. Will now run fallback. Exception class: {} message: {}.", exception.getClass().getName(), exception.getMessage());
+            LOG.debug("Error occurred processing. Will now run fallback. Exception class: {} message: {}.",
+                    exception.getClass().getName(), exception.getMessage());
         } else {
             LOG.debug("Error occurred processing. Will now run fallback.");
         }
@@ -91,7 +96,8 @@ public class HystrixProcessorCommand extends HystrixCommand {
             } else {
                 LOG.debug("Running fallback: {} with exchange: {}", fallback, exchange);
                 // process the fallback until its fully done
-                // (we do not hav any hystrix callback to leverage so we need to complete all work in this run method)
+                // (we do not hav any hystrix callback to leverage so we need to complete all
+                // work in this run method)
                 fallback.process(exchange);
                 LOG.debug("Running fallback: {} with exchange: {} done", fallback, exchange);
             }
@@ -106,41 +112,60 @@ public class HystrixProcessorCommand extends HystrixCommand {
     protected Message run() throws Exception {
         LOG.debug("Running processor: {} with exchange: {}", processor, exchange);
 
-        // prepare a copy of exchange so downstream processors don't cause side-effects if they mutate the exchange
+        // prepare a copy of exchange so downstream processors don't cause side-effects
+        // if they mutate the exchange
         // in case Hystrix timeout processing and continue with the fallback etc
         Exchange copy = ExchangeHelper.createCorrelatedCopy(exchange, false, false);
         try {
             // process the processor until its fully done
-            // (we do not hav any hystrix callback to leverage so we need to complete all work in this run method)
+            // (we do not hav any hystrix callback to leverage so we need to complete all
+            // work in this run method)
             processor.process(copy);
         } catch (Exception e) {
             copy.setException(e);
         }
 
-        // when a hystrix timeout occurs then a hystrix timer thread executes the fallback
-        // and therefore we need this thread to not do anymore if fallback is already in process
+        // if hystrix execution timeout is enabled and fallback is enabled and a timeout
+        // occurs
+        // then a hystrix timer thread executes the fallback so we can stop run()
+        // execution
+        if (getProperties().executionTimeoutEnabled().get() && getProperties().fallbackEnabled().get()
+                && isCommandTimedOut.get() == TimedOutStatus.TIMED_OUT) {
+            LOG.debug("Exiting run command due to a hystrix execution timeout in processing exchange: {}", exchange);
+            return null;
+        }
+
+        // when a hystrix timeout occurs then a hystrix timer thread executes the
+        // fallback
+        // and therefore we need this thread to not do anymore if fallback is already in
+        // process
         if (fallbackInUse.get()) {
             LOG.debug("Exiting run command as fallback is already in use processing exchange: {}", exchange);
             return null;
         }
 
-        // remember any hystrix execution exception which for example can be triggered by a hystrix timeout
+        // remember any hystrix execution exception which for example can be triggered
+        // by a hystrix timeout
         Throwable hystrixExecutionException = getExecutionException();
         Exception camelExchangeException = copy.getException();
 
         synchronized (lock) {
-
-            // when a hystrix timeout occurs then a hystrix timer thread executes the fallback
-            // and therefore we need this thread to not do anymore if fallback is already in process
+            // when a hystrix timeout occurs then a hystrix timer thread executes the
+            // fallback
+            // and therefore we need this thread to not do anymore if fallback is already in
+            // process
             if (fallbackInUse.get()) {
                 LOG.debug("Exiting run command as fallback is already in use processing exchange: {}", exchange);
                 return null;
             }
 
             // execution exception must take precedence over exchange exception
-            // because hystrix may have caused this command to fail due timeout or something else
+            // because hystrix may have caused this command to fail due timeout or something
+            // else
             if (hystrixExecutionException != null) {
-                exchange.setException(new CamelExchangeException("Hystrix execution exception occurred while processing Exchange", exchange, hystrixExecutionException));
+                exchange.setException(
+                        new CamelExchangeException("Hystrix execution exception occurred while processing Exchange",
+                                exchange, hystrixExecutionException));
             }
 
             // special for HystrixBadRequestException which should not trigger fallback
@@ -153,7 +178,8 @@ public class HystrixProcessorCommand extends HystrixCommand {
             ExchangeHelper.copyResults(exchange, copy);
 
             // in case of an exception in the exchange
-            // we need to trigger this by throwing the exception so hystrix will execute the fallback
+            // we need to trigger this by throwing the exception so hystrix will execute the
+            // fallback
             // or open the circuit
             if (hystrixExecutionException == null && camelExchangeException != null) {
                 throw camelExchangeException;
