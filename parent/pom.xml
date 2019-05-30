@@ -577,8 +577,8 @@
     <protonpack-version>1.8</protonpack-version>
     <pubnub-version>4.18.0</pubnub-version>
     <qpid-broker-version>7.0.2</qpid-broker-version>
-    <qpid-proton-j-version>0.29.0.redhat-00001</qpid-proton-j-version>
-    <qpid-jms-client-version>0.37.0.redhat-00001</qpid-jms-client-version>
+    <qpid-proton-j-version>0.31.0.redhat-00001</qpid-proton-j-version>
+    <qpid-jms-client-version>0.40.0.redhat-00001</qpid-jms-client-version>
     <quartz-bundle-version>1.8.6_1</quartz-bundle-version>
     <quartz-version>1.8.6</quartz-version>
     <quartz-version-range>[1.8,2)</quartz-version-range>
