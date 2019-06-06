@@ -105,6 +105,7 @@
         <include>org.apache.camel:camel-git</include>
         <include>org.apache.camel:camel-github</include>
         <include>org.apache.camel:camel-google-calendar</include>
+        <include>org.apache.camel:camel-google-sheets</include>
         <include>org.apache.camel:camel-google-drive</include>
         <include>org.apache.camel:camel-google-mail</include>
         <include>org.apache.camel:camel-google-bigquery</include>
@@ -419,6 +420,7 @@
         <include>org.apache.camel:camel-git-starter</include>
         <include>org.apache.camel:camel-google-bigquery-starter</include>
         <include>org.apache.camel:camel-google-calendar-starter</include>
+        <include>org.apache.camel:camel-google-sheets-starter</include>
         <include>org.apache.camel:camel-google-drive-starter</include>
         <include>org.apache.camel:camel-google-mail-starter</include>
         <include>org.apache.camel:camel-google-pubsub-starter</include>
