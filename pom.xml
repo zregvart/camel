@@ -141,7 +141,7 @@
   <repositories>
     <repository>
       <id>apache.snapshots</id>
-      <url>http://repository.apache.org/snapshots/</url>
+      <url>https://repository.apache.org/snapshots/</url>
       <name>Apache Snapshot Repo</name>
       <snapshots>
         <enabled>true</enabled>
@@ -154,7 +154,7 @@
       <!-- For Swagger 1.5.18.fuse70-1-redhat-1 -->
       <id>jb-fuse-7-brew</id>
       <name>jb-fuse-7-brew</name>
-      <url>http://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-7-maven-build/latest/maven</url>
+      <url>https://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-7-maven-build/latest/maven</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -198,7 +198,7 @@
     <repository>
       <id>brew-jb-eap-7.2-maven</id>
       <name>brew-jb-eap-7.2-maven</name>
-      <url>http://download.eng.bos.redhat.com/brewroot/repos/jb-eap-7.2-maven-build/latest/maven</url>
+      <url>https://download.eng.bos.redhat.com/brewroot/repos/jb-eap-7.2-maven-build/latest/maven</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -212,7 +212,7 @@
     <pluginRepository>
       <id>apache.snapshots</id>
       <name>apache.snapshots</name>
-      <url>http://repository.apache.org/snapshots/</url>
+      <url>https://repository.apache.org/snapshots/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
