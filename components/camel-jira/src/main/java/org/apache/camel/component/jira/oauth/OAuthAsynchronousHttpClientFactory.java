@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Date;
 import java.util.Properties;
-
 import javax.annotation.Nonnull;
 
 import com.atlassian.event.api.EventPublisher;
@@ -171,8 +170,7 @@ public class OAuthAsynchronousHttpClientFactory {
                 props.load(resourceAsStream);
                 return props.getProperty("version", UNKNOWN_VERSION);
             } catch (Exception e) {
-                LOG.debug("Could not find version for maven artifact {}:{}", groupId, artifactId);
-                LOG.debug("Got the following exception", e);
+                LOG.debug("Could not find version for Jira Rest Java Client maven artifact {}:{}. Error: {}", groupId, artifactId, e.getMessage());
                 return UNKNOWN_VERSION;
             }
         }
