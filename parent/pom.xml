@@ -258,7 +258,7 @@
     <geronimo-j2ee-management-spec-version>1.1</geronimo-j2ee-management-spec-version>
     <geronimo-jcdi-1.0-spec-version>1.0</geronimo-jcdi-1.0-spec-version>
     <geronimo-jcdi-1.1-spec-version>1.0</geronimo-jcdi-1.1-spec-version>
-    <geronimo-jms-spec-version>1.1.1</geronimo-jms-spec-version>
+    <geronimo-jms-spec-version>1.1.1.redhat-2</geronimo-jms-spec-version>
     <geronimo-jms2-spec-version>1.0-alpha-2</geronimo-jms2-spec-version>
     <geronimo-jpa-spec-version>1.0-alpha-1</geronimo-jpa-spec-version>
     <geronimo-jsp-spec-version>1.1</geronimo-jsp-spec-version>
