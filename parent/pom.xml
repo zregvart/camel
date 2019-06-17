@@ -263,7 +263,7 @@
     <geronimo-jpa-spec-version>1.0-alpha-1</geronimo-jpa-spec-version>
     <geronimo-jsp-spec-version>1.1</geronimo-jsp-spec-version>
     <geronimo-json-spec-version>1.0</geronimo-json-spec-version>
-    <geronimo-jta-spec-version>1.1.1</geronimo-jta-spec-version>
+    <geronimo-jta-spec-version>1.1.1.redhat-2</geronimo-jta-spec-version>
     <geronimo-servlet-spec-version>1.0</geronimo-servlet-spec-version>
     <geronimo-servlet-2.5-spec-version>1.2</geronimo-servlet-2.5-spec-version>
     <geronimo-ws-metadata-spec-version>1.1.3</geronimo-ws-metadata-spec-version>
