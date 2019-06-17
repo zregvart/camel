@@ -103,7 +103,7 @@
     <boxjavalibv2.version>3.2.1</boxjavalibv2.version>
     <box-java-sdk-version>2.31.0</box-java-sdk-version>
     <braintree-gateway-version>2.77.0</braintree-gateway-version>
-    <braintree-jackson-version>2.9.8</braintree-jackson-version>
+    <braintree-jackson-version>2.9.9</braintree-jackson-version>
     <brave-zipkin-version>4.13.4</brave-zipkin-version>
     <build-helper-maven-plugin-version>1.10</build-helper-maven-plugin-version>
     <bytebuddy-version>1.9.5</bytebuddy-version>
