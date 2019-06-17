@@ -66,6 +66,7 @@
     <dependency>
       <groupId>org.jolokia</groupId>
       <artifactId>jolokia-core</artifactId>
+      <version>${jolokia-version}</version>
     </dependency>
 
     <!-- Spring Boot -->
