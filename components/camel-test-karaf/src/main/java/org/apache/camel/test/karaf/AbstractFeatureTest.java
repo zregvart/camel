@@ -356,7 +356,8 @@ public abstract class AbstractFeatureTest {
                                                                   "    http://repo1.maven.org/maven2@id=central, " 
                                          + "    http://repository.apache.org/content/groups/snapshots-group@id=apache@snapshots@noreleases, "
                                          + "    https://oss.sonatype.org/content/repositories/ops4j-snapshots@id=ops4j.sonatype.snapshots.deploy@snapshots@noreleases, "
-                                         + "    https://maven.repository.redhat.com/ga@id=rhga"),
+                                         + "    https://maven.repository.redhat.com/ga@id=rhga, "
+                                         + "    http://indy.psi.redhat.com/api/group/builds-untested+shared-imports+public@id=indy"),
 
                                          // Assign unique ports for Karaf
                                          // editConfigurationFilePut("etc/org.ops4j.pax.web.cfg",
