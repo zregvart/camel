@@ -160,7 +160,6 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler {
 
     private void sendResponse(HttpServerExchange httpExchange, Exchange camelExchange) throws IOException, NoTypeConversionAvailableException {
         Object body = getResponseBody(httpExchange, camelExchange);
-        TypeConverter tc = getEndpoint().getCamelContext().getTypeConverter();
 
         if (body == null) {
             LOG.trace("No payload to send as reply for exchange: " + camelExchange);
@@ -169,7 +168,7 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler {
             return;
         }
 
-        if (body instanceof InputStream) {
+        if (getEndpoint().isUseStreaming() && (body instanceof InputStream)) {
             httpExchange.startBlocking();
             try (InputStream input = (InputStream) body;
                  OutputStream output = httpExchange.getOutputStream()) {
@@ -177,7 +176,8 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler {
                 IOHelper.copy(input, output, IOHelper.DEFAULT_BUFFER_SIZE, true);
             }
         } else {
-            ByteBuffer bodyAsByteBuffer = tc.convertTo(ByteBuffer.class, body);
+            TypeConverter tc = getEndpoint().getCamelContext().getTypeConverter();
+            ByteBuffer bodyAsByteBuffer = tc.mandatoryConvertTo(ByteBuffer.class, body);
             httpExchange.getResponseSender().send(bodyAsByteBuffer);
         }
     }
