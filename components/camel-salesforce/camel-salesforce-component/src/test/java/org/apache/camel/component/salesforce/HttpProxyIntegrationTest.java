@@ -63,7 +63,7 @@ public class HttpProxyIntegrationTest extends AbstractSalesforceTestBase {
     private static Server server;
     private static int httpProxyPort;
 
-    private static final AtomicBoolean WENT_TORUGH_PROXY = new AtomicBoolean();
+    private static final AtomicBoolean WENT_THROUGH_PROXY = new AtomicBoolean();
 
     @Parameter(0)
     public Consumer<SalesforceComponent> configurationMethod;
@@ -79,7 +79,7 @@ public class HttpProxyIntegrationTest extends AbstractSalesforceTestBase {
         doTestGetVersions("");
         doTestGetVersions("Xml");
 
-        assertTrue("Should have gone through the test proxy", WENT_TORUGH_PROXY.get());
+        assertTrue("Should have gone through the test proxy", WENT_THROUGH_PROXY.get());
     }
 
     @SuppressWarnings("unchecked")
@@ -122,7 +122,7 @@ public class HttpProxyIntegrationTest extends AbstractSalesforceTestBase {
                     return false;
                 }
                 LOG.info("Request contains required header " + PROXY_AUTHORIZATION);
-                WENT_TORUGH_PROXY.set(true);
+                WENT_THROUGH_PROXY.set(true);
                 return true;
             }
         };

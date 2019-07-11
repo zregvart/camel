@@ -104,6 +104,7 @@ public abstract class CamelTestSupport extends TestSupport {
     private static ThreadLocal<FluentProducerTemplate> threadFluentTemplate = new ThreadLocal<FluentProducerTemplate>();
     private static ThreadLocal<ConsumerTemplate> threadConsumer = new ThreadLocal<ConsumerTemplate>();
     private static ThreadLocal<Service> threadService = new ThreadLocal<Service>();
+    protected Properties extra;
     protected volatile ModelCamelContext context;
     protected volatile ProducerTemplate template;
     protected volatile FluentProducerTemplate fluentTemplate;
@@ -342,7 +343,9 @@ public abstract class CamelTestSupport extends TestSupport {
 
         // configure properties component (mandatory for testing)
         PropertiesComponent pc = context.getComponent("properties", PropertiesComponent.class);
-        Properties extra = useOverridePropertiesWithPropertiesComponent();
+        if (extra == null) {
+            extra = useOverridePropertiesWithPropertiesComponent();
+        }
         if (extra != null && !extra.isEmpty()) {
             pc.setOverrideProperties(extra);
         }
