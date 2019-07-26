@@ -25,7 +25,6 @@ import org.apache.camel.ServiceStatus;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.bson.Document;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -154,7 +153,6 @@ public class MongoDbTailableCursorConsumerTest extends AbstractMongoDbTest {
     }
 
     @Test
-    @Ignore
     public void testPersistentTailTrack() throws Exception {
         assertEquals(0, cappedTestCollection.count());
         final MockEndpoint mock = getMockEndpoint("mock:test");
@@ -228,7 +226,6 @@ public class MongoDbTailableCursorConsumerTest extends AbstractMongoDbTest {
     }
 
     @Test
-    @Ignore
     public void testPersistentTailTrackIncreasingDateField() throws Exception {
         assertEquals(0, cappedTestCollection.count());
         final MockEndpoint mock = getMockEndpoint("mock:test");
@@ -305,7 +302,6 @@ public class MongoDbTailableCursorConsumerTest extends AbstractMongoDbTest {
     }
 
     @Test
-    @Ignore
     public void testCustomTailTrackLocation() throws Exception {
         assertEquals(0, cappedTestCollection.count());
         final MockEndpoint mock = getMockEndpoint("mock:test");
