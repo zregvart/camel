@@ -17,8 +17,10 @@
 package org.apache.camel.component.mongodb3.springboot;
 
 import javax.annotation.Generated;
+import com.mongodb.MongoClient;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Component for working with documents stored in MongoDB database.
@@ -32,11 +34,24 @@ public class MongoDbComponentConfiguration
             ComponentConfigurationPropertiesCommon {
 
     /**
+     * Set the client used for connection
+     */
+    @NestedConfigurationProperty
+    private MongoClient mongoConnection;
+    /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
      * placeholders.
      */
     private Boolean resolvePropertyPlaceholders = true;
+
+    public MongoClient getMongoConnection() {
+        return mongoConnection;
+    }
+
+    public void setMongoConnection(MongoClient mongoConnection) {
+        this.mongoConnection = mongoConnection;
+    }
 
     public Boolean getResolvePropertyPlaceholders() {
         return resolvePropertyPlaceholders;
