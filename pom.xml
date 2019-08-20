@@ -205,10 +205,11 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-   </repository>
-   <repository>
-      <id>indy</id>
-      <url>http://indy.psi.redhat.com/api/group/static</url>
+    </repository>
+    <repository>
+      <id>brew-jb-fuse-6.2</id>
+      <name>brew-jb-fuse-6.2</name>
+      <url>https://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6.2-build/latest/maven</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -228,8 +229,9 @@
       </releases>
     </pluginRepository>
     <pluginRepository>
-      <id>indy</id>
-      <url>http://indy.psi.redhat.com/api/group/static</url>
+      <id>brew-jb-fuse-6.2</id>
+      <name>brew-jb-fuse-6.2</name>
+      <url>https://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6.2-build/latest/maven</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>

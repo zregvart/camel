@@ -436,7 +436,6 @@
 	* [Spring Cloud](spring-cloud.adoc)
 	* [Spring Cloud Consul](spring-cloud-consul.adoc)
 	* [Spring Cloud Netflix](spring-cloud-netflix.adoc)
-	* [Spring Cloud Zookeeper](spring-cloud-zookeeper.adoc)
 	* [Spring Java Configuration](spring-javaconfig.adoc)
 	* [Spring Security](spring-security.adoc)
 	* [Swagger](swagger.adoc)
