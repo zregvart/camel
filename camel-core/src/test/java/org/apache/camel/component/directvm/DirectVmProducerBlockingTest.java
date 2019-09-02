@@ -33,7 +33,7 @@ public class DirectVmProducerBlockingTest extends ContextTestSupport {
 
         StopWatch watch = new StopWatch();
         try {
-            template.sendBody("direct-vm:suspended?block=true&timeout=500", "hello world");
+            template.sendBody("direct-vm:suspended?block=true&timeout=500&failIfNoConsumers=false", "hello world");
             fail("Expected CamelExecutionException");
         } catch (CamelExecutionException e) {
             DirectVmConsumerNotAvailableException cause = assertIsInstanceOf(DirectVmConsumerNotAvailableException.class, e.getCause());
@@ -48,13 +48,26 @@ public class DirectVmProducerBlockingTest extends ContextTestSupport {
 
         StopWatch watch = new StopWatch();
         try {
-            template.sendBody("direct-vm:start?block=true&timeout=500", "hello world");
+            template.sendBody("direct-vm:start?block=true&timeout=500&failIfNoConsumers=false", "hello world");
             fail("Expected CamelExecutionException");
         } catch (CamelExecutionException e) {
             DirectVmConsumerNotAvailableException cause = assertIsInstanceOf(DirectVmConsumerNotAvailableException.class, e.getCause());
             assertIsInstanceOf(CamelExchangeException.class, cause);
 
             assertTrue(watch.taken() > 490);
+        }
+    }
+    
+    public void testProducerBlocksFailIfNoConsumerFalse() throws Exception {
+        DirectVmEndpoint endpoint = getMandatoryEndpoint("direct-vm:suspended", DirectVmEndpoint.class);
+        endpoint.getConsumer().suspend();
+
+        try {
+            template.sendBody("direct-vm:start?block=true&timeout=500&failIfNoConsumers=true", "hello world");
+            fail("Expected CamelExecutionException");
+        } catch (CamelExecutionException e) {
+            DirectVmConsumerNotAvailableException cause = assertIsInstanceOf(DirectVmConsumerNotAvailableException.class, e.getCause());
+            assertIsInstanceOf(CamelExchangeException.class, cause);
         }
     }
 
@@ -77,7 +90,7 @@ public class DirectVmProducerBlockingTest extends ContextTestSupport {
 
         getMockEndpoint("mock:result").expectedMessageCount(1);
 
-        template.sendBody("direct-vm:suspended?block=true&timeout=1000", "hello world");
+        template.sendBody("direct-vm:suspended?block=true&timeout=1000&failIfNoConsumers=false", "hello world");
 
         assertMockEndpointsSatisfied();
 
