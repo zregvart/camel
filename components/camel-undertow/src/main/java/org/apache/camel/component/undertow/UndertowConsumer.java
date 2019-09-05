@@ -175,7 +175,7 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler {
         
     }
 
-    private void sendResponse(HttpServerExchange httpExchange, Exchange camelExchange) throws IOException {
+    private void sendResponse(HttpServerExchange httpExchange, Exchange camelExchange) throws IOException, NoTypeConversionAvailableException {
         Object body = getResponseBody(httpExchange, camelExchange);
 
         if (body == null) {
