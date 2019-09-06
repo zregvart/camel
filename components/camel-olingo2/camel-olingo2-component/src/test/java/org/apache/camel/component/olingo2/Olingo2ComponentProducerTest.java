@@ -44,10 +44,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Test class for {@link org.apache.camel.component.olingo2.api.Olingo2App} APIs.
+ * Test class for {@link org.apache.camel.component.olingo2.api.Olingo2App}
+ * APIs.
  * <p>
- * The integration test runs against Apache Olingo 2.0 sample server
- * which is dynamically installed and started during the test.
+ * The integration test runs against Apache Olingo 2.0 sample server which is
+ * dynamically installed and started during the test.
  * </p>
  */
 public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
@@ -186,20 +187,17 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
 
         // 5. create
         final Map<String, Object> data = getEntityData();
-        batchParts.add(Olingo2BatchChangeRequest.resourcePath(MANUFACTURERS).
-            contentId(TEST_RESOURCE_CONTENT_ID).operation(Operation.CREATE).body(data).build());
+        batchParts.add(Olingo2BatchChangeRequest.resourcePath(MANUFACTURERS).contentId(TEST_RESOURCE_CONTENT_ID).operation(Operation.CREATE).body(data).build());
 
         // 6. update address in created entry
         final Map<String, Object> updateData = new HashMap<String, Object>(data);
-        Map<String, Object> address = (Map<String, Object>) updateData.get(ADDRESS);
+        Map<String, Object> address = (Map<String, Object>)updateData.get(ADDRESS);
         address.put("Street", "Main Street");
-        batchParts.add(
-            Olingo2BatchChangeRequest.resourcePath(TEST_RESOURCE_ADDRESS).operation(Operation.UPDATE).body(address).build());
+        batchParts.add(Olingo2BatchChangeRequest.resourcePath(TEST_RESOURCE_ADDRESS).operation(Operation.UPDATE).body(address).build());
 
         // 7. update
         updateData.put("Name", "MyCarManufacturer Renamed");
-        batchParts.add(Olingo2BatchChangeRequest.resourcePath(TEST_RESOURCE).operation(Operation.UPDATE)
-            .body(updateData).build());
+        batchParts.add(Olingo2BatchChangeRequest.resourcePath(TEST_RESOURCE).operation(Operation.UPDATE).body(updateData).build());
 
         // 8. delete
         batchParts.add(Olingo2BatchChangeRequest.resourcePath(TEST_RESOURCE).operation(Operation.DELETE).build());
@@ -212,23 +210,23 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
         assertNotNull("Batch response", responseParts);
         assertEquals("Batch responses expected", 9, responseParts.size());
 
-        final Edm edm = (Edm) responseParts.get(0).getBody();
+        final Edm edm = (Edm)responseParts.get(0).getBody();
         assertNotNull(edm);
         LOG.info("Edm entity sets: {}", edm.getEntitySets());
 
-        final ODataFeed feed = (ODataFeed) responseParts.get(1).getBody();
+        final ODataFeed feed = (ODataFeed)responseParts.get(1).getBody();
         assertNotNull(feed);
         LOG.info("Read feed: {}", feed.getEntries());
 
-        ODataEntry dataEntry = (ODataEntry) responseParts.get(2).getBody();
+        ODataEntry dataEntry = (ODataEntry)responseParts.get(2).getBody();
         assertNotNull(dataEntry);
         LOG.info("Read entry: {}", dataEntry.getProperties());
 
-        dataEntry = (ODataEntry) responseParts.get(3).getBody();
+        dataEntry = (ODataEntry)responseParts.get(3).getBody();
         assertNotNull(dataEntry);
         LOG.info("Read entry with $expand: {}", dataEntry.getProperties());
 
-        dataEntry = (ODataEntry) responseParts.get(4).getBody();
+        dataEntry = (ODataEntry)responseParts.get(4).getBody();
         assertNotNull(dataEntry);
         LOG.info("Created entry: {}", dataEntry.getProperties());
 
@@ -245,16 +243,14 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
         LOG.info("Delete status: {}", statusCode);
 
         assertEquals(HttpStatusCodes.NOT_FOUND.getStatusCode(), responseParts.get(8).getStatusCode());
-        final Exception exception = (Exception) responseParts.get(8).getBody();
+        final Exception exception = (Exception)responseParts.get(8).getBody();
         assertNotNull(exception);
         LOG.info("Read deleted entry exception: {}", exception);
     }
 
     /**
-     *
-     * Read entity set of the People object
-     * and with no filter already seen, all items
-     * should be present in each message
+     * Read entity set of the People object and with no filter already seen, all
+     * items should be present in each message
      *
      * @throws Exception
      */
@@ -281,7 +277,7 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
         for (int i = 0; i < expectedMsgCount; ++i) {
             Object body = mockEndpoint.getExchanges().get(i).getIn().getBody();
             assertTrue(body instanceof ODataFeed);
-            ODataFeed set = (ODataFeed) body;
+            ODataFeed set = (ODataFeed)body;
 
             //
             // All messages contained all the manufacturers
@@ -291,8 +287,8 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
     }
 
     /**
-     * Read entity set of the People object
-     * and filter already seen items on subsequent exchanges
+     * Read entity set of the People object and filter already seen items on
+     * subsequent exchanges
      */
     @Test
     public void testProducerReadFilterAlreadySeen() throws Exception {
@@ -317,7 +313,7 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
         for (int i = 0; i < expectedMsgCount; ++i) {
             Object body = mockEndpoint.getExchanges().get(i).getIn().getBody();
             assertTrue(body instanceof ODataFeed);
-            ODataFeed set = (ODataFeed) body;
+            ODataFeed set = (ODataFeed)body;
 
             if (i == 0) {
                 //
@@ -339,48 +335,33 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
         return new RouteBuilder() {
             public void configure() {
                 // test routes for read
-                from("direct://READSERVICEDOC")
-                    .to("olingo2://read/");
+                from("direct://READSERVICEDOC").to("olingo2://read/");
 
-                from("direct://READFEED")
-                    .to("olingo2://read/Manufacturers?$orderBy=Name%20asc");
+                from("direct://READFEED").to("olingo2://read/Manufacturers?$orderBy=Name%20asc");
 
-                from("direct://READENTRY")
-                    .to("olingo2://read/DefaultContainer.Manufacturers");
+                from("direct://READENTRY").to("olingo2://read/DefaultContainer.Manufacturers");
 
                 // test route for create
-                from("direct://CREATE")
-                    .to("olingo2://create/Manufacturers");
+                from("direct://CREATE").to("olingo2://create/Manufacturers");
 
                 // test route for update
-                from("direct://UPDATE")
-                    .to("olingo2://update/Manufacturers('123')");
+                from("direct://UPDATE").to("olingo2://update/Manufacturers('123')");
 
                 // test route for delete
-                from("direct://DELETE")
-                    .to("olingo2://delete/Manufacturers('123')");
+                from("direct://DELETE").to("olingo2://delete/Manufacturers('123')");
 
-/*
-                // test route for merge
-                from("direct://MERGE")
-                    .to("olingo2://merge");
-
-                // test route for patch
-                from("direct://PATCH")
-                    .to("olingo2://patch");
-*/
+                /*
+                 * // test route for merge from("direct://MERGE")
+                 * .to("olingo2://merge"); // test route for patch
+                 * from("direct://PATCH") .to("olingo2://patch");
+                 */
 
                 // test route for batch
-                from("direct://BATCH")
-                    .to("olingo2://batch");
+                from("direct://BATCH").to("olingo2://batch");
 
-                from("direct:read-people-nofilterseen")
-                    .to("olingo2://read/Manufacturers")
-                    .to("mock:producer-noalreadyseen");
+                from("direct:read-people-nofilterseen").to("olingo2://read/Manufacturers").to("mock:producer-noalreadyseen");
 
-                from("direct:read-people-filterseen")
-                    .to("olingo2://read/Manufacturers?filterAlreadySeen=true")
-                    .to("mock:producer-alreadyseen");
+                from("direct:read-people-filterseen").to("olingo2://read/Manufacturers?filterAlreadySeen=true").to("mock:producer-alreadyseen");
             }
         };
     }

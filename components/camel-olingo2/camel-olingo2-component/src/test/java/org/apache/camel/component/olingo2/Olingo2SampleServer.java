@@ -38,7 +38,6 @@ public class Olingo2SampleServer {
     private int port;
 
     /**
-     * 
      * @param port
      * @param resourcePath
      */
@@ -77,8 +76,9 @@ public class Olingo2SampleServer {
 
     static void generateSampleData(String serviceUrl) throws IOException {
         try {
-            // need to use reflection to avoid a build error even when the sample source is not available 
-            Class<?> clz = Class.forName("org.apache.olingo.sample.annotation.util.AnnotationSampleDataGenerator"); 
+            // need to use reflection to avoid a build error even when the
+            // sample source is not available
+            Class<?> clz = Class.forName("org.apache.olingo.sample.annotation.util.AnnotationSampleDataGenerator");
             Method m = clz.getMethod("generateData", String.class);
             m.invoke(null, serviceUrl);
         } catch (Throwable t) {
