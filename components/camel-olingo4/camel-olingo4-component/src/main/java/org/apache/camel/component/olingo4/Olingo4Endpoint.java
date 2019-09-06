@@ -202,8 +202,8 @@ public class Olingo4Endpoint extends AbstractApiEndpoint<Olingo4ApiName, Olingo4
             final String paramName = entry.getKey();
 
             /**
-             * Avoid swallowing consumer scheduler properties, which
-             * get processed in configureProperties()
+             * Avoid swallowing consumer scheduler properties, which get
+             * processed in configureProperties()
              */
             if (paramName.startsWith("consumer.")) {
                 continue;
