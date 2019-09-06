@@ -70,6 +70,7 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
     private DataSource dataSource;
     private TransactionTemplate transactionTemplate;
     private TransactionTemplate transactionTemplateReadOnly;
+    private int propagationBehavior = TransactionDefinition.PROPAGATION_REQUIRED;
     private JdbcTemplate jdbcTemplate;
     private LobHandler lobHandler = new DefaultLobHandler();
     private String repositoryName;
@@ -99,7 +100,7 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
     }
 
     /**
-     * @param repositoryName the repositoryName to set
+     * Sets the name of the repository
      */
     public final void setRepositoryName(String repositoryName) {
         this.repositoryName = repositoryName;
@@ -109,10 +110,10 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
         this.transactionManager = transactionManager;
 
         transactionTemplate = new TransactionTemplate(transactionManager);
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        transactionTemplate.setPropagationBehavior(propagationBehavior);
 
         transactionTemplateReadOnly = new TransactionTemplate(transactionManager);
-        transactionTemplateReadOnly.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        transactionTemplateReadOnly.setPropagationBehavior(propagationBehavior);
         transactionTemplateReadOnly.setReadOnly(true);
     }
 
@@ -181,7 +182,6 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
      * @param key            the correlation key
      * @param exchange       the aggregated exchange
      * @param repositoryName The name of the table
-     * @throws Exception
      */
     protected void update(final CamelContext camelContext, final String key, final Exchange exchange, String repositoryName) throws Exception {
         StringBuilder queryBuilder = new StringBuilder()
@@ -212,7 +212,6 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
      * @param correlationId  the correlation key
      * @param exchange       the aggregated exchange to insert. The headers will be persisted but not the properties.
      * @param repositoryName The name of the table
-     * @throws Exception
      */
     protected void insert(final CamelContext camelContext, final String correlationId, final Exchange exchange, String repositoryName) throws Exception {
         // The default totalParameterIndex is 2 for ID and Exchange. Depending on logic this will be increased
@@ -465,6 +464,7 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
     /**
      * Allows to store headers as String which is human readable. By default this option is disabled,
      * storing the headers in binary format.
+     *
      * @param headersToStoreAsText the list of headers to store as String
      */
     public void setHeadersToStoreAsText(List<String> headersToStoreAsText) {
@@ -488,15 +488,24 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
         this.allowSerializedHeaders = allowSerializedHeaders;
     }
 
-   /**
-     * @return the lobHandler
+    public int getPropagationBehavior() {
+        return propagationBehavior;
+    }
+
+    /**
+     * Sets propagation behavior to use with spring transaction template which are used for database access.
+     * The default is TransactionDefinition.PROPAGATION_REQUIRED.
      */
+    public void setPropagationBehavior(int propagationBehavior) {
+        this.propagationBehavior = propagationBehavior;
+    }
+
     public LobHandler getLobHandler() {
         return lobHandler;
     }
 
     /**
-     * @param lobHandler the lobHandler to set
+     * Sets a custom LobHandler to use
      */
     public void setLobHandler(LobHandler lobHandler) {
         this.lobHandler = lobHandler;
