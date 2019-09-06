@@ -110,15 +110,15 @@ public abstract class AbstractOlingo2AppAPITestSupport {
             Object value = entry.getValue();
             if (value instanceof Map) {
                 @SuppressWarnings("unchecked")
-                final Map<String, Object> objectMap = (Map<String, Object>) value;
+                final Map<String, Object> objectMap = (Map<String, Object>)value;
                 value = prettyPrint(objectMap, level + 1);
                 b.append(value).append(NEW_LINE);
             } else if (value instanceof Calendar) {
-                Calendar cal = (Calendar) value;
+                Calendar cal = (Calendar)value;
                 value = DateFormat.getInstance().format(cal.getTime());
                 b.append(value).append(NEW_LINE);
             } else if (value instanceof ODataDeltaFeed) {
-                ODataDeltaFeed feed = (ODataDeltaFeed) value;
+                ODataDeltaFeed feed = (ODataDeltaFeed)value;
                 List<ODataEntry> inlineEntries = feed.getEntries();
                 b.append("{");
                 for (ODataEntry oDataEntry : inlineEntries) {
@@ -148,9 +148,9 @@ public abstract class AbstractOlingo2AppAPITestSupport {
             this.response = response;
             if (LOG.isDebugEnabled()) {
                 if (response instanceof ODataFeed) {
-                    LOG.debug("Received response: {}", prettyPrint((ODataFeed) response));
+                    LOG.debug("Received response: {}", prettyPrint((ODataFeed)response));
                 } else if (response instanceof ODataEntry) {
-                    LOG.debug("Received response: {}", prettyPrint((ODataEntry) response));
+                    LOG.debug("Received response: {}", prettyPrint((ODataEntry)response));
                 } else {
                     LOG.debug("Received response: {}", response);
                 }

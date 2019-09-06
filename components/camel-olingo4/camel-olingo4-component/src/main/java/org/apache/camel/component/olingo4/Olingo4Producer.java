@@ -68,7 +68,7 @@ public class Olingo4Producer extends AbstractApiProducer<Olingo4ApiName, Olingo4
                 exchange.getOut().setBody(response);
                 // copy headers
                 exchange.getOut().setHeaders(exchange.getIn().getHeaders());
-                
+
                 // Add http response headers
                 exchange.getOut().setHeader(Olingo4Constants.PROPERTY_PREFIX + Olingo4Constants.RESPONSE_HTTP_HEADERS, responseHeaders);
 
@@ -116,7 +116,8 @@ public class Olingo4Producer extends AbstractApiProducer<Olingo4ApiName, Olingo4
     @Override
     public void interceptProperties(Map<String, Object> properties) {
         //
-        // If we have a filterAlreadySeen property then initialise the filter index
+        // If we have a filterAlreadySeen property then initialise the filter
+        // index
         //
         Object value = properties.get(Olingo4Endpoint.FILTER_ALREADY_SEEN);
         if (value == null) {
@@ -124,7 +125,8 @@ public class Olingo4Producer extends AbstractApiProducer<Olingo4ApiName, Olingo4
         }
 
         //
-        // Initialise the index if not already and if filterAlreadySeen has been set
+        // Initialise the index if not already and if filterAlreadySeen has been
+        // set
         //
         if (Boolean.parseBoolean(value.toString()) && resultIndex == null) {
             resultIndex = new Olingo4Index();
