@@ -630,7 +630,7 @@ public class KafkaComponentConfiguration
         private Integer heartbeatIntervalMs = 3000;
         /**
          * The maximum amount of data per-partition the server will return. The
-         * maximum total memory used for a request will be #partitions *
+         * maximum total memory used for a request will be #partitions
          * max.partition.fetch.bytes. This size must be at least as large as the
          * maximum message size the server allows or else it is possible for the
          * producer to send messages larger than the consumer can fetch. If that

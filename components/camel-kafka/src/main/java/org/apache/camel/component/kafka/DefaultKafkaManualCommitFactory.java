@@ -24,8 +24,8 @@ import org.apache.kafka.common.TopicPartition;
 public class DefaultKafkaManualCommitFactory implements KafkaManualCommitFactory {
 
     @Override
-    public KafkaManualCommit newInstance(Exchange exchange, KafkaConsumer consumer, String topicName,
-                                         String threadId, StateRepository<String, String> offsetRepository, TopicPartition partition, long partitionLastOffset) {
+    public KafkaManualCommit newInstance(Exchange exchange, KafkaConsumer consumer, String topicName, String threadId, StateRepository<String, String> offsetRepository,
+                                         TopicPartition partition, long partitionLastOffset) {
         return new DefaultKafkaManualCommit(consumer, topicName, threadId, offsetRepository, partition, partitionLastOffset);
     }
 }
