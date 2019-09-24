@@ -375,7 +375,7 @@
     <jboss-javaee-6-version>1.0.0.Final</jboss-javaee-6-version>
     <jboss-logging-version>3.4.0.Final-redhat-00001</jboss-logging-version>
     <jboss-marshalling-version>1.4.10.Final</jboss-marshalling-version>
-    <jboss-transaction-spi.version>7.5.1.Final</jboss-transaction-spi.version>
+    <jboss-transaction-spi.version>7.6.0.Final-redhat-1</jboss-transaction-spi.version>
     <jboss-xnio-version>3.3.8.Final</jboss-xnio-version>
     <jcache-bundle-version>1.1.0_1</jcache-bundle-version>
     <jclouds-version>2.1.0</jclouds-version>
@@ -523,7 +523,7 @@
     <mustache-bundle-version>0.9.5_1</mustache-bundle-version>
     <mvel-version>2.4.0.Final</mvel-version>
     <mybatis-version>3.4.5</mybatis-version>
-    <narayana-version>5.9.1.Final-redhat-00001</narayana-version>
+    <narayana-version>5.9.3.Final-redhat-00001</narayana-version>
     <neethi-bundle-version>3.0.1</neethi-bundle-version>
     <nekohtml-version>1.9.22</nekohtml-version>
     <neoscada-version>0.4.0</neoscada-version>
