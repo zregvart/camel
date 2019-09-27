@@ -32,6 +32,7 @@
 
 	<properties>
 		<main.class>org.apache.camel.examples.grpc.HelloCamelServer</main.class>
+		<google-guava-version>${grpc-guava-version}</google-guava-version>
 	</properties>
 
 	<dependencies>
@@ -67,7 +68,7 @@
 				<configuration>
 					<protocArtifact>com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}</protocArtifact>
 					<pluginId>grpc-java</pluginId>
-					<pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc-version}:exe:${os.detected.classifier}</pluginArtifact>
+					<pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc-community-version}:exe:${os.detected.classifier}</pluginArtifact>
 				</configuration>
 				<executions>
 					<execution>
