@@ -36,6 +36,8 @@
   <properties>
     <camel.osgi.export.pkg>org.apache.camel.component.grpc.*;${camel.osgi.version}</camel.osgi.export.pkg>
     <camel.osgi.export.service>org.apache.camel.spi.ComponentResolver;component=grpc</camel.osgi.export.service>
+    <!-- gRPC requires strong own of the Google Guava version -->
+    <google-guava-version>${grpc-guava-version}</google-guava-version>
   </properties>
 
   <dependencies>
@@ -188,7 +190,7 @@
         <configuration>
           <protocArtifact>com.google.protobuf:protoc:${protobuf-version}:exe:${os.detected.classifier}</protocArtifact>
           <pluginId>grpc-java</pluginId>
-          <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc-version}:exe:${os.detected.classifier}</pluginArtifact>
+          <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.23.0:exe:${os.detected.classifier}</pluginArtifact>
           <skip>${skipTests}</skip>
         </configuration>
         <executions>

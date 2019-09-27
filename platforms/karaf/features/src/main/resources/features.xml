@@ -876,13 +876,14 @@
     <bundle dependency='true'>mvn:io.netty/netty-resolver/${netty-version}</bundle>
     <bundle dependency='true'>mvn:io.netty/netty-transport/${netty-version}</bundle>
     <bundle dependency='true'>mvn:io.netty/netty-tcnative-boringssl-static/${grpc-netty-tcnative-boringssl-static-version}</bundle>
-    <bundle dependency='true'>mvn:com.google.guava/guava/${google-guava-version}</bundle>
+    <bundle dependency='true'>mvn:com.google.guava/guava/${grpc-guava-version}</bundle>
     <bundle dependency='true'>wrap:mvn:com.google.errorprone/error_prone_annotations/${grpc-errorprone-version}</bundle>
     <!-- Third party dependencies -->
     <bundle dependency='true'>mvn:org.javassist/javassist/${javassist-version}</bundle>
     <bundle dependency='true'>wrap:mvn:com.auth0/java-jwt/${grpc-java-jwt-version}</bundle>
     <bundle dependency='true'>wrap:mvn:com.google.auth/google-auth-library-oauth2-http/${grpc-google-auth-library-version}</bundle>
     <bundle dependency='true'>wrap:mvn:com.google.auth/google-auth-library-credentials/${grpc-google-auth-library-version}</bundle>
+    <bundle dependency='true'>mvn:com.google.code.findbugs/jsr305/${google-findbugs-jsr305-version}</bundle>
     <bundle dependency='true'>mvn:com.google.protobuf/protobuf-java/${protobuf-version}</bundle>
     <bundle dependency='true'>mvn:com.google.protobuf.nano/protobuf-javanano/${protobuf-javanano-version}</bundle>
     <bundle dependency='true'>mvn:com.google.protobuf/protobuf-java-util/${protobuf-version}</bundle>
@@ -891,6 +892,7 @@
     <bundle dependency='true'>wrap:mvn:io.opencensus/opencensus-contrib-grpc-metrics/${opencensus-api-version}</bundle>
     <bundle dependency='true'>wrap:mvn:io.opencensus/opencensus-api/${opencensus-api-version}</bundle>
     <bundle dependency='true'>mvn:com.google.code.gson/gson/${gson-version}</bundle>
+    <bundle dependency='true'>wrap:mvn:io.perfmark/perfmark-api/${perfmark-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.junit/${junit-bundle-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-grpc/${project.version}</bundle>
   </feature>
@@ -1754,7 +1756,7 @@
     <bundle dependency='true'>mvn:com.google.protobuf/protobuf-java/${protobuf-version}</bundle>
     <bundle dependency='true'>mvn:com.google.protobuf/protobuf-java-util/${protobuf-version}</bundle>
     <bundle dependency='true'>mvn:commons-io/commons-io/${commons-io-version}</bundle>
-    <bundle dependency='true'>mvn:com.google.guava/guava/${google-guava-version}</bundle>
+    <bundle dependency='true'>mvn:com.google.guava/guava/${protobuf-guava-version}</bundle>
     <bundle dependency='true'>mvn:com.google.code.gson/gson/${gson-version}</bundle>
     <bundle>mvn:org.apache.camel/camel-protobuf/${project.version}</bundle>
   </feature>
