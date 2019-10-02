@@ -354,8 +354,8 @@ public class KafkaComponentConfiguration
          * order and the first rule that matches a principal name is used to map
          * it to a short name. Any later rules in the list are ignored. By
          * default, principal names of the form {username}/{hostname}@{REALM}
-         * are mapped to {username}. For more details on the format please see
-         * <a href=\"#security_authz\"> security authorization and acls</a>.
+         * are mapped to {username}. For more details on the format you can take
+         * a look at security authorization and acls.
          * <p/>
          * Multiple values can be separated by comma
          */
