@@ -30,6 +30,8 @@ import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 
+import de.flapdoodle.embed.mongo.config.Storage;
+import org.bson.Document;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,13 +44,23 @@ import static org.springframework.util.SocketUtils.findAvailableTcpPort;
 @Configuration
 public class EmbedMongoConfiguration {
 
-    private static final int PORT = findAvailableTcpPort();
+    public static final int PORT = findAvailableTcpPort();
 
     static {
         try {
-            IMongodConfig mongodConfig = new MongodConfigBuilder().version(PRODUCTION).net(new Net(PORT, localhostIsIPv6())).build();
+            IMongodConfig mongodConfig = new MongodConfigBuilder()
+                    .version(PRODUCTION)
+                    .net(new Net(PORT, localhostIsIPv6()))
+                    .replication(new Storage(null, "replicationName", 5000))
+                    .build();
+
             MongodExecutable mongodExecutable = MongodStarter.getDefaultInstance().prepare(mongodConfig);
             mongodExecutable.start();
+
+            // init replica set
+            MongoClient client = new MongoClient("localhost", PORT);
+            client.getDatabase("admin").runCommand(new Document("replSetInitiate", new Document()));
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
