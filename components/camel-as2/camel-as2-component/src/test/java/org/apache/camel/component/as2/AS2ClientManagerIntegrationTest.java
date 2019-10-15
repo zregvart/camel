@@ -520,6 +520,7 @@ public class AS2ClientManagerIntegrationTest extends AbstractAS2TestSupport {
     public static void teardownTest() throws Exception {
         if (serverConnection != null) {
             serverConnection.stopListening("/");
+            serverConnection.close();
         }
     }
 
