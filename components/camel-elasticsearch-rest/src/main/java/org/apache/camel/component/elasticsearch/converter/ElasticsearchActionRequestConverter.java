@@ -66,7 +66,7 @@ public final class ElasticsearchActionRequestConverter {
         } else if (document instanceof XContentBuilder) {
             updateRequest.doc((XContentBuilder) document);
         } else {
-            return null;
+            throw new IllegalArgumentException("Wrong body type. Only Map, String, byte[], XContentBuilder or UpdateRequest is allowed as a type");
         }
 
         return updateRequest
@@ -97,7 +97,7 @@ public final class ElasticsearchActionRequestConverter {
         } else if (document instanceof XContentBuilder) {
             indexRequest.source((XContentBuilder) document);
         } else {
-            return null;
+            throw new IllegalArgumentException("Wrong body type. Only Map, String, byte[], XContentBuilder or IndexRequest is allowed as a type");
         }
 
         return indexRequest
@@ -125,11 +125,14 @@ public final class ElasticsearchActionRequestConverter {
         if (document instanceof GetRequest) {
             return (GetRequest) document;
         }
-        return new GetRequest(exchange.getIn().getHeader(
-            ElasticsearchConstants.PARAM_INDEX_NAME, String.class))
-            .type(exchange.getIn().getHeader(
-                ElasticsearchConstants.PARAM_INDEX_TYPE,
-                String.class)).id((String) document);
+        if (document instanceof  String) {
+            return new GetRequest(exchange.getIn().getHeader(
+                    ElasticsearchConstants.PARAM_INDEX_NAME, String.class))
+                    .type(exchange.getIn().getHeader(
+                            ElasticsearchConstants.PARAM_INDEX_TYPE,
+                            String.class)).id((String) document);
+        }
+        throw new IllegalArgumentException("Wrong body type. Only String or GetRequest is allowed as a type");
     }
 
     public static DeleteRequest toDeleteRequest(Object document, Exchange exchange) {
