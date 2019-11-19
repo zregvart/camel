@@ -34,6 +34,7 @@ import org.apache.camel.VerifiableComponent;
 import org.apache.camel.component.extension.ComponentVerifierExtension;
 import org.apache.camel.component.salesforce.api.SalesforceException;
 import org.apache.camel.component.salesforce.api.dto.AbstractSObjectBase;
+import org.apache.camel.component.salesforce.api.utils.SecurityUtils;
 import org.apache.camel.component.salesforce.internal.OperationName;
 import org.apache.camel.component.salesforce.internal.PayloadFormat;
 import org.apache.camel.component.salesforce.internal.SalesforceSession;
@@ -329,6 +330,8 @@ public class SalesforceComponent extends DefaultComponent implements VerifiableC
             final SSLContextParameters contextParameters = Optional.ofNullable(sslContextParameters)
                 .orElseGet(() -> Optional.ofNullable(retrieveGlobalSslContextParameters())
                 .orElseGet(() -> new SSLContextParameters()));
+
+            SecurityUtils.adaptToIBMTlsVersion(contextParameters);
 
             final SslContextFactory sslContextFactory = new SslContextFactory();
             sslContextFactory.setSslContext(contextParameters.createSSLContext(getCamelContext()));
@@ -698,6 +701,8 @@ public class SalesforceComponent extends DefaultComponent implements VerifiableC
         // let's work with a copy for IntrospectionSupport so original properties are intact
         IntrospectionSupport.setProperties(typeConverter, sslContextParameters, new HashMap<>(properties));
 
+        SecurityUtils.adaptToIBMTlsVersion(sslContextParameters);
+
         final SslContextFactory sslContextFactory = new SslContextFactory();
         sslContextFactory.setSslContext(sslContextParameters.createSSLContext(camelContext));
 
@@ -712,6 +717,8 @@ public class SalesforceComponent extends DefaultComponent implements VerifiableC
     }
 
     static SalesforceHttpClient createHttpClient(final SslContextFactory sslContextFactory) throws Exception {
+        SecurityUtils.adaptToIBMCipherNames(sslContextFactory);
+
         final SalesforceHttpClient httpClient = new SalesforceHttpClient(sslContextFactory);
         // default settings, use httpClientProperties to set other
         // properties

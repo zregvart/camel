@@ -27,6 +27,7 @@ import org.apache.camel.component.salesforce.SalesforceEndpointConfig;
 import org.apache.camel.component.salesforce.SalesforceHttpClient;
 import org.apache.camel.component.salesforce.SalesforceLoginConfig;
 import org.apache.camel.component.salesforce.api.SalesforceException;
+import org.apache.camel.component.salesforce.api.utils.SecurityUtils;
 import org.apache.camel.component.salesforce.internal.PayloadFormat;
 import org.apache.camel.component.salesforce.internal.SalesforceSession;
 import org.apache.camel.component.salesforce.internal.client.DefaultRestClient;
@@ -226,12 +227,11 @@ abstract class AbstractSalesforceMojo extends AbstractMojo {
         try {
             final SslContextFactory sslContextFactory = new SslContextFactory();
 
-            //salesforce requires tls1.2. Oracle jdk is by default accepting such connections, but IBM java works by default only with TLS1
-            // and this is a way to force it to use TLS1.2 (or to use -Dcom.ibm.jsse2.overrideDefaultTLS=true for jdk)
-            if (System.getProperty("java.vendor").contains("IBM")) {
-                sslContextParameters.setSecureSocketProtocol("TLSv1.2");
-            }
+            SecurityUtils.adaptToIBMTlsVersion(sslContextParameters);
+
             sslContextFactory.setSslContext(sslContextParameters.createSSLContext(new DefaultCamelContext()));
+
+            SecurityUtils.adaptToIBMCipherNames(sslContextFactory);
 
             httpClient = new SalesforceHttpClient(sslContextFactory);
         } catch (final GeneralSecurityException e) {
