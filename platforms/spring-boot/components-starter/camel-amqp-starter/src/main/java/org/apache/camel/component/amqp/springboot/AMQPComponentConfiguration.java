@@ -50,6 +50,13 @@ public class AMQPComponentConfiguration
             ComponentConfigurationPropertiesCommon {
 
     /**
+     * Whether to include AMQP annotations when mapping from AMQP to Camel
+     * Message. Setting this to true will map AMQP message annotations to
+     * message headers. Due to limitations in Apache Qpid JMS API, currently
+     * delivery annotations are ignored.
+     */
+    private Boolean includeAmqpAnnotations = false;
+    /**
      * To use a shared JMS configuration
      */
     @NestedConfigurationProperty
@@ -624,6 +631,14 @@ public class AMQPComponentConfiguration
      * placeholders.
      */
     private Boolean resolvePropertyPlaceholders = true;
+
+    public Boolean getIncludeAmqpAnnotations() {
+        return includeAmqpAnnotations;
+    }
+
+    public void setIncludeAmqpAnnotations(Boolean includeAmqpAnnotations) {
+        this.includeAmqpAnnotations = includeAmqpAnnotations;
+    }
 
     public JmsConfiguration getConfiguration() {
         return configuration;
