@@ -97,7 +97,7 @@ public class SftpOperations implements RemoteFileOperations<SftpRemoteFile> {
         this.endpoint = (SftpEndpoint)endpoint;
     }
 
-    public synchronized boolean connect(RemoteFileConfiguration configuration) throws GenericFileOperationFailedException {
+    public synchronized boolean connect(RemoteFileConfiguration configuration, Exchange exchange) throws GenericFileOperationFailedException {
         if (isConnected()) {
             // already connected
             return true;
@@ -444,16 +444,16 @@ public class SftpOperations implements RemoteFileOperations<SftpRemoteFile> {
         }
     }
 
-    private void reconnectIfNecessary() {
+    private void reconnectIfNecessary(Exchange exchange) {
         if (!isConnected()) {
-            connect(endpoint.getConfiguration());
+            connect(endpoint.getConfiguration(), exchange);
         }
     }
 
     public synchronized boolean deleteFile(String name) throws GenericFileOperationFailedException {
         LOG.debug("Deleting file: {}", name);
         try {
-            reconnectIfNecessary();
+            reconnectIfNecessary(null);
             channel.rm(name);
             return true;
         } catch (SftpException e) {
@@ -465,7 +465,7 @@ public class SftpOperations implements RemoteFileOperations<SftpRemoteFile> {
     public synchronized boolean renameFile(String from, String to) throws GenericFileOperationFailedException {
         LOG.debug("Renaming file: {} to: {}", from, to);
         try {
-            reconnectIfNecessary();
+            reconnectIfNecessary(null);
             // make use of the '/' separator because JSch expects this
             // as the file separator even on Windows
             to = FileUtil.compactPath(to, '/');
@@ -604,8 +604,18 @@ public class SftpOperations implements RemoteFileOperations<SftpRemoteFile> {
         // that
         if (FileUtil.hasLeadingSeparator(path)) {
             // change to root path
-            doChangeDirectory(path.substring(0, 1));
-            path = path.substring(1);
+            if (!path.matches("^[a-zA-Z]:(//|\\\\).*$")) {
+                doChangeDirectory(path.substring(0, 1));
+                path = path.substring(1);
+            } else {
+                if (path.matches("^[a-zA-Z]:(//).*$")) {
+                    doChangeDirectory(path.substring(0, 3));
+                    path = path.substring(3);
+                } else if (path.matches("^[a-zA-Z]:(\\\\).*$")) {
+                    doChangeDirectory(path.substring(0, 4));
+                    path = path.substring(4);
+                }
+            }
         }
 
         // split into multiple dirs
