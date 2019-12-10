@@ -92,7 +92,7 @@ in path such as `/api/\{version\}/users/\{id\}`.
 == Options
 
 // component options: START
-The REST OpenApi component supports 9 options, which are listed below.
+The REST OpenApi component supports 9 options which are listed below.
 
 
 

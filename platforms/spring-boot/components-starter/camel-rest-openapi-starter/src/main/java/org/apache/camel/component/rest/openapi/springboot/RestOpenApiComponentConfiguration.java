@@ -19,7 +19,9 @@ package org.apache.camel.component.rest.openapi.springboot;
 import java.net.URI;
 import javax.annotation.Generated;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
+import org.apache.camel.util.jsse.SSLContextParameters;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * An awesome REST endpoint backed by OpenApi specifications.
@@ -32,11 +34,6 @@ public class RestOpenApiComponentConfiguration
         extends
             ComponentConfigurationPropertiesCommon {
 
-    /**
-     * Whether to enable auto configuration of the rest-openapi component. This
-     * is enabled by default.
-     */
-    private Boolean enabled;
     /**
      * API basePath, for example /v2. Default is unset, if set overrides the
      * value present in OpenApi specification.
@@ -88,10 +85,10 @@ public class RestOpenApiComponentConfiguration
     private URI specificationUri;
     /**
      * Customize TLS parameters used by the component. If not set defaults to
-     * the TLS parameters set in the Camel context. The option is a
-     * org.apache.camel.util.jsse.SSLContextParameters type.
+     * the TLS parameters set in the Camel context
      */
-    private String sslContextParameters;
+    @NestedConfigurationProperty
+    private SSLContextParameters sslContextParameters;
     /**
      * Enable usage of global SSL context parameters.
      */
@@ -151,11 +148,12 @@ public class RestOpenApiComponentConfiguration
         this.specificationUri = specificationUri;
     }
 
-    public String getSslContextParameters() {
+    public SSLContextParameters getSslContextParameters() {
         return sslContextParameters;
     }
 
-    public void setSslContextParameters(String sslContextParameters) {
+    public void setSslContextParameters(
+            SSLContextParameters sslContextParameters) {
         this.sslContextParameters = sslContextParameters;
     }
 
