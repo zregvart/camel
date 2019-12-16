@@ -116,6 +116,8 @@
             <excludes>
 
               <!-- These artifacts should not be included in the final (generated) BOM -->
+              <exclude>ch.qos.logback:logback-classic</exclude>
+              <exclude>ch.qos.logback:logback-core</exclude>
 
               <!-- Different versions from the ones provided by spring-boot -->
               <exclude>de.flapdoodle*:*</exclude>
