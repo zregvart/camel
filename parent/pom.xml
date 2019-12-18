@@ -1770,6 +1770,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
+        <artifactId>camel-openapi-java</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
         <artifactId>camel-openshift</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -1856,6 +1861,16 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-reactor</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-rxjava2</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-rest-openapi</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -3219,6 +3234,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
+        <artifactId>camel-openapi-java-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
         <artifactId>camel-openshift-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -3295,6 +3315,16 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-reactor-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-rxjava2-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-rest-openapi-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -4905,7 +4935,14 @@
         <version>${logback-version}</version>
       </dependency>
 
+      <!-- apicurio -->
+      <dependency>
+        <groupId>io.apicurio</groupId>
+        <artifactId>apicurio-data-models</artifactId>
+        <version>${apicurio-version}</version>
+      </dependency>
     </dependencies>
+
   </dependencyManagement>
 
   <build>
