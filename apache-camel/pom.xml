@@ -855,6 +855,10 @@
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
+      <artifactId>camel-rest-openapi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
       <artifactId>camel-rest-swagger</artifactId>
     </dependency>
     <dependency>
@@ -2153,6 +2157,11 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-reactor-starter</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-rest-openapi-starter</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
