@@ -83,7 +83,7 @@
       <dependency>
         <groupId>com.github.dozermapper</groupId>
         <artifactId>dozer-core</artifactId>
-        <version>6.2.0</version>
+        <version>6.4.1</version>
       </dependency>
       <dependency>
         <groupId>com.google.code.scriptengines</groupId>
@@ -160,11 +160,6 @@
         <groupId>httpunit</groupId>
         <artifactId>httpunit</artifactId>
         <version>1.7</version>
-      </dependency>
-      <dependency>
-        <groupId>io.apicurio</groupId>
-        <artifactId>apicurio-data-models</artifactId>
-        <version>1.0.16.Final</version>
       </dependency>
       <dependency>
         <groupId>io.nessus</groupId>
@@ -2086,16 +2081,6 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
-        <artifactId>camel-openapi-java</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-openapi-java-starter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
         <artifactId>camel-openshift</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -2262,16 +2247,6 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-reactor-starter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-rest-openapi</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-rest-openapi-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
