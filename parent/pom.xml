@@ -106,7 +106,7 @@
     <braintree-jackson-version>2.9.9</braintree-jackson-version>
     <brave-zipkin-version>4.13.4</brave-zipkin-version>
     <build-helper-maven-plugin-version>1.10</build-helper-maven-plugin-version>
-    <bytebuddy-version>1.9.5</bytebuddy-version>
+    <bytebuddy-version>1.9.11.redhat-00002</bytebuddy-version>
     <c3p0-version>0.9.5.4</c3p0-version>
     <c3p0-bundle-version>0.9.5.4_1</c3p0-bundle-version>
     <caffeine-version>2.6.2</caffeine-version>
