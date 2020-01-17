@@ -353,7 +353,7 @@ public abstract class AbstractFeatureTest {
                                          // Disable the Karaf shutdown port
                                          editConfigurationFilePut("etc/custom.properties", "karaf.shutdown.port", "-1"),
                                          editConfigurationFilePut("etc/org.ops4j.pax.url.mvn.cfg", "org.ops4j.pax.url.mvn.repositories",
-                                                                  "    http://repo1.maven.org/maven2@id=central, " 
+                                                                  "    https://repo1.maven.org/maven2@id=central, " 
                                          + "    http://repository.apache.org/content/groups/snapshots-group@id=apache@snapshots@noreleases, "
                                          + "    https://oss.sonatype.org/content/repositories/ops4j-snapshots@id=ops4j.sonatype.snapshots.deploy@snapshots@noreleases, "
                                          + "    https://maven.repository.redhat.com/ga@id=rhga, "
