@@ -309,7 +309,7 @@
     <hessian-version>4.0.51</hessian-version>
     <hibernate-validator-version>5.3.5.Final-redhat-2</hibernate-validator-version>
     <hibernate-version>5.3.13.Final-redhat-00001</hibernate-version>
-    <hikaricp-version>2.3.13</hikaricp-version>
+    <hikaricp-version>2.4.13</hikaricp-version>
     <hk2-version>2.3.0</hk2-version>
     <hk2-osgi-resource-version>1.0.1</hk2-osgi-resource-version>
     <hsqldb-version>2.4.0</hsqldb-version>
@@ -596,7 +596,7 @@
     <quartz-bundle-version>1.8.6_1</quartz-bundle-version>
     <quartz-version>1.8.6</quartz-version>
     <quartz-version-range>[1.8,2)</quartz-version-range>
-    <quartz2-version>2.3.0</quartz2-version>
+    <quartz2-version>2.3.2</quartz2-version>
     <quickfixj-version>2.0.0</quickfixj-version>
     <rabbitmq-amqp-client-version>5.1.2</rabbitmq-amqp-client-version>
     <reactive-streams-version>1.0.2</reactive-streams-version>
