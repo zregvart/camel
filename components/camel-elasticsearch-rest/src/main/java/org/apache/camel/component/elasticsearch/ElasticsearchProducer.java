@@ -44,6 +44,7 @@ import org.elasticsearch.action.get.MultiGetRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -53,6 +54,9 @@ import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.apache.camel.component.elasticsearch.ElasticsearchConstants.PARAM_SCROLL;
+import static org.apache.camel.component.elasticsearch.ElasticsearchConstants.PARAM_SCROLL_KEEP_ALIVE_MS;
 
 
 /**
@@ -189,7 +193,7 @@ public class ElasticsearchProducer extends DefaultProducer {
             SearchRequest searchRequest = new SearchRequest(exchange.getIn().getHeader(ElasticsearchConstants.PARAM_INDEX_NAME, String.class));
             searchRequest.source(sourceBuilder);
             try {
-                restHighLevelClient.search(searchRequest);
+                restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
                 message.setBody(true);
             } catch (ElasticsearchStatusException e) {
                 if (e.status().equals(RestStatus.NOT_FOUND)) {
@@ -201,9 +205,18 @@ public class ElasticsearchProducer extends DefaultProducer {
             }
         } else if (operation == ElasticsearchOperation.Search) {
             SearchRequest searchRequest = ElasticsearchActionRequestConverter.toSearchRequest(message.getBody(), exchange);
-            message.setBody(restHighLevelClient.search(searchRequest).getHits());
+
+            // is it a scroll request ?
+            boolean useScroll = message.getHeader(PARAM_SCROLL, configuration.getUseScroll(), Boolean.class);
+            if (useScroll) {
+                int scrollKeepAliveMs = message.getHeader(PARAM_SCROLL_KEEP_ALIVE_MS, configuration.getScrollKeepAliveMs(), Integer.class);
+                ElasticsearchScrollRequestIterator scrollRequestIterator = new ElasticsearchScrollRequestIterator(searchRequest, restHighLevelClient, scrollKeepAliveMs, exchange);
+                exchange.getIn().setBody(scrollRequestIterator);
+            } else {
+                message.setBody(restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT).getHits());
+            }
         } else if (operation == ElasticsearchOperation.Ping) {
-            message.setBody(restHighLevelClient.ping());
+            message.setBody(restHighLevelClient.ping(RequestOptions.DEFAULT));
         } else {
             throw new IllegalArgumentException(ElasticsearchConstants.PARAM_OPERATION + " value '" + operation + "' is not supported");
         }
@@ -217,10 +230,6 @@ public class ElasticsearchProducer extends DefaultProducer {
         // subsequent endpoint index/type with the first endpoint index/type.
         if (configIndexName) {
             message.removeHeader(ElasticsearchConstants.PARAM_INDEX_NAME);
-        }
-
-        if (configIndexType) {
-            message.removeHeader(ElasticsearchConstants.PARAM_INDEX_TYPE);
         }
 
         if (configWaitForActiveShards) {

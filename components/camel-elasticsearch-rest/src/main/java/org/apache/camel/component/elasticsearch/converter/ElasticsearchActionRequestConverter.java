@@ -34,6 +34,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.MultiSearchRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -171,7 +172,7 @@ public final class ElasticsearchActionRequestConverter {
             }
             try {
                 XContentBuilder contentBuilder = XContentFactory.contentBuilder(XContentType.JSON);
-                queryText = contentBuilder.map(mapQuery).string();
+                queryText = Strings.toString(contentBuilder.map(mapQuery));
             } catch (IOException e) {
                 LOG.error(e.getMessage());
             }
