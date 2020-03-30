@@ -6,7 +6,7 @@ xref:{eip-vc}:eips:enterprise-integration-patterns.adoc[Enterprise Integration P
 inside the ActiveMQ Broker. In which case the
 stand alone broker is already packaged to work with Camel out of the
 box; just add your EIP routing rules to ActiveMQ's
-xref:xml-configuration.adoc[XML Configuration] like the example
+xref:ROOT:xml-configuration.adoc[XML Configuration] like the example
 routing rule which ships with ActiveMQ
 5.x or later. If you want to include some Java routing rules, then just
 add your jar to somewhere inside ActiveMQ's lib directory.
@@ -19,4 +19,4 @@ necessary jars and customise the Spring XML and you're good to go.
 == What jars do I need?
 
 * https://activemq.apache.org/initial-configuration.html[What jars are required for ActiveMQ]
-* xref:faq/what-jars-do-i-need.adoc[What jars are required for Camel]
+* xref:what-jars-do-i-need.adoc[What jars are required for Camel]
