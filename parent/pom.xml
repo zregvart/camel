@@ -472,7 +472,7 @@
     <lifecycle-mapping-version>1.0.0</lifecycle-mapping-version>
     <logback-version>1.2.3</logback-version>
     <log4j-version>1.2.17</log4j-version>
-    <log4j2-version>2.12.1</log4j2-version>
+    <log4j2-version>2.13.2</log4j2-version>
     <lucene3-bundle-version>3.6.0_1</lucene3-bundle-version>
     <lucene3-version>3.6.0</lucene3-version>
     <lucene-bundle-version>5.5.2_1</lucene-bundle-version>
@@ -579,7 +579,7 @@
     <pax-cdi-version>1.1.2</pax-cdi-version>
     <pax-exam-version>4.9.2</pax-exam-version>
     <pax-tiny-bundle-version>1.3.2</pax-tiny-bundle-version>
-    <pax-logging-version>1.11.4</pax-logging-version>
+    <pax-logging-version>1.11.6</pax-logging-version>
     <pdfbox18-version>1.8.16</pdfbox18-version>
     <pdfbox-version>2.0.12</pdfbox-version>
     <perfmark-version>0.17.0</perfmark-version>
