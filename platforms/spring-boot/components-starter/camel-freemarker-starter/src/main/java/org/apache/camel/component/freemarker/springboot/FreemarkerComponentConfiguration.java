@@ -38,6 +38,13 @@ public class FreemarkerComponentConfiguration
      */
     private Configuration configuration;
     /**
+     * Whether to allow to use resource template from header or not (default
+     * false). Enabling this allows to specify dynamic templates via message
+     * header. However this can be seen as a potential security vulnerability if
+     * the header is coming from a malicious user, so use this with care.
+     */
+    private Boolean allowTemplateFromHeader = false;
+    /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
      * placeholders.
@@ -50,6 +57,14 @@ public class FreemarkerComponentConfiguration
 
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public Boolean getAllowTemplateFromHeader() {
+        return allowTemplateFromHeader;
+    }
+
+    public void setAllowTemplateFromHeader(Boolean allowTemplateFromHeader) {
+        this.allowTemplateFromHeader = allowTemplateFromHeader;
     }
 
     public Boolean getResolvePropertyPlaceholders() {
