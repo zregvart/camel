@@ -94,7 +94,7 @@ public class RestDslXmlGenerator extends RestDslGenerator<RestDslXmlGenerator> {
                 configuration.setAttribute("apiContextPath", apiContextPath);
             }
 
-            if (clientRequestValidation) {
+            if (clientRequestValidation == true) {
                 configuration.setAttribute("clientRequestValidation", "true");
             }
 

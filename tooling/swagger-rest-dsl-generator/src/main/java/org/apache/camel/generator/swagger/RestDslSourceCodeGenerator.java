@@ -109,7 +109,7 @@ public abstract class RestDslSourceCodeGenerator<T> extends RestDslGenerator<Res
             if (ObjectHelper.isNotEmpty(apiContextPath)) {
                 configure.addCode(".apiContextPath(\"" + apiContextPath + "\")");
             }
-            if (clientRequestValidation) {
+            if (clientRequestValidation == true) {
                 configure.addCode(".clientRequestValidation(true)");
             }
             configure.addCode(";\n\n");
