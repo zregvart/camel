@@ -70,6 +70,7 @@ pipeline {
     }
 
     post {
+        recordIssues aggregatingResults: true, enabledForFailure: true, tools: [mavenConsole(), java(), javaDoc()]
         always {
             emailext(
                 subject: '${DEFAULT_SUBJECT}',
@@ -79,4 +80,3 @@ pipeline {
         }
     }
 }
-
