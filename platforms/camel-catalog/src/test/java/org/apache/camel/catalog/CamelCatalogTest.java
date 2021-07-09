@@ -983,6 +983,13 @@ public class CamelCatalogTest {
         assertTrue(result.getError().startsWith("expected symbol functionEnd but was eol at location 5"));
         assertEquals("expected symbol functionEnd but was eol", result.getShortError());
         assertEquals(5, result.getIndex());
+
+        result = catalog.validateSimpleExpression(null, "${bodyxxx}");
+        assertFalse(result.isSuccess());
+        assertEquals("${bodyxxx}", result.getSimple());
+        LOG.info(result.getError());
+        assertEquals("Valid syntax: ${body.OGNL} was: bodyxxx", result.getShortError());
+        assertEquals(0, result.getIndex());
     }
 
     @Test
@@ -1166,6 +1173,33 @@ public class CamelCatalogTest {
         assertFalse(result.isSuccess());
 
         assertEquals("delete", result.getNotProducerOnly().iterator().next());
+    }
+
+    @Test
+    public void testNetty4Http4DynamicToIssue() throws Exception {
+        String uri = "netty4-http:http://10.192.1.10:8080/client/alerts/summary?throwExceptionOnFailure=false";
+        Map<String, String> params = catalog.endpointProperties(uri);
+        params.remove("path");
+        params.remove("throwExceptionOnFailure");
+
+        String resolved = catalog.asEndpointUri("netty4-http", params, false);
+        assertEquals("netty4-http:http:10.192.1.10:8080", resolved);
+    }
+
+    @Test
+    public void testNetty4Http4DynamicToIssueHost() throws Exception {
+        String uri = "netty4-http:http://a-b-c.hostname.tld:8080/anything";
+        Map<String, String> params = catalog.endpointProperties(uri);
+        assertEquals("http", params.get("protocol"));
+        assertEquals("a-b-c.hostname.tld", params.get("host"));
+        assertEquals("8080", params.get("port"));
+        assertEquals("anything", params.get("path"));
+
+        // remove path
+        params.remove("path");
+
+        String resolved = catalog.asEndpointUri("netty4-http", params, false);
+        assertEquals("netty4-http:http:a-b-c.hostname.tld:8080", resolved);
     }
 
     @Test
